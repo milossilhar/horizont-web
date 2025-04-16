@@ -8,5 +8,6 @@ html {
   font-size: 14px;
 }
 
+@import "primeicons/primeicons.css";
 @import "tailwindcss";
 @import "tailwindcss-primeui";

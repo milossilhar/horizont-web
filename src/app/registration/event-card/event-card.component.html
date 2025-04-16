@@ -1,0 +1,17 @@
+<p-card [header]="event?.name" styleClass="overflow-hidden">
+  @if (showImage) {
+    <ng-template #header>
+      <img alt="Card" class="w-full" src="images/event_daily_2025.jpg" />
+    </ng-template>
+  }
+  <ng-template #title> {{event?.name}} </ng-template>
+  <ng-template #subtitle> {{event?.place}} </ng-template>
+  <p>
+    {{event?.details}}
+  </p>
+  @if (showButton) {
+    <ng-template #footer>
+      <a pButton size="large" [routerLink]="['/registration', event?.uuid]" class="w-full font-bold">Registrovať</a>
+    </ng-template>
+  }
+</p-card>

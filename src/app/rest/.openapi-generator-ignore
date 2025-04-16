@@ -1,0 +1,7 @@
+# OpenAPI Generator Ignore
+
+# Don't generate these files
+README.md
+.gitignore
+git_push.sh
+index.ts

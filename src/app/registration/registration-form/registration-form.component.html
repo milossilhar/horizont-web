@@ -1,0 +1,193 @@
+<form [formGroup]="form" class="flex flex-col gap-y-4" (ngSubmit)="submitRegistration()">
+
+  <div class="flex flex-row justify-center">
+    <h2 class="text-2xl mb-2">Registrácia</h2>
+  </div>
+
+  <app-event-card [event]="event()" [showImage]="false" [showButton]="false"></app-event-card>
+    
+  <p-card>
+    <ng-template #title> Vyberte termín </ng-template>
+    <app-event-term-selector formControlName="eventTermId" [terms]="terms"></app-event-term-selector>
+  </p-card>
+
+  <p-card>
+    <ng-template #title> Údaje o rodičovi </ng-template>
+    <ng-template #subtitle> Najskôr vyplňte údaje o Vás </ng-template>
+    <div class="w-full grid grid-cols-1 sm:grid-cols-2 gap-x-2 gap-y-4">
+      <p-floatlabel variant="on">
+        <label for="parent-name">Meno</label>
+        <input class="w-full" pInputText id="parent-name" formControlName="name" autocomplete="off" pSize="large" />
+      </p-floatlabel>
+      <p-floatlabel variant="on">
+        <label for="parent-surname">Priezvisko</label>
+        <input class="w-full" pInputText id="parent-surname" formControlName="surname" autocomplete="off" pSize="large" />
+      </p-floatlabel>
+      <div class="flex flex-col gap-2">
+        <p-floatlabel variant="on">
+          <label for="parent-email">Email</label>
+          <input class="w-full" pInputText id="parent-email" formControlName="email" autocomplete="off" pSize="large" />
+        </p-floatlabel>
+        @if(hasError(fc.email, "email")) {
+          <p-message severity="error" variant="simple">Email nemá správny formát.</p-message>
+        }
+        @if(hasError(fc.email, "required")) {
+          <p-message severity="error" variant="simple">Email je povinný.</p-message>
+        }
+      </div>
+      <div class="flex flex-col gap-2">
+        <p-floatlabel variant="on">
+          <label for="parent-phone">Telefón</label>
+          <input class="w-full" pInputText id="parent-phone" formControlName="telPhone" autocomplete="off" pSize="large" />
+        </p-floatlabel>
+        @if(hasError(fc.telPhone, "required")) {
+          <p-message severity="error" variant="simple">Telefón rodiča je povinný.</p-message>
+        }
+      </div>
+    </div>
+  </p-card>
+
+  <p-card>
+    <ng-template #title> Údaje o deťoch </ng-template>
+    <ng-template #subtitle> Vyplnťe prosím údaje o dieťati. Naraz viete zaregistrovať aj viac detí.
+      <b>Prosíme registrujte len svoje deti.</b>
+    </ng-template>
+    <div class="w-full flex flex-col gap-3 mt-5" formArrayName="people">
+      @for (personForm of people.controls; track $index) {
+        <div [formGroup]="personForm" class="w-full flex flex-col gap-y-4 rounded-border p-4 bg-primary-50">
+          <div class="w-full flex flex-row justify-between items-baseline">
+            <h2 class="text-xl">Prihlasovaná osoba {{$index + 1}}</h2>
+            <p-button type="button" [class]="{ 'invisible': isOnlyOneChild }"
+              icon="pi pi-times" rounded="true" severity="danger" outlined="true"
+              (onClick)="removePersonForm($index)" />
+          </div>
+          <div class="w-full grid grid-cols-1 sm:grid-cols-2 gap-x-2 gap-y-4">
+            <p-floatlabel variant="on">
+              <label [for]="`child-${$index}-name`">Meno</label>
+              <input class="w-full" pInputText [id]="`child-${$index}-name`" formControlName="name" autocomplete="off" pSize="large" />
+            </p-floatlabel>
+            <p-floatlabel variant="on">
+              <label [for]="`child-${$index}-surname`">Priezvisko</label>
+              <input class="w-full" pInputText [id]="`child-${$index}-surname`" formControlName="surname" autocomplete="off" pSize="large" />
+            </p-floatlabel>
+            <p-floatlabel variant="on">
+              <p-datepicker [inputId]="`child-${$index}-dateofbirth`" formControlName="dateOfBirth"
+                fluid="true" size="large" showIcon="true" iconDisplay="input">
+              </p-datepicker>
+              <label [for]="`child-${$index}-dateofbirth`">Dátum narodenia</label>
+            </p-floatlabel>
+            <div class="flex flex-row gap-4 sm:ml-5 content-center justify-start items-center"
+              pTooltip="Môže byť dieťa pustené samé domov po ukončení akcie / dňa." tooltipPosition="top" tooltipStyleClass="min-w-fit" autoHide="false">
+              <p-checkbox formControlName="isIndependent" [binary]="true" size="large" [inputId]="`child-${$index}-independent`" />
+              <label [for]="`child-${$index}-independent`">Je dieťa samostatné?</label>
+              <i class="text-blue-900 pi pi-info-circle"></i>
+            </div>
+          </div>
+          <div class="w-full grid grid-cols-1 sm:grid-cols-2 gap-x-2 gap-y-4">
+            <p-floatlabel variant="on">
+              <textarea class="w-full" pTextarea [id]="`child-${$index}-healthnotes`" formControlName="healthNotes" [autoResize]="true"></textarea>
+              <label [for]="`child-${$index}-healthnotes`">Zdravotné ťažkosti</label>
+            </p-floatlabel>
+            <p-floatlabel variant="on">
+              <textarea class="w-full" pTextarea [id]="`child-${$index}-foodalergy`" [autoResize]="true" formControlName="foodAllergyNotes"></textarea>
+              <label [for]="`child-${$index}-foodalergy`">Alergie na jedlo / potraviny</label>
+            </p-floatlabel>
+          </div>
+        </div>
+      }
+    </div>
+    <ng-template #footer>
+      <p-button type="button" icon="pi pi-plus-circle" label="Pridaj dieťa" severity="secondary" (onClick)="addPersonForm()" />
+    </ng-template>
+  </p-card>
+
+  @if (isAnyPersonDependent()) {
+    <p-card>
+      <ng-template #title> Osoby na vyzdvihnutie </ng-template>
+      <ng-template #subtitle> Sem môžete doplniť ďalšie osoby, ktorým môžeme odovzdať dieťa po akcii / dni tábora.</ng-template>
+      <div class="w-full flex flex-col gap-3 mt-5" formArrayName="people">
+        @for (knownPersonForm of knownPeople.controls; track $index) {
+          <div [formGroup]="knownPersonForm" class="w-full flex flex-col gap-y-4 rounded-border p-4 bg-primary-50">
+            <div class="w-full flex flex-row justify-between items-baseline">
+              <h2 class="text-xl">Zodpovedná osoba {{$index + 1}}</h2>
+              <p-button type="button" icon="pi pi-times" rounded="true" severity="danger" outlined="true"
+                (onClick)="removeKnownPersonForm($index)" />
+            </div>
+            <div class="w-full grid grid-cols-1 sm:grid-cols-3 gap-x-2 gap-y-4">
+              <p-floatlabel variant="on">
+                <label [for]="`known-person-${$index}-name`">Meno</label>
+                <input class="w-full" pInputText [id]="`known-person-${$index}-name`" formControlName="name" autocomplete="off" pSize="large" />
+              </p-floatlabel>
+              <p-floatlabel variant="on">
+                <label [for]="`known-person-${$index}-surname`">Priezvisko</label>
+                <input class="w-full" pInputText [id]="`known-person-${$index}-surname`" formControlName="surname" autocomplete="off" pSize="large" />
+              </p-floatlabel>
+            </div>
+          </div>
+        }
+      </div>
+      <ng-template #footer>
+        <p-button type="button" icon="pi pi-plus-circle" label="Pridaj osobu" severity="secondary" (onClick)="addKnownPersonForm()" />
+      </ng-template>
+    </p-card>
+  }
+
+  <p-card>
+    <ng-template #title> Súhlasy </ng-template>
+    <ng-template #subtitle>Prosím vyplňte súhlasy</ng-template>
+    <div class="w-full grid grid-cols-1 sm:grid-cols-2 gap-x-2 gap-y-4 items-baseline">
+      <div class="flex flex-col gap-1">
+        <div class="flex flex-row gap-4 content-center justify-start items-center">
+          <p-checkbox formControlName="consentGDPR" [binary]="true" size="large" inputId="consent-gdpr" />
+          <label for="consent-gdpr">Súhlasím so spracovaním osobných údajov</label>
+        </div>
+        @if (hasError(fc.consentGDPR, "required")) {
+          <p-message severity="error" variant="simple">Je potrebné súhlasiť so spracovaním údajov</p-message>
+        }
+      </div>
+      <div class="flex flex-col gap-1">
+        <div class="flex flex-row gap-4 content-center justify-start items-center">
+          <p-selectbutton formControlName="consentPhoto" id="consent-photo" allowEmpty="false"
+          [options]="consentPhotoOptions" optionLabel="text" optionValue="value" />
+          <label for="consent-photo">Súhlasím so zverejňovaním fotografií</label>
+        </div>
+        @if (hasError(fc.consentPhoto, "required")) {
+          <p-message severity="error" variant="simple">Prosím vyberte možnosť.</p-message>
+        }
+      </div>
+    </div>
+  </p-card>
+  
+  <p-card>
+    <ng-template #title> <span class="text-2xl">Zhrnutie</span> </ng-template>
+    <div class="flex flex-col items-end gap-y-2 rounded-border p-4 bg-primary-50">
+      <h3 class="text-xl self-start">{{event()?.name}} :: {{selectedTerm?.startAt | date}} - {{selectedTerm?.endAt | date}}</h3>
+      <p class="text-lg">
+        Cena akcie: {{ payment().price | currency}}
+      </p>
+      @if (payment().hasDiscount) {
+        <p class="text-lg">
+          <i class="text-blue-900 pi pi-info-circle mr-2"></i>Zľava: {{ payment().discountValue | currency}}
+        </p>
+      }
+      <p class="text-2xl">
+        Výsledná cena: {{ payment().final_price | currency }}
+      </p>
+      @if (payment().hasDeposit) {
+        <p class="text-lg">
+          <i class="text-blue-900 pi pi-info-circle mr-2"></i>Záloha: {{ payment().deposit | currency}}
+        </p>
+      }
+    </div>
+    <ng-template #footer>
+      <div class="flex flex-row justify-end items-baseline gap-4">
+        @if (wasSubmitted && form.invalid) {
+          <p-message severity="error">Formulár obsahuje chyby opravte ich prosím a skúste znova.</p-message>
+        }
+        <p-button type="submit" icon="pi pi-pencil" label="Registrovať" />
+      </div>
+    </ng-template>
+  </p-card>
+  
+  <p>{{form.getRawValue() | json}}</p>
+</form>
