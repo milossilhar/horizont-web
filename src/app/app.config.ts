@@ -14,7 +14,7 @@ import localeSk from '@angular/common/locales/sk';
 import { sk } from './app.locale';
 
 const API_CONFIG: ConfigurationParameters = {
-  basePath: 'http://localhost:8080/api'
+  basePath: '/api'
 };
 
 registerLocaleData(localeSk, 'sk');

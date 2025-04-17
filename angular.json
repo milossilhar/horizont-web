@@ -21,6 +21,9 @@
               "@angular/localize/init"
             ],
             "tsConfig": "tsconfig.app.json",
+            "allowedCommonJsDependencies": [
+              "lodash"
+            ],
             "assets": [
               {
                 "glob": "**/*",

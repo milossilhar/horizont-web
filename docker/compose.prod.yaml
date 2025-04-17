@@ -1,0 +1,19 @@
+name: "horizon"
+services:
+  frontend:
+    build:
+      context: ../
+      dockerfile: ./docker/Dockerfile
+      no_cache: true
+      pull: true
+    image: "horizon/caddy-web"
+    container_name: "horizon_web"
+    restart: unless-stopped
+    ports:
+      - "8088:80"
+    networks:
+      - horizon_network
+networks:
+  horizon_network:
+    name: horizon_network
+    driver: bridge
