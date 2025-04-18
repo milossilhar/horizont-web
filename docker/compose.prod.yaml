@@ -8,8 +8,8 @@ services:
     container_name: "horizon_web"
     restart: unless-stopped
     ports:
-      - "${HOR_PORT:?required}:80"
-      - "${HOR_SECURE_PORT:?required}:443"
+      - "${HOR_PORT:-80}:80"
+      - "${HOR_SECURE_PORT:-443}:443"
     networks:
       - horizon_network
     volumes:
@@ -17,10 +17,10 @@ services:
       - caddy_config:/config
     environment:
       HOR_HOSTNAME: ${HOR_HOSTNAME:?required}
-      HOR_PORT: ${HOR_PORT}
-      HOR_SECURE_PORT: ${HOR_SECURE_PORT}
-      HOR_BE_CONTAINER_NAME: ${HOR_BE_CONTAINER_NAME:horizon_backend}
-      HOR_BE_PORT: ${HOR_BE_PORT:8080}
+      HOR_PORT: ${HOR_PORT:-80}
+      HOR_SECURE_PORT: ${HOR_SECURE_PORT:-443}
+      HOR_BE_CONTAINER_NAME: ${HOR_BE_CONTAINER_NAME:-horizon_backend}
+      HOR_BE_PORT: ${HOR_BE_PORT:-8080}
 networks:
   horizon_network:
     name: horizon_network
