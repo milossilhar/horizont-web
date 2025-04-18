@@ -19,8 +19,8 @@ services:
       HOR_HOSTNAME: ${HOR_HOSTNAME:?required}
       HOR_PORT: ${HOR_PORT}
       HOR_SECURE_PORT: ${HOR_SECURE_PORT}
-      HOR_BE_CONTAINER_NAME: ${HOR_BE_CONTAINER_NAME:?required}
-      HOR_BE_PORT: ${HOR_BE_PORT:?required}
+      HOR_BE_CONTAINER_NAME: ${HOR_BE_CONTAINER_NAME:horizon_backend}
+      HOR_BE_PORT: ${HOR_BE_PORT:8080}
 networks:
   horizon_network:
     name: horizon_network
