@@ -1,13 +1,18 @@
-:80 {
-	encode zstd gzip
+www.{$HOR_HOSTNAME} {
+  redir https://{$HOR_HOSTNAME}{uri} permanent
+}
 
-	handle /api/* {
-		reverse_proxy horizon_backend:8080
-	}
+{$HOR_HOSTNAME} {
+  root * /var/www/angular
+  encode zstd gzip
 
-	handle {
-		root * /var/www/angular
-		try_files {path} /index.html
-		file_server
-	}
+  route {
+    # reverse proxy to backend (name of a container from backend stack)
+    reverse_proxy /api/* {$HOR_BE_CONTAINER_NAME}:{$HOR_BE_PORT}
+
+    # all other requests return index.html
+    try_files {path} /index.html
+    header /index.html >Cache-Control "no-store"
+    file_server
+  }
 }

@@ -4,16 +4,29 @@ services:
     build:
       context: ../
       dockerfile: ./docker/Dockerfile
-      no_cache: true
-      pull: true
     image: "horizon/caddy-web"
     container_name: "horizon_web"
     restart: unless-stopped
     ports:
-      - "8088:80"
+      - "${HOR_PORT:?required}:80"
+      - "${HOR_SECURE_PORT:?required}:443"
     networks:
       - horizon_network
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config
+    environment:
+      HOR_HOSTNAME: ${HOR_HOSTNAME:?required}
+      HOR_PORT: ${HOR_PORT}
+      HOR_SECURE_PORT: ${HOR_SECURE_PORT}
+      HOR_BE_CONTAINER_NAME: ${HOR_BE_CONTAINER_NAME:?required}
+      HOR_BE_PORT: ${HOR_BE_PORT:?required}
 networks:
   horizon_network:
     name: horizon_network
     driver: bridge
+volumes:
+  caddy_data:
+    name: horizon_caddy_data
+  caddy_config:
+    name: horizon_caddy_config

@@ -16,8 +16,6 @@ COPY --from=npm-install /usr/src/frontend/node_modules ./node_modules
 
 COPY . .
 
-RUN ls -l
-
 # build angular
 RUN npm run build --omit=dev
 
