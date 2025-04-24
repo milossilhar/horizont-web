@@ -1,6 +1,6 @@
-www.{$HOR_HOSTNAME} {
-  redir https://{$HOR_HOSTNAME}{uri} permanent
-}
+#www.{$HOR_HOSTNAME} {
+#  redir https://{$HOR_HOSTNAME}{uri} permanent
+#}
 
 {$HOR_HOSTNAME} {
   root * /var/www/angular
