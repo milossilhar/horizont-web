@@ -114,11 +114,11 @@ export class RegistrationFormComponent extends Destroyable implements OnInit {
     ).subscribe();
 
     // remove error after false submit
-    this.form.valueChanges.pipe(
-      filter(() => !!this.registrationError),
-      tap(() => this.registrationError = ''),
-      takeUntil(this.destroy$)
-    ).subscribe();
+    // this.form.valueChanges.pipe(
+    //   filter(() => !!this.registrationError),
+    //   tap(() => this.registrationError = ''),
+    //   takeUntil(this.destroy$)
+    // ).subscribe();
 
     // recalculate price
     let previousLength = 0;
@@ -229,6 +229,7 @@ export class RegistrationFormComponent extends Destroyable implements OnInit {
 
   protected submitRegistration() {
     this.wasSubmitted = true;
+    this.registrationError = '';
     this.form.updateValueAndValidity();
     this.markAllAsDirty(this.form);
 
@@ -251,18 +252,17 @@ export class RegistrationFormComponent extends Destroyable implements OnInit {
             if (err.status === 409) {
               this.registrationError = 'Registrácia na zvolený termín pre minimálne jednu registrovanú osobu už existuje.';
             } else {
-              this.registrationError = 'Registrácia sa nepodarila. V prípade, že Vám registrácia nefunguje napíšte mail na info&#64;leziemevpezinku.sk.';
+              this.registrationError = 'Registrácia sa nepodarila. V prípade, že Vám registrácia nefunguje napíšte mail na info@leziemevpezinku.sk.';
             }
             return of(undefined);
           })
         )),
       filter(createdReg => !!createdReg),
       tap(createdReg => {
-        if (createdReg.status === RegistrationDTO.StatusEnum.Concept) {
-          this.router.navigate(['registration', 'result', 'success']);
-        }
         if (createdReg.status === RegistrationDTO.StatusEnum.Queue) {
           this.router.navigate(['registration', 'result', 'queue']);
+        } else {
+          this.router.navigate(['registration', 'result', 'success']);
         }
       }),
       finalize(() => {
