@@ -1,4 +1,4 @@
-import { CurrencyPipe, DatePipe, JsonPipe } from '@angular/common';
+import { AsyncPipe, CurrencyPipe, DatePipe, JsonPipe } from '@angular/common';
 import { Component, OnInit, signal, WritableSignal } from '@angular/core';
 import { AbstractControl, FormArray, FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FloatLabelModule } from 'primeng/floatlabel';
@@ -10,20 +10,28 @@ import { TooltipModule } from 'primeng/tooltip';
 import { CheckboxModule } from 'primeng/checkbox';
 import { Destroyable } from '../../shared/base/destroyable';
 import { EventHorizontService } from '../../rest/api/event.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { EventCardComponent } from '../event-card/event-card.component';
-import { catchError, concatMap, filter, map, merge, of, takeUntil, tap } from 'rxjs';
+import { catchError, concatMap, filter, finalize, map, merge, of, switchMap, takeUntil, tap, timer } from 'rxjs';
 import { CardModule } from 'primeng/card';
 import { EventTermSelectorComponent } from "../../shared/form/event-term-selector/event-term-selector.component";
 import { EventPublicDTO } from '../../rest/model/event-public';
 import { EventTermPublicDTO } from '../../rest/model/event-term-public';
 import { ButtonModule } from 'primeng/button';
+import { MeterGroupModule } from 'primeng/metergroup';
+import { SelectModule } from 'primeng/select';
 import { find, some } from 'lodash';
 import { MessageModule } from 'primeng/message';
 import { PRIME_CONSTANTS } from '../../shared/primeng.constant';
 import { PaymentDTO } from '../../rest/model/payment';
 import { RegistrationHorizontService } from '../../rest/api/api';
 import { RegistrationPricingRequestDTO } from '../../rest/model/registration-pricing-request';
+import { EventTermCapacityResponseDTO } from '../../rest/model/event-term-capacity-response';
+import { EnumerationService } from '../../shared/service/enumeration.service';
+import { EnumerationItemDTO } from '../../rest/model/enumeration-item';
+import { ProgressBar } from 'primeng/progressbar';
+import { RegistrationPublicDTO } from '../../rest/model/registration-public';
+import { RegistrationDTO } from '../../rest/model/registration';
 
 @Component({
   selector: 'app-registration-form',
@@ -39,16 +47,21 @@ import { RegistrationPricingRequestDTO } from '../../rest/model/registration-pri
     TextareaModule,
     CardModule,
     InputTextModule,
+    ProgressBar,
+    SelectModule,
+    MeterGroupModule,
     EventCardComponent,
-    JsonPipe, DatePipe, CurrencyPipe,
+    DatePipe, CurrencyPipe, AsyncPipe,
     EventTermSelectorComponent
 ],
   templateUrl: './registration-form.component.html',
   styles: ``
 })
 export class RegistrationFormComponent extends Destroyable implements OnInit {
-  
-  protected event: WritableSignal<EventPublicDTO | undefined> = signal(undefined);
+  protected today = new Date();
+
+  protected event = signal<EventPublicDTO | undefined>(undefined);
+  protected capacity = signal<EventTermCapacityResponseDTO | undefined>(undefined);
   protected isAnyPersonDependent = signal(true);
   
   protected consentPhotoOptions = PRIME_CONSTANTS.selectbutton.yesno.boolean;
@@ -56,12 +69,15 @@ export class RegistrationFormComponent extends Destroyable implements OnInit {
   protected form;
 
   protected wasSubmitted = false;
+  protected creatingRegistration = false;
+  protected registrationError = '';
 
   protected payment: WritableSignal<PaymentDTO> = signal({ price: 0 });
   
   constructor(
     private fb: NonNullableFormBuilder,
-    private route: ActivatedRoute,
+    private route: ActivatedRoute, private router: Router,
+    private enumerationService: EnumerationService,
     private eventHorizontService: EventHorizontService,
     private registrationHorizontService: RegistrationHorizontService,
   ) {
@@ -74,7 +90,7 @@ export class RegistrationFormComponent extends Destroyable implements OnInit {
       telPhone: this.fb.control('', Validators.required),
       name: this.fb.control('', Validators.required),
       surname: this.fb.control('', Validators.required),
-      consentGDPR: this.fb.control('', Validators.requiredTrue),
+      consentGDPR: this.fb.control<boolean>(false, Validators.requiredTrue),
       consentPhoto: this.fb.control<boolean|null>(null, Validators.required),
       knownPeople: this.fb.array([this.createKnownPersonForm()]),
       people: this.fb.array([this.createPersonForm()], [Validators.required, Validators.minLength(1)])
@@ -94,6 +110,13 @@ export class RegistrationFormComponent extends Destroyable implements OnInit {
     this.people.valueChanges.pipe(
       map(value => some(value, p => !p.isIndependent)),
       tap(isAnyPersonDependent => this.isAnyPersonDependent.set(isAnyPersonDependent)),
+      takeUntil(this.destroy$)
+    ).subscribe();
+
+    // remove error after false submit
+    this.form.valueChanges.pipe(
+      filter(() => !!this.registrationError),
+      tap(() => this.registrationError = ''),
       takeUntil(this.destroy$)
     ).subscribe();
 
@@ -152,6 +175,14 @@ export class RegistrationFormComponent extends Destroyable implements OnInit {
     return find(this.terms, term => term.id === eventTermId);
   }
 
+  get relations() {
+    return this.enumerationService.getEnum(EnumerationItemDTO.EnumNameEnum.RegERelation);
+  }
+  
+  get shirtSizes() {
+    return this.enumerationService.getEnum(EnumerationItemDTO.EnumNameEnum.RegEShirtSize);
+  }
+
   protected hasError(form: AbstractControl, errorCode: string): boolean {
     return form.dirty && form.hasError(errorCode);
   }
@@ -160,7 +191,7 @@ export class RegistrationFormComponent extends Destroyable implements OnInit {
     return this.fb.group({
       name: this.fb.control('', Validators.required),
       surname: this.fb.control('', Validators.required),
-      dateOfBirth: this.fb.control<Date | null>(null, [Validators.required]),
+      dateOfBirth: this.fb.control('', [Validators.required]),
       healthNotes: this.fb.control(''),
       foodAllergyNotes: this.fb.control(''),
       shirtSize: this.fb.control('', Validators.required),
@@ -172,7 +203,7 @@ export class RegistrationFormComponent extends Destroyable implements OnInit {
     return this.fb.group({
       name: this.fb.control('', Validators.required),
       surname: this.fb.control('', Validators.required),
-      relation: this.fb.control<string | null>(null, Validators.required)
+      relation: this.fb.control('', Validators.required)
     })
   }
 
@@ -192,6 +223,10 @@ export class RegistrationFormComponent extends Destroyable implements OnInit {
     this.knownPeople.removeAt(index);
   }
 
+  protected getChildText(childForm: FormGroup) {
+    childForm
+  }
+
   protected submitRegistration() {
     this.wasSubmitted = true;
     this.form.updateValueAndValidity();
@@ -199,8 +234,55 @@ export class RegistrationFormComponent extends Destroyable implements OnInit {
 
     of(this.form.valid).pipe(
       filter(valid => !!valid),
-      tap(() => console.log('submitting form with data ', this.form.getRawValue()))
+      map(() => {
+        return {
+          eventTermId: this.fc.eventTermId.value ?? 0,
+          request: this.createRequest()
+        }
+      }),
+      tap(() => {
+        this.form.disable();
+        this.creatingRegistration = true;
+      }),
+      concatMap(({eventTermId, request}) => this.registrationHorizontService
+        .createRegistration(eventTermId, request).pipe(
+          catchError(err => {
+            console.error(`Error creating registration: ${JSON.stringify(request, null, 2)}`, err);
+            if (err.status === 409) {
+              this.registrationError = 'Registrácia na zvolený termín pre minimálne jednu registrovanú osobu už existuje.';
+            } else {
+              this.registrationError = 'Registrácia sa nepodarila. V prípade, že Vám registrácia nefunguje napíšte mail na info&#64;leziemevpezinku.sk.';
+            }
+            return of(undefined);
+          })
+        )),
+      filter(createdReg => !!createdReg),
+      tap(createdReg => {
+        if (createdReg.status === RegistrationDTO.StatusEnum.Concept) {
+          this.router.navigate(['registration', 'result', 'success']);
+        }
+        if (createdReg.status === RegistrationDTO.StatusEnum.Queue) {
+          this.router.navigate(['registration', 'result', 'queue']);
+        }
+      }),
+      finalize(() => {
+        this.creatingRegistration = false;
+        this.form.enable();
+      })
     ).subscribe();
+  }
+
+  private createRequest(): RegistrationPublicDTO {
+    return {
+      name: this.fc.name.value,
+      surname: this.fc.surname.value,
+      email: this.fc.email.value,
+      telPhone: this.fc.telPhone.value,
+      consentGDPR: this.fc.consentGDPR.value,
+      consentPhoto: this.fc.consentPhoto.value ?? false,
+      people: this.fc.people.getRawValue(),
+      knownPeople: this.knownPeople.getRawValue()
+    };
   }
 
   private markAllAsDirty(form: AbstractControl) {

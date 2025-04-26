@@ -1,15 +1,15 @@
-import { Component, forwardRef, Injector, Input, OnChanges, OnInit, Self, SimpleChanges } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl } from '@angular/forms';
-import { EventTermDTO } from '../../../rest/model/event-term';
-import { BehaviorSubject, concatMap, filter, map, startWith, Subject, take, takeUntil, tap } from 'rxjs';
+import { Component, forwardRef, input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { BehaviorSubject, filter, map, takeUntil, tap } from 'rxjs';
 import { Destroyable } from '../../base/destroyable';
-import { AsyncPipe, DatePipe } from '@angular/common';
+import { AsyncPipe, CurrencyPipe, DatePipe } from '@angular/common';
 import { EventTermPublicDTO } from '../../../rest/model/event-term-public';
+import { EventHorizontService } from '../../../rest/api/event.service';
 
 @Component({
   selector: 'app-event-term-selector',
   imports: [
-    AsyncPipe, DatePipe
+    AsyncPipe, DatePipe, CurrencyPipe
   ],
   templateUrl: './event-term-selector.component.html',
   styles: ``,
@@ -20,9 +20,10 @@ import { EventTermPublicDTO } from '../../../rest/model/event-term-public';
     }]
 })
 export class EventTermSelectorComponent extends Destroyable implements ControlValueAccessor, OnInit, OnChanges {
-  
-  @Input({ required: true })
-  public terms: Array<EventTermPublicDTO> = [];
+
+  public eventUUID = input<string>();
+
+  public terms = input.required<Array<EventTermPublicDTO>>();
   
   protected selectedIndex = new BehaviorSubject<number>(-1);
   protected disabled = new BehaviorSubject<boolean>(false);
@@ -30,14 +31,39 @@ export class EventTermSelectorComponent extends Destroyable implements ControlVa
   private onChange: (value?: number) => void = () => {};
   private onTouched = () => {};
   
-  constructor() {
+  constructor(
+    private eventHorizontService: EventHorizontService
+  ) {
     super();
+  }
+
+  get validSelectIndex() {
+    return this.selectedIndex.pipe(
+      filter(i => i >= 0 && i < this.terms().length)
+    );
+  }
+
+  get selectedTerm() {
+    return this.validSelectIndex.pipe(
+      map(i => this.terms()[i])
+    );
   }
   
   ngOnInit(): void {
-    this.selectedIndex.pipe(
-      filter(i => i >= 0 && i < this.terms.length),
-      map(i => this.terms[i]),
+    // merge(timer(5000, 1000), this.validSelectIndex).pipe(
+    //   throttleTime(10000),
+    //   switchMap(() => this.eventHorizontService
+    //     .getCurrentCapacities(this.eventUUID() ?? '')
+    //     .pipe(
+    //       catchError(() => of(undefined))
+    //     )
+    //   ),
+    //   filter(val => !!val),
+    //   tap(capacities => this.capacities = capacities),
+    //   takeUntil(this.destroy$)
+    // ).subscribe();
+
+    this.selectedTerm.pipe(
       tap(term => this.selectedTermChanged(term)),
       takeUntil(this.destroy$)
     ).subscribe();
@@ -59,7 +85,7 @@ export class EventTermSelectorComponent extends Destroyable implements ControlVa
   writeValue(obj: any): void {
     if (!obj) return;
 
-    const foundIndex = this.terms.findIndex(t => t.id === obj);
+    const foundIndex = this.terms().findIndex(t => t.id === obj);
     this.selectedIndex.next(foundIndex);
   }
   registerOnChange(fn: any): void {

@@ -1,17 +1,53 @@
-<p-card [header]="event?.name" styleClass="overflow-hidden">
-  @if (showImage) {
+<p-card [header]="event()?.name" styleClass="overflow-hidden">
+  <!-- @if (showImage) {
     <ng-template #header>
       <img alt="Card" class="w-full" src="images/event_daily_2025.jpg" />
     </ng-template>
-  }
-  <ng-template #title> {{event?.name}} </ng-template>
-  <ng-template #subtitle> {{event?.place}} </ng-template>
-  <p>
-    {{event?.details}}
-  </p>
-  @if (showButton) {
+  } -->
+  <ng-template #title> <span class="text-2xl">{{event()?.name}}</span> </ng-template>
+  <ng-template #subtitle>
+    <div class="flex flex-col items-start gap-y-2">
+      <p><i class="pi pi-map-marker mr-1"></i>{{event()?.place}}</p>
+      @if(full()) {
+        <p><i class="pi pi-calendar mr-1"></i>Termíny</p>
+        <div class="w-full grid grid-cols-2 gap-1">
+          @for (term of event()?.terms; track $index) {
+            <div class="p-2 flex flex-col items-center justify-center rounded-border bg-highlight">
+              <p class="text-xl">{{term.startAt | date : 'd. MMM'}} - {{term.endAt | date : 'd. MMM'}}</p>
+              <div class="w-full flex flex-row justify-around">
+                <p class="text-xl">{{term.price | currency}}</p>
+                <p class="text-xl">
+                  <i class="pi pi-user mr-1"></i>{{term.capacity}}<span class="ml-1 text-xs">max.</span>
+                </p>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </ng-template>
+  <div class="flex flex-col gap-y-2">
+    @if(full()) {
+      <p class="m-0 whitespace-pre-line">{{formattedDetails()}}</p>
+    } @else {
+      <p class="m-0">{{event()?.details}}</p>
+    }
+
+    @if(showDiscount() && hasDiscountTabor()) {
+      <p-message severity="info">Táto údalosť má možnosť získania súrodeneckej zľavy. Zaregistrujte súrodencov (2 a viac) na jeden termín a zľava bude automaticky zarátaná vo výslednej cene.</p-message>
+    }
+  </div>
+  @if (isActive() && full()) {
     <ng-template #footer>
-      <a pButton size="large" [routerLink]="['/registration', event?.uuid]" class="w-full font-bold">Registrovať</a>
+      <a pButton size="large" [routerLink]="['/registration', event()?.uuid]" class="w-full font-bold">Registrovať</a>
+    </ng-template>
+  } @else if (isFuture()) {
+    <ng-template #footer>
+      <p-message severity="info" icon="pi pi-hourglass">Registrácia bude spustená {{event()?.regStartAt | date : 'medium'}}</p-message>
+    </ng-template>
+  } @else if (isClosed()) {
+    <ng-template #footer>
+      <p-message severity="warn">Mrzí nás to ale zmeškal si registráciu. Skús nás poprípade ešte kontaktovať emailom/telefónom.</p-message>
     </ng-template>
   }
 </p-card>
