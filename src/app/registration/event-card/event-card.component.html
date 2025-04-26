@@ -1,9 +1,9 @@
 <p-card [header]="event()?.name" styleClass="overflow-hidden">
-  <!-- @if (showImage) {
+  @if (full()) {
     <ng-template #header>
-      <img alt="Card" class="w-full" src="images/event_daily_2025.jpg" />
+      <img alt="Card" class="w-full" [src]="'/images/' + event()?.imageUrl" />
     </ng-template>
-  } -->
+  }
   <ng-template #title> <span class="text-2xl">{{event()?.name}}</span> </ng-template>
   <ng-template #subtitle>
     <div class="flex flex-col items-start gap-y-2">
