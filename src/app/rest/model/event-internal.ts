@@ -20,6 +20,7 @@ export interface EventInternalDTO {
     eventType: EventInternalDTO.EventTypeEnum;
     regStartAt: string;
     regEndAt: string;
+    imageUrl?: string;
     discountType?: string;
     terms?: Set<EventTermInternalDTO>;
 }

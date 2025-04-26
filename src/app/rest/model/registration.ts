@@ -21,6 +21,8 @@ export interface RegistrationDTO {
     surname: string;
     email: string;
     telPhone: string;
+    consentGDPR: boolean;
+    consentPhoto: boolean;
     people?: Array<PersonDTO>;
     knownPeople?: Array<KnownPersonDTO>;
     payment?: PaymentDTO;

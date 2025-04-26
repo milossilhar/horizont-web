@@ -21,6 +21,8 @@ export interface RegistrationInternalDTO {
     surname: string;
     email: string;
     telPhone: string;
+    consentGDPR: boolean;
+    consentPhoto: boolean;
     people?: Array<PersonInternalDTO>;
     knownPeople?: Array<KnownPersonInternalDTO>;
     payment?: PaymentInternalDTO;

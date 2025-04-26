@@ -20,6 +20,7 @@ export interface EventDTO {
     eventType: EventDTO.EventTypeEnum;
     regStartAt: string;
     regEndAt: string;
+    imageUrl?: string;
     discountType?: string;
     terms?: Set<EventTermDTO>;
 }
