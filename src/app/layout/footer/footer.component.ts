@@ -1,6 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { tap } from 'rxjs';
-import { HealthHorizontService } from '../../rest/api/health.service';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-footer',
@@ -8,15 +6,5 @@ import { HealthHorizontService } from '../../rest/api/health.service';
   templateUrl: './footer.component.html',
   styles: ``
 })
-export class FooterComponent implements OnInit {
-
-  protected environment?: string;
-
-  constructor(private healthService: HealthHorizontService) { }
-  
-  ngOnInit(): void {
-    this.healthService.getEnvironment().pipe(
-      tap(env => this.environment = env.value)
-    ).subscribe();
-  }
+export class FooterComponent {
 }
