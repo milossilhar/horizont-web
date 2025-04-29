@@ -13,10 +13,10 @@
         <div class="w-full grid grid-cols-2 gap-1">
           @for (term of event()?.terms; track $index) {
             <div class="p-2 flex flex-col items-center justify-center rounded-border bg-highlight">
-              <p class="text-xl">{{term.startAt | date : 'd. MMM'}} - {{term.endAt | date : 'd. MMM'}}</p>
+              <p class="text-lg sm:text-xl">{{term.startAt | date : 'd. MMM'}} - {{term.endAt | date : 'd. MMM'}}</p>
               <div class="w-full flex flex-row justify-around">
-                <p class="text-xl">{{term.price | currency}}</p>
-                <p class="text-xl">
+                <p class="text-lg sm:text-xl">{{term.price | currency}}</p>
+                <p class="text-lg sm:text-xl">
                   <i class="pi pi-user mr-1"></i>{{term.capacity}}<span class="ml-1 text-xs">max.</span>
                 </p>
               </div>

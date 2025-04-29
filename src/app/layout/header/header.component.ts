@@ -24,7 +24,7 @@ export class HeaderComponent implements OnInit {
 
   protected environment = signal<string | undefined>(undefined);
 
-  protected isNotProd = computed(() => this.environment() !== 'prod');
+  protected isNotProd = computed(() => this.environment() && this.environment() !== 'prod');
 
   loginItems: MenuItem[] = [
     { label: 'Môj profil' },
