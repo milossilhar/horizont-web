@@ -25,10 +25,8 @@
               "lodash"
             ],
             "assets": [
-              {
-                "glob": "**/*",
-                "input": "public"
-              }
+              { "glob": "**/*", "input": "public" },
+              "src/silent-refresh.html"
             ],
             "styles": [
               "src/styles.css"

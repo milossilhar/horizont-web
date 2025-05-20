@@ -11,6 +11,11 @@ import { RegistrationConfirmComponent } from './registration/registration-confir
 export const routes: Routes = [
   {
     path: '',
+    redirectTo: '/registration',
+    pathMatch: 'full'
+  },
+  {
+    path: '',
     canActivate: [InitGuard],
     children: [
       { path: 'registration', component: RegistrationListComponent },
@@ -18,7 +23,6 @@ export const routes: Routes = [
       { path: 'registration/result/queue', component: RegistrationResultQueueComponent },
       { path: 'registration/result/success', component: RegistrationResultSuccessComponent },
       { path: 'registration/confirm/:token', component: RegistrationConfirmComponent },
-      { path: '', redirectTo: '/registration', pathMatch: 'full' },
     ]
   },
   {
