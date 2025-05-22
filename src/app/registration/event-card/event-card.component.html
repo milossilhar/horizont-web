@@ -37,17 +37,15 @@
       <p-message severity="info">Táto údalosť má možnosť získania súrodeneckej zľavy. Zaregistrujte súrodencov (2 a viac) na jeden termín a zľava bude automaticky zarátaná vo výslednej cene.</p-message>
     }
   </div>
-  @if (isActive() && full()) {
-    <ng-template #footer>
+  <ng-template #footer>
+    <div class="flex flex-col gap-y-1">
+    @if (isActive() && full()) {
       <a pButton size="large" [routerLink]="['/registration', event()?.uuid]" class="w-full font-bold">Registrovať</a>
-    </ng-template>
-  } @else if (isFuture()) {
-    <ng-template #footer>
+    } @else if (isFuture()) {
       <p-message severity="info" icon="pi pi-hourglass">Registrácia bude spustená {{event()?.regStartAt | date : 'medium'}}</p-message>
-    </ng-template>
-  } @else if (isClosed()) {
-    <ng-template #footer>
+    } @else if (isClosed()) {
       <p-message severity="warn">Mrzí nás to ale zmeškal si registráciu. Skús nás poprípade ešte kontaktovať emailom/telefónom.</p-message>
-    </ng-template>
-  }
+    }
+    </div>
+  </ng-template>
 </p-card>
