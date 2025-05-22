@@ -1,0 +1,39 @@
+<div class="flex flex-col gap-y-2">
+  @for (event of events(); track $index) {
+  <p-card>
+    <ng-template #title>
+      <div class="flex flex-row justify-between">
+        <p class="text-2xl">{{event.name}}</p>
+        <p-button icon="pi pi-external-link" [outlined]="true" label="Otvoriť" [routerLink]="`detail/${event.uuid}`"></p-button>
+      </div>
+    </ng-template>
+    <ng-template #subtitle>
+      <div class="flex flex-col items-start gap-y-2">
+        <p><i class="pi pi-map-marker mr-1"></i>{{event.place}}</p>
+        <p><i class="pi pi-calendar mr-1"></i>Termíny</p>
+        <div class="w-full grid grid-cols-2 gap-1">
+          @for (term of event.terms; track $index) {
+            <div class="p-2 flex flex-col gap-y-2 items-center justify-center rounded-border bg-highlight">
+              <p class="font-bold text-lg sm:text-xl">{{term.startAt | date : 'd. MMM'}} - {{term.endAt | date : 'd. MMM'}}</p>
+              <div class="flex flex-row items-baseline gap-x-1">
+                <i class="pi pi-user mr-1"></i>
+                <p class="text-lg sm:text-xl">{{getTermRegistrations(term)}} / {{term.capacity}}</p>
+              </div>
+              <div class="w-full flex flex-row justify-center gap-x-3">
+                @for (status of registrationStatues; track $index) {
+                  @let currentCapacity = getCapacityForStatus(term, status);
+                  @let messageConfig = getCapacityMessageConfig(status);
+                  <div class="flex flex-col justify-center items-center gap-y-1">
+                    <p-badge [severity]="messageConfig.severity" badgeSize="xlarge" [value]="(currentCapacity?.registrations ?? 0) + ''"></p-badge>
+                    <p-message [severity]="messageConfig.severity" variant="simple" size="small">{{messageConfig.title}}</p-message>
+                  </div>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    </ng-template>
+  </p-card>
+  }
+</div>
