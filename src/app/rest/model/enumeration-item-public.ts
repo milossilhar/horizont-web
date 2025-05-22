@@ -9,14 +9,14 @@
  */
 
 
-export interface EnumerationItemDTO { 
-    enum_name: EnumerationItemDTO.EnumNameEnum;
+export interface EnumerationItemPublicDTO { 
+    enum_name: EnumerationItemPublicDTO.EnumNameEnum;
     code: string;
     description: string;
     ordering: number;
     visible: boolean;
 }
-export namespace EnumerationItemDTO {
+export namespace EnumerationItemPublicDTO {
     export type EnumNameEnum = 'REG_E_EVENT_CONDITION_TYPE' | 'REG_E_EVENT_DISCOUNT_TYPE' | 'REG_E_RELATION' | 'REG_E_SHIRT_SIZE';
     export const EnumNameEnum = {
         RegEEventConditionType: 'REG_E_EVENT_CONDITION_TYPE' as EnumNameEnum,

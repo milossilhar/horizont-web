@@ -9,9 +9,10 @@
  */
 
 
-export interface KnownPersonDTO { 
-    name: string;
-    surname: string;
-    relation: string;
+export interface GenericErrorDTO { 
+    code?: string;
+    status_code?: number;
+    message?: string;
+    parameters?: { [key: string]: object; };
 }
 

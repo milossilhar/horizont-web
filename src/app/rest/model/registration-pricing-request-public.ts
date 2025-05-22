@@ -9,8 +9,7 @@
  */
 
 
-export interface RegistrationPricingRequestDTO { 
-    eventTermId: number;
+export interface RegistrationPricingRequestPublicDTO { 
     userEmail: string;
     numberOfPeople: number;
 }

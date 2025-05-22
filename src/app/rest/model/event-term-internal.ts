@@ -7,7 +7,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { RegistrationInternalDTO } from './registration-internal';
+import { EventTermCapacityInternalDTO } from './event-term-capacity-internal';
 
 
 export interface EventTermInternalDTO { 
@@ -17,6 +17,6 @@ export interface EventTermInternalDTO {
     capacity: number;
     deposit: number;
     price: number;
-    registrations?: Array<RegistrationInternalDTO>;
+    currentCapacities?: Array<EventTermCapacityInternalDTO>;
 }
 

@@ -9,9 +9,10 @@
  */
 
 
-export interface KnownPersonInternalDTO { 
-    name: string;
-    surname: string;
-    relation: string;
+export interface EventTermCapacityResponsePublicDTO { 
+    capacity?: number;
+    confirmed?: number;
+    registered?: number;
+    available?: number;
 }
 
