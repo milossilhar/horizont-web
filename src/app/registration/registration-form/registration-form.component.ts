@@ -1,4 +1,4 @@
-import { AsyncPipe, CurrencyPipe, DatePipe, JsonPipe } from '@angular/common';
+import { AsyncPipe, CurrencyPipe, DatePipe } from '@angular/common';
 import { Component, OnInit, signal, WritableSignal } from '@angular/core';
 import { AbstractControl, FormArray, FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FloatLabelModule } from 'primeng/floatlabel';
@@ -8,11 +8,10 @@ import { DatePickerModule } from 'primeng/datepicker';
 import { TextareaModule } from 'primeng/textarea';
 import { TooltipModule } from 'primeng/tooltip';
 import { CheckboxModule } from 'primeng/checkbox';
-import { Destroyable } from '../../shared/base/destroyable';
-import { EventHorizontService } from '../../rest/api/event.service';
+import { DestroyableComponent } from '../../shared/base/destroyable.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EventCardComponent } from '../event-card/event-card.component';
-import { catchError, concatMap, filter, finalize, map, merge, of, switchMap, takeUntil, tap, timer } from 'rxjs';
+import { catchError, concatMap, filter, finalize, map, merge, of, takeUntil, tap } from 'rxjs';
 import { CardModule } from 'primeng/card';
 import { EventTermSelectorComponent } from "../../shared/form/event-term-selector/event-term-selector.component";
 import { EventPublicDTO } from '../../rest/model/event-public';
@@ -23,15 +22,14 @@ import { SelectModule } from 'primeng/select';
 import { find, some } from 'lodash';
 import { MessageModule } from 'primeng/message';
 import { PRIME_CONSTANTS } from '../../shared/primeng.constant';
-import { PaymentDTO } from '../../rest/model/payment';
-import { RegistrationHorizontService } from '../../rest/api/api';
-import { RegistrationPricingRequestDTO } from '../../rest/model/registration-pricing-request';
-import { EventTermCapacityResponseDTO } from '../../rest/model/event-term-capacity-response';
+import { PublicHorizontService } from '../../rest/api/api';
 import { EnumerationService } from '../../shared/service/enumeration.service';
-import { EnumerationItemDTO } from '../../rest/model/enumeration-item';
 import { ProgressBar } from 'primeng/progressbar';
+import { PaymentPublicDTO } from '../../rest/model/payment-public';
+import { RegistrationPricingRequestPublicDTO } from '../../rest/model/registration-pricing-request-public';
 import { RegistrationPublicDTO } from '../../rest/model/registration-public';
-import { RegistrationDTO } from '../../rest/model/registration';
+import { EventTermCapacityResponsePublicDTO } from '../../rest/model/event-term-capacity-response-public';
+import { EnumerationItemPublicDTO } from '../../rest/model/enumeration-item-public';
 
 @Component({
   selector: 'app-registration-form',
@@ -57,11 +55,11 @@ import { RegistrationDTO } from '../../rest/model/registration';
   templateUrl: './registration-form.component.html',
   styles: ``
 })
-export class RegistrationFormComponent extends Destroyable implements OnInit {
+export class RegistrationFormComponent extends DestroyableComponent implements OnInit {
   protected today = new Date();
 
   protected event = signal<EventPublicDTO | undefined>(undefined);
-  protected capacity = signal<EventTermCapacityResponseDTO | undefined>(undefined);
+  protected capacity = signal<EventTermCapacityResponsePublicDTO | undefined>(undefined);
   protected isAnyPersonDependent = signal(true);
   
   protected consentPhotoOptions = PRIME_CONSTANTS.selectbutton.yesno.boolean;
@@ -72,14 +70,13 @@ export class RegistrationFormComponent extends Destroyable implements OnInit {
   protected creatingRegistration = false;
   protected registrationError = '';
 
-  protected payment: WritableSignal<PaymentDTO> = signal({ price: 0 });
+  protected payment: WritableSignal<PaymentPublicDTO> = signal({ price: 0 });
   
   constructor(
     private fb: NonNullableFormBuilder,
     private route: ActivatedRoute, private router: Router,
     private enumerationService: EnumerationService,
-    private eventHorizontService: EventHorizontService,
-    private registrationHorizontService: RegistrationHorizontService,
+    private publicHorizontService: PublicHorizontService,
   ) {
     super();
 
@@ -102,7 +99,7 @@ export class RegistrationFormComponent extends Destroyable implements OnInit {
   ngOnInit(): void {
     const eventUUID = this.route.snapshot.params['eventUUID'];
 
-    this.eventHorizontService.getEventByUUID(eventUUID).pipe(
+    this.publicHorizontService.getEventByUUID(eventUUID).pipe(
       tap(event => this.event.set(event))
     ).subscribe();
 
@@ -135,12 +132,11 @@ export class RegistrationFormComponent extends Destroyable implements OnInit {
     ).pipe(
       tap(() => this.fc.priceCalculated.setValue(false)),
       concatMap(() => {
-        const request: RegistrationPricingRequestDTO = {
-          eventTermId: this.fc.eventTermId.value ?? -1,
+        const request: RegistrationPricingRequestPublicDTO = {
           userEmail: this.fc.email.value,
           numberOfPeople: this.people.controls.length
         };
-        return this.registrationHorizontService.calculatePriceForRegistration(request).pipe(
+        return this.publicHorizontService.calculatePriceForRegistration(this.fc.eventTermId.value ?? 0, request).pipe(
           catchError(() => of(null))
         );
       }),
@@ -176,11 +172,11 @@ export class RegistrationFormComponent extends Destroyable implements OnInit {
   }
 
   get relations() {
-    return this.enumerationService.getEnum(EnumerationItemDTO.EnumNameEnum.RegERelation);
+    return this.enumerationService.getEnum(EnumerationItemPublicDTO.EnumNameEnum.RegERelation);
   }
   
   get shirtSizes() {
-    return this.enumerationService.getEnum(EnumerationItemDTO.EnumNameEnum.RegEShirtSize);
+    return this.enumerationService.getEnum(EnumerationItemPublicDTO.EnumNameEnum.RegEShirtSize);
   }
 
   protected hasError(form: AbstractControl, errorCode: string): boolean {
@@ -245,7 +241,7 @@ export class RegistrationFormComponent extends Destroyable implements OnInit {
         this.form.disable();
         this.creatingRegistration = true;
       }),
-      concatMap(({eventTermId, request}) => this.registrationHorizontService
+      concatMap(({eventTermId, request}) => this.publicHorizontService
         .createRegistration(eventTermId, request).pipe(
           catchError(err => {
             console.error(`Error creating registration: ${JSON.stringify(request, null, 2)}`, err);
@@ -259,7 +255,7 @@ export class RegistrationFormComponent extends Destroyable implements OnInit {
         )),
       filter(createdReg => !!createdReg),
       tap(createdReg => {
-        if (createdReg.status === RegistrationDTO.StatusEnum.Queue) {
+        if (createdReg.status === RegistrationPublicDTO.StatusEnum.Queue) {
           this.router.navigate(['registration', 'result', 'queue']);
         } else {
           this.router.navigate(['registration', 'result', 'success']);

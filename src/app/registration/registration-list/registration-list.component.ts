@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Destroyable } from '../../shared/base/destroyable';
+import { DestroyableComponent } from '../../shared/base/destroyable.component';
 import { BehaviorSubject, map, ReplaySubject, switchMap, takeUntil, tap, timer } from 'rxjs';
-import { EventHorizontService } from '../../rest/api/event.service';
 import { AsyncPipe } from '@angular/common';
 import { EventCardComponent } from '../event-card/event-card.component';
 import { EventPublicDTO } from '../../rest/model/event-public';
@@ -10,6 +9,7 @@ import { DividerModule } from 'primeng/divider';
 import { MessageModule } from 'primeng/message';
 import { EventService } from '../../shared/service/event.service';
 import { EventStatus } from '../../shared/enum/event-status';
+import { PublicHorizontService } from '../../rest/api/public.service';
 
 @Component({
   selector: 'app-registration-list',
@@ -20,7 +20,7 @@ import { EventStatus } from '../../shared/enum/event-status';
   templateUrl: './registration-list.component.html',
   styles: ''
 })
-export class RegistrationListComponent extends Destroyable implements OnInit {
+export class RegistrationListComponent extends DestroyableComponent implements OnInit {
   protected EventStatusType = EventStatus;
 
   private static readonly EVENT_CHECK_INTERVAL = 1000; //ms
@@ -31,7 +31,7 @@ export class RegistrationListComponent extends Destroyable implements OnInit {
   
   constructor(
     private eventService: EventService,
-    private eventHorizontService: EventHorizontService) {
+    private publicHorizontService: PublicHorizontService) {
     super();
 
     // initialize events dictionary with all states
@@ -49,7 +49,7 @@ export class RegistrationListComponent extends Destroyable implements OnInit {
       takeUntil(this.destroy$)
     ).subscribe();
     
-    this.eventHorizontService.getCurrentEvents().pipe(
+    this.publicHorizontService.getEventsCurrent().pipe(
       tap(events => this.cachedEvents.next(events)),
     ).subscribe();
   }

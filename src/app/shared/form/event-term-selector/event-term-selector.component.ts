@@ -1,7 +1,7 @@
 import { Component, forwardRef, input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BehaviorSubject, filter, map, takeUntil, tap } from 'rxjs';
-import { Destroyable } from '../../base/destroyable';
+import { DestroyableComponent } from '../../base/destroyable.component';
 import { AsyncPipe, CurrencyPipe, DatePipe } from '@angular/common';
 import { EventTermPublicDTO } from '../../../rest/model/event-term-public';
 import { EventHorizontService } from '../../../rest/api/event.service';
@@ -19,7 +19,7 @@ import { EventHorizontService } from '../../../rest/api/event.service';
       multi: true
     }]
 })
-export class EventTermSelectorComponent extends Destroyable implements ControlValueAccessor, OnInit, OnChanges {
+export class EventTermSelectorComponent extends DestroyableComponent implements ControlValueAccessor, OnInit, OnChanges {
 
   public eventUUID = input<string>();
 
