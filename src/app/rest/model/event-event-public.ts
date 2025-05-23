@@ -7,21 +7,23 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { EventTermEventPublicDTO } from './event-term-event-public';
 
 
-export interface EventPublicDTO { 
+export interface EventEventPublicDTO { 
     createdAt?: string;
     uuid?: string;
     name: string;
     details: string;
     place: string;
-    eventType: EventPublicDTO.EventTypeEnum;
+    eventType: EventEventPublicDTO.EventTypeEnum;
     regStartAt: string;
     regEndAt: string;
     imageUrl?: string;
     discountType?: string;
+    terms?: Set<EventTermEventPublicDTO>;
 }
-export namespace EventPublicDTO {
+export namespace EventEventPublicDTO {
     export type EventTypeEnum = 'EVENT' | 'CAMP' | 'SCHOOL_CLIMB' | 'ECA';
     export const EventTypeEnum = {
         Event: 'EVENT' as EventTypeEnum,

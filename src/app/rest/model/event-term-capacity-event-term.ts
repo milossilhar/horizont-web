@@ -9,15 +9,15 @@
  */
 
 
-export interface EventTermCapacityInternalDTO { 
+export interface EventTermCapacityEventTermDTO { 
     eventTermId?: number;
-    status?: EventTermCapacityInternalDTO.StatusEnum;
+    status?: EventTermCapacityEventTermDTO.StatusEnum;
     capacity?: number;
     registrations?: number;
     registeredCount?: number;
     confirmedCount?: number;
 }
-export namespace EventTermCapacityInternalDTO {
+export namespace EventTermCapacityEventTermDTO {
     export type StatusEnum = 'CONCEPT' | 'QUEUE' | 'ACCEPTED' | 'CONFIRMED';
     export const StatusEnum = {
         Concept: 'CONCEPT' as StatusEnum,

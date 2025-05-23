@@ -7,16 +7,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { EventTermCapacityInternalDTO } from './event-term-capacity-internal';
 
 
-export interface EventTermInternalDTO { 
+export interface EventTermEventPublicDTO { 
     id?: number;
     startAt?: string;
     endAt?: string;
     capacity: number;
     deposit: number;
     price: number;
-    currentCapacities?: Array<EventTermCapacityInternalDTO>;
 }
 

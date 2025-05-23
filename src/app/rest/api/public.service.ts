@@ -19,7 +19,7 @@ import { Observable }                                        from 'rxjs';
 // @ts-ignore
 import { EnumerationItemPublicDTO } from '../model/enumeration-item-public';
 // @ts-ignore
-import { EventPublicDTO } from '../model/event-public';
+import { EventEventPublicDTO } from '../model/event-event-public';
 // @ts-ignore
 import { EventTermCapacityResponsePublicDTO } from '../model/event-term-capacity-response-public';
 // @ts-ignore
@@ -251,9 +251,9 @@ export class PublicHorizontService extends BaseService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getEventByUUID(eventUUID: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<EventPublicDTO>;
-    public getEventByUUID(eventUUID: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<EventPublicDTO>>;
-    public getEventByUUID(eventUUID: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<EventPublicDTO>>;
+    public getEventByUUID(eventUUID: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<EventEventPublicDTO>;
+    public getEventByUUID(eventUUID: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<EventEventPublicDTO>>;
+    public getEventByUUID(eventUUID: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<EventEventPublicDTO>>;
     public getEventByUUID(eventUUID: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (eventUUID === null || eventUUID === undefined) {
             throw new Error('Required parameter eventUUID was null or undefined when calling getEventByUUID.');
@@ -286,7 +286,7 @@ export class PublicHorizontService extends BaseService {
         }
 
         let localVarPath = `/public/events/${this.configuration.encodeParam({name: "eventUUID", value: eventUUID, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
-        return this.httpClient.request<EventPublicDTO>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<EventEventPublicDTO>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -356,9 +356,9 @@ export class PublicHorizontService extends BaseService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getEventsCurrent(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<EventPublicDTO>>;
-    public getEventsCurrent(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<EventPublicDTO>>>;
-    public getEventsCurrent(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<EventPublicDTO>>>;
+    public getEventsCurrent(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<EventEventPublicDTO>>;
+    public getEventsCurrent(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<EventEventPublicDTO>>>;
+    public getEventsCurrent(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<EventEventPublicDTO>>>;
     public getEventsCurrent(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
@@ -388,7 +388,7 @@ export class PublicHorizontService extends BaseService {
         }
 
         let localVarPath = `/public/events/current`;
-        return this.httpClient.request<Array<EventPublicDTO>>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<Array<EventEventPublicDTO>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
