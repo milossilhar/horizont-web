@@ -9,11 +9,14 @@
       <p-button icon="pi pi-times" (onClick)="onClearClick()" [rounded]="true" [text]="true" severity="secondary"></p-button>
     }
   </div>
-  <p-selectbutton [options]="displayOptions" [formControl]="displayForm" optionValue="value" [allowEmpty]="false">
-      <ng-template #item let-item>
-          <i class="pi" [class]="item.icon"></i>
-      </ng-template>
-  </p-selectbutton>
+  <div class="flex flex-row gap-x-2 items-baseline">
+    <p-button icon="pi pi-copy" label="e-mail" (click)="onEmailCopyClick()" size="small" severity="secondary"></p-button>
+    <p-selectbutton [options]="displayOptions" [formControl]="displayForm" optionValue="value" [allowEmpty]="false">
+        <ng-template #item let-item>
+            <i class="pi" [class]="item.icon"></i>
+        </ng-template>
+    </p-selectbutton>
+  </div>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
   @for (registration of filteredRegistrations(); track $index) {

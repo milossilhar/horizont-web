@@ -3,11 +3,11 @@ import { RegistrationCardComponent } from '../registration-card/registration-car
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectButtonModule } from 'primeng/selectbutton';
-import { debounceTime, distinctUntilChanged, takeUntil, tap } from 'rxjs';
+import { debounceTime, distinctUntilChanged, from, takeUntil, tap } from 'rxjs';
 import { ButtonModule } from 'primeng/button';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
-import { deburr, filter, includes, some, toLower, trim } from 'lodash';
+import { deburr, filter, includes, join, map, some, toLower, trim } from 'lodash';
 import { RegistrationDTO } from '../../rest/model/models';
 import { DestroyableComponent } from '../../shared/base/destroyable.component';
 import { PersonCardComponent } from '../../shared/components/person-card/person-card.component';
@@ -73,6 +73,11 @@ export class RegistrationsComponent extends DestroyableComponent implements OnIn
 
   protected hasDisplay(val: DisplayOptionsEnum) {
     return this.displayForm.value === val;
+  }
+
+  protected onEmailCopyClick() {
+    const emails = join(map(this.registrations(), r => r.email), ",");
+    from(navigator.clipboard.writeText(emails)).subscribe();
   }
 
   private filterRegistrations(registrations: RegistrationDTO[], searchValue: string | null) {
