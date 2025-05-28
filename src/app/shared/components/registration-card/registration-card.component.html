@@ -1,0 +1,155 @@
+<p-card styleClass="w-full overflow-hidden">
+  
+  <!-- Header with Status -->
+  <ng-template #header>
+    <div class="bg-gradient-to-bl from-zinc-600 to-emerald-800 text-white py-4 px-6">
+      <div class="flex justify-between items-start">
+        <div class="flex flex-col gap-y-1">
+          <h2 class="text-2xl font-bold">
+            {{registration.name}} {{registration.surname}}
+          </h2>
+          <p class="text-blue-100 text-sm" *ngIf="registration.createdAt">
+            Registrácia: {{registration.createdAt | date : 'medium'}}
+          </p>
+        </div>
+        <p-tag
+          [value]="statusText"
+          [severity]="statusSeverity"
+          [rounded]="true"
+          styleClass="text-sm font-semibold px-3 py-1">
+        </p-tag>
+      </div>
+    </div>
+  </ng-template>
+
+  <!-- Main Content -->
+  <div class="px-2 py-0">
+    
+    <!-- Contact Information -->
+    <div class="grid sm:grid-cols-2 gap-6">
+      <div class="flex flex-col gap-y-4">
+        <h3 class="text-lg font-semibold text-gray-800 border-b border-gray-200">
+          Kontaktné Informácie
+        </h3>
+        <div class="space-y-2">
+          <div class="flex items-center gap-3">
+            <i class="pi pi-envelope text-gray-500"></i>
+            <app-external-link [value]="registration.email" type="email"></app-external-link>
+          </div>
+          <div class="flex items-center gap-3">
+            <i class="pi pi-phone text-gray-500"></i>
+            <app-external-link [value]="registration.telPhone" type="tel"></app-external-link>
+          </div>
+        </div>
+      </div>
+
+      <!-- Consent Information -->
+      <div class="flex flex-col gap-y-4">
+        <h3 class="text-lg font-semibold text-gray-800 border-b border-gray-200">
+          Súhlasy
+        </h3>
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-gray-700">GDPR</span>
+            <app-consent-tag [consent]="registration.consentGDPR"></app-consent-tag>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-gray-700">Fotenie</span>
+            <app-consent-tag [consent]="registration.consentPhoto"></app-consent-tag>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Payment Information -->
+    <div *ngIf="registration.payment" class="bg-gray-50 rounded-lg p-4">
+      <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center gap-2">
+        <i class="pi pi-credit-card text-gray-600"></i>
+        Platobné Informácie
+      </h3>
+      <div class="grid md:grid-cols-3 gap-4">
+        <div *ngIf="registration.payment.final_price">
+          <span class="text-sm text-gray-600">Amount</span>
+          <p class="font-semibold text-gray-800">${{registration.payment.final_price}}</p>
+        </div>
+        <div *ngIf="registration.payment.deposit">
+          <span class="text-sm text-gray-600">Deposit</span>
+          <p class="font-semibold text-gray-800">{{registration.payment.deposit}}</p>
+        </div>
+        <div *ngIf="registration.payment.hasDiscount">
+          <span class="text-sm text-gray-600">Discount</span>
+          <p class="font-semibold text-gray-800">{{registration.payment.hasDiscount}}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- People Information -->
+    <div *ngIf="registration.people && registration.people.length > 0">
+      <p-divider></p-divider>
+      <h3 class="text-lg font-semibold text-gray-800 mb-4 flex flex-row justify-start items-center gap-2">
+        <i class="pi pi-users text-gray-600"></i>
+        Registrované deti
+        <p-badge [value]="registration.people.length" severity="info"></p-badge>
+      </h3>
+      
+      <div class="grid gap-4">
+        @for (person of registration.people; track $index) {
+          <div class="bg-white border border-gray-200 rounded-lg p-3 flex flex-col gap-y-1">
+            
+            <div class="flex justify-between items-start">
+              <h4 class="font-semibold text-gray-800">
+                {{person.name}} {{person.surname}}
+              </h4>
+              <app-independent-tag [independent]="person.isIndependent" size="small"></app-independent-tag>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
+              <div *ngIf="person.dateOfBirth">
+                <span class="text-gray-600 block">Dátum narodenia</span>
+                <span class="text-gray-800 font-medium">{{person.dateOfBirth | date}}</span>
+              </div>
+              
+              <div *ngIf="person.shirtSize">
+                <span class="text-gray-600 block">Veľkosť trička</span>
+                <span class="text-gray-800 font-medium">{{person.shirtSize}}</span>
+              </div>
+              
+              <div *ngIf="person.healthNotes">
+                <span class="text-gray-600 block">Zdravotné poznámky</span>
+                <span class="text-teal-700 font-medium">{{person.healthNotes}}</span>
+              </div>
+              
+              <div *ngIf="person.foodAllergyNotes">
+                <span class="text-gray-600 block">Alergie na jedlo</span>
+                <span class="text-orange-700 font-medium">{{person.foodAllergyNotes}}</span>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Known People -->
+    <div *ngIf="registration.knownPeople && registration.knownPeople.length > 0">
+      <p-divider></p-divider>
+      <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+        <i class="pi pi-user-plus text-gray-600"></i>
+        Známe osoby
+        <p-badge [value]="registration.knownPeople.length.toString()" severity="info"></p-badge>
+      </h3>
+      
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
+        <div 
+          *ngFor="let knownPerson of registration.knownPeople; trackBy: trackByKnownPersonName"
+          class="bg-gray-50 rounded-lg p-3 border border-gray-200">
+          <p class="font-medium text-gray-800">
+            {{knownPerson.name}} {{knownPerson.surname}}
+          </p>
+          <p class="text-sm text-gray-600">{{knownPerson.relation | enum : 'REG_E_RELATION'}}</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</p-card>

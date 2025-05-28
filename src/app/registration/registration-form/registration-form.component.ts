@@ -1,5 +1,5 @@
-import { AsyncPipe, CurrencyPipe, DatePipe } from '@angular/common';
-import { Component, OnInit, signal, WritableSignal } from '@angular/core';
+import { AsyncPipe, CurrencyPipe, DatePipe, JsonPipe } from '@angular/common';
+import { Component, computed, OnInit, signal, WritableSignal } from '@angular/core';
 import { AbstractControl, FormArray, FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
@@ -14,8 +14,6 @@ import { EventCardComponent } from '../event-card/event-card.component';
 import { catchError, concatMap, filter, finalize, map, merge, of, takeUntil, tap } from 'rxjs';
 import { CardModule } from 'primeng/card';
 import { EventTermSelectorComponent } from "../../shared/form/event-term-selector/event-term-selector.component";
-import { EventPublicDTO } from '../../rest/model/event-public';
-import { EventTermPublicDTO } from '../../rest/model/event-term-public';
 import { ButtonModule } from 'primeng/button';
 import { MeterGroupModule } from 'primeng/metergroup';
 import { SelectModule } from 'primeng/select';
@@ -25,11 +23,7 @@ import { PRIME_CONSTANTS } from '../../shared/primeng.constant';
 import { PublicHorizontService } from '../../rest/api/api';
 import { EnumerationService } from '../../shared/service/enumeration.service';
 import { ProgressBar } from 'primeng/progressbar';
-import { PaymentPublicDTO } from '../../rest/model/payment-public';
-import { RegistrationPricingRequestPublicDTO } from '../../rest/model/registration-pricing-request-public';
-import { RegistrationPublicDTO } from '../../rest/model/registration-public';
-import { EventTermCapacityResponsePublicDTO } from '../../rest/model/event-term-capacity-response-public';
-import { EnumerationItemPublicDTO } from '../../rest/model/enumeration-item-public';
+import { EnumerationItemPublicDTO, EventEventPublicDTO, PaymentPublicDTO, RegistrationPricingRequestPublicDTO, RegistrationPublicDTO } from '../../rest/model/models';
 
 @Component({
   selector: 'app-registration-form',
@@ -49,7 +43,7 @@ import { EnumerationItemPublicDTO } from '../../rest/model/enumeration-item-publ
     SelectModule,
     MeterGroupModule,
     EventCardComponent,
-    DatePipe, CurrencyPipe, AsyncPipe,
+    DatePipe, CurrencyPipe, AsyncPipe, JsonPipe,
     EventTermSelectorComponent
 ],
   templateUrl: './registration-form.component.html',
@@ -58,9 +52,9 @@ import { EnumerationItemPublicDTO } from '../../rest/model/enumeration-item-publ
 export class RegistrationFormComponent extends DestroyableComponent implements OnInit {
   protected today = new Date();
 
-  protected event = signal<EventPublicDTO | undefined>(undefined);
-  protected capacity = signal<EventTermCapacityResponsePublicDTO | undefined>(undefined);
+  protected event = signal<EventEventPublicDTO | undefined>(undefined);
   protected isAnyPersonDependent = signal(true);
+  protected selectedTermID = signal<number>(-1);
   
   protected consentPhotoOptions = PRIME_CONSTANTS.selectbutton.yesno.boolean;
 
@@ -71,6 +65,13 @@ export class RegistrationFormComponent extends DestroyableComponent implements O
   protected registrationError = '';
 
   protected payment: WritableSignal<PaymentPublicDTO> = signal({ price: 0 });
+
+  protected terms = computed(() => Array.from(this.event()?.terms?.values() ?? []));
+
+  protected selectedTerm = computed(() => {
+    const eventTermId = this.selectedTermID();
+    return find(this.terms(), term => term.id === eventTermId);
+  });
   
   constructor(
     private fb: NonNullableFormBuilder,
@@ -107,6 +108,12 @@ export class RegistrationFormComponent extends DestroyableComponent implements O
     this.people.valueChanges.pipe(
       map(value => some(value, p => !p.isIndependent)),
       tap(isAnyPersonDependent => this.isAnyPersonDependent.set(isAnyPersonDependent)),
+      takeUntil(this.destroy$)
+    ).subscribe();
+
+    // update selectedTermID
+    this.fc.eventTermId.valueChanges.pipe(
+      tap(id => { if (!!id) this.selectedTermID.set(id); }),
       takeUntil(this.destroy$)
     ).subscribe();
 
@@ -150,10 +157,6 @@ export class RegistrationFormComponent extends DestroyableComponent implements O
     return this.form.controls;
   }
 
-  get terms(): Array<EventTermPublicDTO> {
-    return Array.from(this.event()?.terms?.values() ?? []);
-  }
-
   get people() {
     return this.form.controls.people;
   }
@@ -164,11 +167,6 @@ export class RegistrationFormComponent extends DestroyableComponent implements O
 
   get isOnlyOneChild() {
     return this.people.controls.length === 1;
-  }
-
-  get selectedTerm() {
-    const eventTermId = this.fc.eventTermId.value;
-    return find(this.terms, term => term.id === eventTermId);
   }
 
   get relations() {
@@ -217,10 +215,6 @@ export class RegistrationFormComponent extends DestroyableComponent implements O
 
   protected removeKnownPersonForm(index: number) {
     this.knownPeople.removeAt(index);
-  }
-
-  protected getChildText(childForm: FormGroup) {
-    childForm
   }
 
   protected submitRegistration() {

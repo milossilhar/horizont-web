@@ -14,7 +14,6 @@ export class AuthService {
   constructor(private oauthService: OAuthService) { }
   
   private set user(newUser: any | undefined) {
-    console.log('setting new user', newUser);
     this._user = newUser;
     this._user$.next(newUser);
   }

@@ -25,7 +25,7 @@ export const routes: Routes = [
         canActivate: [AuthGuard],
         children: [
           { path: '', component: EventListComponent },
-          { path: 'detail/:eventUUID', component: EventDetailComponent }
+          { path: 'detail/:eventID', component: EventDetailComponent }
         ]
       },
       {

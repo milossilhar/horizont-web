@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { map, Observable, ReplaySubject, tap } from 'rxjs';
-import { Dictionary } from 'lodash';
+import { Dictionary, find } from 'lodash';
 import { PublicHorizontService } from '../../rest/api/public.service';
 import { EnumerationItemPublicDTO } from '../../rest/model/enumeration-item-public';
 
@@ -9,19 +9,29 @@ import { EnumerationItemPublicDTO } from '../../rest/model/enumeration-item-publ
 })
 export class EnumerationService {
 
-  private cachedEnums = new ReplaySubject<Dictionary<Array<EnumerationItemPublicDTO>>>(1);
+  private _cachedEnums: Dictionary<Array<EnumerationItemPublicDTO>> = {};
+  private _cachedEnums$ = new ReplaySubject<Dictionary<Array<EnumerationItemPublicDTO>>>(1);
+
+  private set cachedEnums(enums: Dictionary<Array<EnumerationItemPublicDTO>>) {
+    this._cachedEnums = enums;
+    this._cachedEnums$.next(enums);
+  }
 
   constructor(private publicHorizontService: PublicHorizontService) { }
   
   public init(): Observable<any> {
     return this.publicHorizontService.getPublicEnumerations().pipe(
-      tap(enumerations => this.cachedEnums.next(enumerations))
+      tap(enumerations => this.cachedEnums = enumerations)
     );
   }
 
   public getEnum(name: string): Observable<Array<EnumerationItemPublicDTO>> {
-    return this.cachedEnums.asObservable().pipe(
+    return this._cachedEnums$.asObservable().pipe(
       map(ce => ce[name] ?? [])
     );
+  }
+
+  public getEnumItem(name: string, code: string): EnumerationItemPublicDTO | undefined {
+    return find(this._cachedEnums[name] ?? [], e => e.code === code);
   }
 }

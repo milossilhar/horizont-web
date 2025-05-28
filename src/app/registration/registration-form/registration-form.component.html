@@ -8,7 +8,7 @@
 
   <p-card>
     <ng-template #title> Vyberte termín </ng-template>
-    <app-event-term-selector formControlName="eventTermId" [terms]="terms" [eventUUID]="event()?.uuid"></app-event-term-selector>
+    <app-event-term-selector formControlName="eventTermId" [terms]="terms()" [eventUUID]="event()?.uuid"></app-event-term-selector>
   </p-card>
 
 
@@ -212,9 +212,9 @@
     <ng-template #title> <span class="text-2xl">Zhrnutie</span> </ng-template>
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-2 rounded-border p-4 bg-primary-50">
       <div class="flex flex-col items-start gap-y-2">
-        <h3 class="text-xl">{{event()?.name}}</h3>
-        <p class="text-lg">Zvolený termín: {{selectedTerm?.startAt | date : 'shortDate'}} - {{selectedTerm?.endAt | date : 'shortDate'}}</p>
-        <p class="text-lg">Cena za dieťa: {{selectedTerm?.price | currency}}</p>
+        <h3 class="text-xl font-bold">{{event()?.name}}</h3>
+        <p class="text-lg">Zvolený termín: <span class="font-semibold">{{selectedTerm()?.startAt | date : 'shortDate'}} - {{selectedTerm()?.endAt | date : 'shortDate'}}</span></p>
+        <p class="text-lg">Cena za dieťa: {{selectedTerm()?.price | currency}}</p>
         <p class="text-lg">Prihlasované deti:</p>
         @for (childForm of people.controls; track $index) {
           @if (!!childForm.controls.name.value && !!childForm.controls.surname.value && !!childForm.controls.dateOfBirth.value) {
@@ -257,3 +257,5 @@
     </ng-template>
   </p-card>
 </form>
+
+<div>{{form.getRawValue() | json}}</div>

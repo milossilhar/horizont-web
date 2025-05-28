@@ -2,11 +2,11 @@ import { Component, computed, input } from '@angular/core';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { RouterLink } from '@angular/router';
-import { EventPublicDTO } from '../../rest/model/event-public';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { EventService } from '../../shared/service/event.service';
 import { EventStatus } from '../../shared/enum/event-status';
 import { MessageModule } from 'primeng/message';
+import { EventEventPublicDTO } from '../../rest/model/models';
 
 @Component({
   selector: 'app-event-card',
@@ -20,7 +20,7 @@ import { MessageModule } from 'primeng/message';
 })
 export class EventCardComponent {
 
-  public event = input<EventPublicDTO>();
+  public event = input<EventEventPublicDTO>();
 
   public minimal = input<boolean>(false);
 
