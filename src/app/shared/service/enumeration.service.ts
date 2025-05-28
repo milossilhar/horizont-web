@@ -1,28 +1,37 @@
 import { Injectable } from '@angular/core';
-import { Initialization } from '../base/initialization';
 import { map, Observable, ReplaySubject, tap } from 'rxjs';
-import { EnumerationItemDTO } from '../../rest/model/enumeration-item';
-import { Dictionary } from 'lodash';
-import { EnumerationHorizontService } from '../../rest/api/enumeration.service';
+import { Dictionary, find } from 'lodash';
+import { PublicHorizontService } from '../../rest/api/public.service';
+import { EnumerationItemPublicDTO } from '../../rest/model/enumeration-item-public';
 
 @Injectable({
   providedIn: 'root'
 })
-export class EnumerationService implements Initialization {
+export class EnumerationService {
 
-  private cachedEnums = new ReplaySubject<Dictionary<Array<EnumerationItemDTO>>>(1);
+  private _cachedEnums: Dictionary<Array<EnumerationItemPublicDTO>> = {};
+  private _cachedEnums$ = new ReplaySubject<Dictionary<Array<EnumerationItemPublicDTO>>>(1);
 
-  constructor(private enumerationHorizontService: EnumerationHorizontService) { }
+  private set cachedEnums(enums: Dictionary<Array<EnumerationItemPublicDTO>>) {
+    this._cachedEnums = enums;
+    this._cachedEnums$.next(enums);
+  }
 
+  constructor(private publicHorizontService: PublicHorizontService) { }
+  
   public init(): Observable<any> {
-    return this.enumerationHorizontService.getVisibleEnumerations().pipe(
-      tap(enumerations => this.cachedEnums.next(enumerations))
+    return this.publicHorizontService.getPublicEnumerations().pipe(
+      tap(enumerations => this.cachedEnums = enumerations)
     );
   }
 
-  public getEnum(name: string): Observable<Array<EnumerationItemDTO>> {
-    return this.cachedEnums.asObservable().pipe(
+  public getEnum(name: string): Observable<Array<EnumerationItemPublicDTO>> {
+    return this._cachedEnums$.asObservable().pipe(
       map(ce => ce[name] ?? [])
     );
+  }
+
+  public getEnumItem(name: string, code: string): EnumerationItemPublicDTO | undefined {
+    return find(this._cachedEnums[name] ?? [], e => e.code === code);
   }
 }

@@ -8,6 +8,10 @@ html {
   font-size: 14px;
 }
 
+:root {
+  --content-min-height: calc(100svh - 198px);
+}
+
 @import "primeicons/primeicons.css";
 @import "tailwindcss";
 @import "tailwindcss-primeui";

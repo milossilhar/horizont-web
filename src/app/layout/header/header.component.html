@@ -37,5 +37,9 @@
   } @else {
     <p class="text-2xl">#leziemevpezinku</p>
   }
-  <a class="text-lg" routerLink="/registration">Letné Tábory</a>
+  <div class="flex flex-row items-baseline justify-center gap-x-2">
+    <a pButton [text]="true" routerLinkActive="font-bold" routerLink="/registration">Registrácie</a>
+    <a *ifLoggedIn pButton [text]="true" routerLinkActive="font-bold" routerLink="/event">Tábory</a>
+    <p-button [label]="loginButtonLabel" variant="text" severity="info" (onClick)="onLoginClick()"></p-button>
+  </div>
 </div>

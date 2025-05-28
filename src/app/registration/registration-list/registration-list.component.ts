@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { Destroyable } from '../../shared/base/destroyable';
+import { DestroyableComponent } from '../../shared/base/destroyable.component';
 import { BehaviorSubject, map, ReplaySubject, switchMap, takeUntil, tap, timer } from 'rxjs';
-import { EventHorizontService } from '../../rest/api/event.service';
 import { AsyncPipe } from '@angular/common';
-import { EventCardComponent } from '../event-card/event-card.component';
-import { EventPublicDTO } from '../../rest/model/event-public';
+import { EventCardComponent } from '../../event/event-card/event-card.component';
 import { Dictionary, groupBy } from 'lodash';
 import { DividerModule } from 'primeng/divider';
 import { MessageModule } from 'primeng/message';
 import { EventService } from '../../shared/service/event.service';
 import { EventStatus } from '../../shared/enum/event-status';
+import { PublicHorizontService } from '../../rest/api/public.service';
+import { EventEventPublicDTO } from '../../rest/model/models';
 
 @Component({
   selector: 'app-registration-list',
@@ -20,23 +20,23 @@ import { EventStatus } from '../../shared/enum/event-status';
   templateUrl: './registration-list.component.html',
   styles: ''
 })
-export class RegistrationListComponent extends Destroyable implements OnInit {
+export class RegistrationListComponent extends DestroyableComponent implements OnInit {
   protected EventStatusType = EventStatus;
 
   private static readonly EVENT_CHECK_INTERVAL = 1000; //ms
 
-  private cachedEvents = new ReplaySubject<EventPublicDTO[]>(1);
+  private cachedEvents = new ReplaySubject<EventEventPublicDTO[]>(1);
 
-  protected events: Dictionary<BehaviorSubject<EventPublicDTO[]>> = { };
+  protected events: Dictionary<BehaviorSubject<EventEventPublicDTO[]>> = { };
   
   constructor(
     private eventService: EventService,
-    private eventHorizontService: EventHorizontService) {
+    private publicHorizontService: PublicHorizontService) {
     super();
 
     // initialize events dictionary with all states
     Object.keys(EventStatus)
-      .map(key => this.events[key] = new BehaviorSubject<EventPublicDTO[]>([]));
+      .map(key => this.events[key] = new BehaviorSubject<EventEventPublicDTO[]>([]));
   }
   
   ngOnInit(): void {
@@ -49,7 +49,7 @@ export class RegistrationListComponent extends Destroyable implements OnInit {
       takeUntil(this.destroy$)
     ).subscribe();
     
-    this.eventHorizontService.getCurrentEvents().pipe(
+    this.publicHorizontService.getEventsCurrent().pipe(
       tap(events => this.cachedEvents.next(events)),
     ).subscribe();
   }

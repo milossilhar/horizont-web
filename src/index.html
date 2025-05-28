@@ -9,8 +9,41 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+  <style>
+    .intro-container {
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .intro-loading {
+      display: flex;
+      flex-direction: column;
+      row-gap: 1rem;
+      justify-content: center;
+      align-items: center;
+    }
+    .intro-loading.hidden {
+      display: none;
+    }
+
+    .intro-loading-icon {
+      font-size: 2rem;
+    }
+  </style>
 </head>
 <body>
-  <app-root></app-root>
+  <app-root>
+    <div class="intro-container">
+      <div id="intro-loading" class="intro-loading">
+        <p>Načítavam</p>
+        <i class="pi pi-spin pi-spinner intro-loading-icon"></i>
+      </div>
+      <p id="intro-error" class="hidden">Aplikácia sa nepodarila načítať. Skúste <a href="/">obnoviť</a> </p>
+    </div>
+  </app-root>
 </body>
 </html>

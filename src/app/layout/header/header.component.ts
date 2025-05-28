@@ -4,9 +4,11 @@ import { ButtonModule } from 'primeng/button';
 import { MenuModule } from 'primeng/menu';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { MessageModule } from 'primeng/message';
-import { Router, RouterLink } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { HealthHorizontService } from '../../rest/api/health.service';
 import { catchError, tap } from 'rxjs';
+import { AuthService } from '../../shared/service/auth.service';
+import { IfLoggedInDirective } from '../../shared/directives/if-logged-in.directive';
 
 @Component({
   selector: 'app-header',
@@ -15,7 +17,8 @@ import { catchError, tap } from 'rxjs';
     BreadcrumbModule,
     MenuModule,
     MessageModule,
-    RouterLink,
+    RouterLink, RouterLinkActive,
+    IfLoggedInDirective
   ],
   templateUrl: './header.component.html',
   styles: ``
@@ -23,6 +26,8 @@ import { catchError, tap } from 'rxjs';
 export class HeaderComponent implements OnInit {
 
   protected environment = signal<string | undefined>(undefined);
+
+  protected loginButtonType: 'LOGIN' | 'LOGOUT' = 'LOGIN';
 
   protected isNotProd = computed(() => this.environment() && this.environment() !== 'prod');
 
@@ -39,8 +44,14 @@ export class HeaderComponent implements OnInit {
     { label: "E-Mail", icon: 'pi pi-envelope' },
   ]
 
+  loginLabels = {
+    'LOGIN': 'Prihlásiť sa',
+    'LOGOUT': 'Odhlásiť sa'
+  }
+
   constructor(
     private router: Router,
+    private authService: AuthService,
     private healthHorizonService: HealthHorizontService) { }
 
   ngOnInit(): void {
@@ -48,8 +59,18 @@ export class HeaderComponent implements OnInit {
       tap(env => this.environment.set(env.value)),
       catchError(() => this.router.navigateByUrl('/unavailable'))
     ).subscribe();
+
+    this.authService.isLoggedIn.pipe(
+      tap(loggedIn => this.loginButtonType = !loggedIn ? 'LOGIN' : 'LOGOUT')
+    ).subscribe();
   }
 
-  
+  get loginButtonLabel() {
+    return this.loginLabels[this.loginButtonType];
+  }
+
+  protected onLoginClick() {
+    this.authService.toggleLogin();
+  }
 
 }

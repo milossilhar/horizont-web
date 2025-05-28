@@ -7,18 +7,37 @@ import { NotFoundComponent } from './standalone/not-found/not-found.component';
 import { RegistrationResultQueueComponent } from './registration/registration-result-queue/registration-result-queue.component';
 import { RegistrationResultSuccessComponent } from './registration/registration-result-success/registration-result-success.component';
 import { RegistrationConfirmComponent } from './registration/registration-confirm/registration-confirm.component';
+import { EventDetailComponent } from './event/event-detail/event-detail.component';
+import { AuthGuard } from './shared/guards/auth.guard';
+import { EventListComponent } from './event/event-list/event-list.component';
 
 export const routes: Routes = [
   {
     path: '',
+    redirectTo: '/registration',
+    pathMatch: 'full'
+  },
+  {
+    path: '',
     canActivate: [InitGuard],
     children: [
-      { path: 'registration', component: RegistrationListComponent },
-      { path: 'registration/:eventUUID', component: RegistrationFormComponent },
-      { path: 'registration/result/queue', component: RegistrationResultQueueComponent },
-      { path: 'registration/result/success', component: RegistrationResultSuccessComponent },
-      { path: 'registration/confirm/:token', component: RegistrationConfirmComponent },
-      { path: '', redirectTo: '/registration', pathMatch: 'full' },
+      { path: 'event',
+        canActivate: [AuthGuard],
+        children: [
+          { path: '', component: EventListComponent },
+          { path: 'detail/:eventID', component: EventDetailComponent }
+        ]
+      },
+      {
+        path: 'registration',
+        children: [
+          { path: '', component: RegistrationListComponent },
+          { path: ':eventUUID', component: RegistrationFormComponent },
+          { path: 'result/queue', component: RegistrationResultQueueComponent },
+          { path: 'result/success', component: RegistrationResultSuccessComponent },
+          { path: 'confirm/:token', component: RegistrationConfirmComponent },
+        ]
+      }
     ]
   },
   {

@@ -1,0 +1,72 @@
+// registration-card.component.ts
+import { Component, Input } from '@angular/core';
+import { CommonModule, DatePipe } from '@angular/common';
+import { CardModule } from 'primeng/card';
+import { TagModule } from 'primeng/tag';
+import { DividerModule } from 'primeng/divider';
+import { ButtonModule } from 'primeng/button';
+import { TooltipModule } from 'primeng/tooltip';
+import { BadgeModule } from 'primeng/badge';
+import { IndependentTagComponent } from '../../shared/components/tags/independent-tag/independent-tag.component';
+import { ConsentTagComponent } from '../../shared/components/tags/consent-tag/consent-tag.component';
+import { ExternalLinkComponent } from '../../shared/components/external-link/external-link.component';
+import { EnumPipe } from '../../shared/pipes/enum.pipe';
+import { KnownPersonDTO, RegistrationDTO } from '../../rest/model/models';
+
+
+@Component({
+  selector: 'app-registration-card',
+  standalone: true,
+  imports: [
+    CommonModule, CardModule, TagModule, DividerModule, ButtonModule, TooltipModule, BadgeModule,
+    DatePipe,
+    IndependentTagComponent,
+    ConsentTagComponent,
+    ExternalLinkComponent,
+    EnumPipe
+],
+  templateUrl: './registration-card.component.html',
+  styles: []
+})
+export class RegistrationCardComponent {
+
+  @Input() registration!: RegistrationDTO;
+
+  get statusSeverity(): 'contrast' | 'success' | 'info' | 'warn' | 'danger' {
+    switch(this.registration.status) {
+      case 'CONFIRMED':
+        return 'success';
+      case 'QUEUE':
+        return 'warn';
+      case 'CONCEPT':
+        return 'danger';
+      default:
+        return 'contrast';
+    }
+  }
+
+  get statusText(): string {
+    switch(this.registration.status) {
+      case 'CONFIRMED':
+        return 'Potvrdené';
+      case 'QUEUE':
+        return 'V poradí';
+      case 'CONCEPT':
+        return 'Nepotvrdené';
+      default:
+        return 'Neznámy';
+    }
+  }
+
+  get emailHref(): string {
+    return `mailto${this.registration.email}`;
+  }
+
+  get telPhoneHref(): string {
+    return `tel:${this.registration.telPhone}`;
+  }
+
+  trackByKnownPersonName(index: number, person: KnownPersonDTO): string {
+    return `${person.name}-${person.surname}-${person.relation}-${index}`;
+  }
+}
