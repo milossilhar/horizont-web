@@ -9,6 +9,7 @@ import { DatePipe } from '@angular/common';
 import { find, reduce } from 'lodash';
 import { RouterLink } from '@angular/router';
 import { EventEventInternalDTO, EventTermCapacityEventInternalDTO, EventTermEventInternalDTO } from '../../rest/model/models';
+import { TooltipModule } from 'primeng/tooltip';
 
 interface CapacityMessageConfig {
   title: string;
@@ -19,7 +20,7 @@ interface CapacityMessageConfig {
   selector: 'app-event-list',
   imports: [
     DatePipe, RouterLink,
-    BadgeModule, CardModule, MessageModule, ButtonModule
+    BadgeModule, CardModule, MessageModule, ButtonModule, TooltipModule
   ],
   templateUrl: './event-list.component.html',
   styles: ``
@@ -27,7 +28,7 @@ interface CapacityMessageConfig {
 export class EventListComponent implements OnInit {
 
   protected registrationStatues = [
-    EventTermCapacityEventInternalDTO.StatusEnum.Concept,
+    // EventTermCapacityEventInternalDTO.StatusEnum.Concept,
     EventTermCapacityEventInternalDTO.StatusEnum.Confirmed,
     EventTermCapacityEventInternalDTO.StatusEnum.Queue
   ];
@@ -55,8 +56,8 @@ export class EventListComponent implements OnInit {
   getCapacityMessageConfig(status: EventTermCapacityEventInternalDTO.StatusEnum): CapacityMessageConfig {
     switch(status) {
       case 'CONCEPT': return { title: 'Nepotvrdené', severity: 'secondary' };
-      case 'QUEUE': return { title: 'V poradí', severity: 'warn' };
-      case 'CONFIRMED': return { title: 'Potvrdené', severity: 'info' };
+      case 'QUEUE': return { title: 'V poradí', severity: 'danger' };
+      case 'CONFIRMED': return { title: 'Potvrdené', severity: 'success' };
     }
   }
 }

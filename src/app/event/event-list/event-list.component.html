@@ -15,19 +15,21 @@
           @for (term of event.terms; track $index) {
             <div class="p-2 flex flex-col gap-y-2 items-center justify-center rounded-border bg-highlight">
               <p class="font-bold text-lg sm:text-xl">{{term.startAt | date : 'd. MMM'}} - {{term.endAt | date : 'd. MMM'}}</p>
-              <div class="flex flex-row items-baseline gap-x-1">
-                <i class="pi pi-user mr-1"></i>
-                <p class="text-lg sm:text-xl">{{getTermRegistrations(term)}} / {{term.capacity}}</p>
-              </div>
-              <div class="w-full flex flex-row justify-center gap-x-3">
-                @for (status of registrationStatues; track $index) {
-                  @let currentCapacity = getCapacityForStatus(term, status);
-                  @let messageConfig = getCapacityMessageConfig(status);
-                  <div class="flex flex-col justify-center items-center gap-y-1">
-                    <p-badge [severity]="messageConfig.severity" badgeSize="xlarge" [value]="(currentCapacity?.registrations ?? 0) + ''"></p-badge>
-                    <p-message [severity]="messageConfig.severity" variant="simple" size="small">{{messageConfig.title}}</p-message>
-                  </div>
-                }
+              <div class="w-full grid grid-cols-1 sm:grid-cols-2 justify-items-center items-center gap-2">
+                <div class="flex flex-row items-baseline gap-x-1">
+                  <i class="pi pi-user mr-1"></i>
+                  <p class="text-lg sm:text-xl">{{getTermRegistrations(term)}} / {{term.capacity}}</p>
+                </div>
+                <div class="flex flex-row items-center gap-x-2">
+                  @for (status of registrationStatues; track $index) {
+                    @let currentCapacity = getCapacityForStatus(term, status);
+                    @let messageConfig = getCapacityMessageConfig(status);
+                    <p-badge [severity]="messageConfig.severity" badgeSize="xlarge" styleClass="cursor-default"
+                      [value]="`${(currentCapacity?.registrations ?? 0)}`"
+                      [pTooltip]="messageConfig.title">
+                    </p-badge>
+                  }
+                </div>
               </div>
             </div>
           }
