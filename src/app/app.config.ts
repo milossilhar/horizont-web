@@ -24,7 +24,7 @@ const OAUTH_CLIENT_CONFIG: AuthConfig = {
   responseType: 'code',
   scope: 'openid profile email',
   useSilentRefresh: true,
-  showDebugInformation: true,
+  // showDebugInformation: true,
 };
 
 const API_CONFIG: ConfigurationParameters = {
