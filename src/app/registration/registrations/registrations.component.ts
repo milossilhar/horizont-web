@@ -1,16 +1,16 @@
 import { Component, computed, input, OnInit, signal } from '@angular/core';
-import { RegistrationDTO } from '../../../rest/model/registration';
 import { RegistrationCardComponent } from '../registration-card/registration-card.component';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectButtonModule } from 'primeng/selectbutton';
-import { DestroyableComponent } from '../../base/destroyable.component';
 import { debounceTime, distinctUntilChanged, takeUntil, tap } from 'rxjs';
 import { ButtonModule } from 'primeng/button';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { deburr, filter, includes, some, toLower, trim } from 'lodash';
-import { PersonCardComponent } from '../person-card/person-card.component';
+import { RegistrationDTO } from '../../rest/model/models';
+import { DestroyableComponent } from '../../shared/base/destroyable.component';
+import { PersonCardComponent } from '../../shared/components/person-card/person-card.component';
 
 interface DisplayOptionType {
   icon: string,

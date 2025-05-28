@@ -10,7 +10,6 @@ import { TooltipModule } from 'primeng/tooltip';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DestroyableComponent } from '../../shared/base/destroyable.component';
 import { ActivatedRoute, Router } from '@angular/router';
-import { EventCardComponent } from '../event-card/event-card.component';
 import { catchError, concatMap, filter, finalize, map, merge, of, takeUntil, tap } from 'rxjs';
 import { CardModule } from 'primeng/card';
 import { EventTermSelectorComponent } from "../../shared/form/event-term-selector/event-term-selector.component";
@@ -24,6 +23,7 @@ import { PublicHorizontService } from '../../rest/api/api';
 import { EnumerationService } from '../../shared/service/enumeration.service';
 import { ProgressBar } from 'primeng/progressbar';
 import { EnumerationItemPublicDTO, EventEventPublicDTO, PaymentPublicDTO, RegistrationPricingRequestPublicDTO, RegistrationPublicDTO } from '../../rest/model/models';
+import { EventCardComponent } from '../../event/event-card/event-card.component';
 
 @Component({
   selector: 'app-registration-form',

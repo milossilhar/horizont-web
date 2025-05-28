@@ -9,7 +9,8 @@ import { ButtonModule } from 'primeng/button';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { DestroyableComponent } from '../../shared/base/destroyable.component';
 import { EventTermSelectorComponent } from "../../shared/form/event-term-selector/event-term-selector.component";
-import { RegistrationsComponent } from "../../shared/components/registrations/registrations.component";
+import { RegistrationsComponent } from '../../registration/registrations/registrations.component';
+
 
 @Component({
   selector: 'app-event-detail',

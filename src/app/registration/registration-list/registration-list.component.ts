@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DestroyableComponent } from '../../shared/base/destroyable.component';
 import { BehaviorSubject, map, ReplaySubject, switchMap, takeUntil, tap, timer } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
-import { EventCardComponent } from '../event-card/event-card.component';
+import { EventCardComponent } from '../../event/event-card/event-card.component';
 import { Dictionary, groupBy } from 'lodash';
 import { DividerModule } from 'primeng/divider';
 import { MessageModule } from 'primeng/message';

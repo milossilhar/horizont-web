@@ -7,11 +7,12 @@ import { DividerModule } from 'primeng/divider';
 import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
 import { BadgeModule } from 'primeng/badge';
-import { KnownPersonDTO, RegistrationDTO } from '../../../rest/model/models';
-import { IndependentTagComponent } from "../tags/independent-tag/independent-tag.component";
-import { ConsentTagComponent } from "../tags/consent-tag/consent-tag.component";
-import { ExternalLinkComponent } from "../external-link/external-link.component";
-import { EnumPipe } from "../../pipes/enum.pipe";
+import { IndependentTagComponent } from '../../shared/components/tags/independent-tag/independent-tag.component';
+import { ConsentTagComponent } from '../../shared/components/tags/consent-tag/consent-tag.component';
+import { ExternalLinkComponent } from '../../shared/components/external-link/external-link.component';
+import { EnumPipe } from '../../shared/pipes/enum.pipe';
+import { KnownPersonDTO, RegistrationDTO } from '../../rest/model/models';
+
 
 @Component({
   selector: 'app-registration-card',
