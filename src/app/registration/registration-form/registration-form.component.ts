@@ -1,4 +1,4 @@
-import { AsyncPipe, CurrencyPipe, DatePipe, JsonPipe } from '@angular/common';
+import { AsyncPipe, CurrencyPipe, DatePipe } from '@angular/common';
 import { Component, computed, OnInit, signal, WritableSignal } from '@angular/core';
 import { AbstractControl, FormArray, FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FloatLabelModule } from 'primeng/floatlabel';
@@ -43,7 +43,7 @@ import { EventCardComponent } from '../../event/event-card/event-card.component'
     SelectModule,
     MeterGroupModule,
     EventCardComponent,
-    DatePipe, CurrencyPipe, AsyncPipe, JsonPipe,
+    DatePipe, CurrencyPipe, AsyncPipe,
     EventTermSelectorComponent
 ],
   templateUrl: './registration-form.component.html',
