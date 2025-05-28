@@ -11,7 +11,6 @@ model/enumeration-item-public.ts
 model/event-event-internal.ts
 model/event-event-public.ts
 model/event-event-term.ts
-model/event-public.ts
 model/event-term-capacity-event-internal.ts
 model/event-term-capacity-event-term.ts
 model/event-term-capacity-response-public.ts

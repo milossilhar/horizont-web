@@ -27,11 +27,10 @@ export interface RegistrationPublicDTO {
     payment?: PaymentPublicDTO;
 }
 export namespace RegistrationPublicDTO {
-    export type StatusEnum = 'CONCEPT' | 'QUEUE' | 'ACCEPTED' | 'CONFIRMED';
+    export type StatusEnum = 'CONCEPT' | 'QUEUE' | 'CONFIRMED';
     export const StatusEnum = {
         Concept: 'CONCEPT' as StatusEnum,
         Queue: 'QUEUE' as StatusEnum,
-        Accepted: 'ACCEPTED' as StatusEnum,
         Confirmed: 'CONFIRMED' as StatusEnum
     };
 }

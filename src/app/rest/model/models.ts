@@ -3,7 +3,6 @@ export * from './event';
 export * from './event-event-internal';
 export * from './event-event-public';
 export * from './event-event-term';
-export * from './event-public';
 export * from './event-term-capacity';
 export * from './event-term-capacity-event-internal';
 export * from './event-term-capacity-event-term';

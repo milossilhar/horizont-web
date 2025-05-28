@@ -14,7 +14,6 @@ export interface EventEventTermDTO {
     uuid?: string;
     id?: number;
     name: string;
-    details: string;
     place: string;
     eventType: EventEventTermDTO.EventTypeEnum;
     regStartAt: string;

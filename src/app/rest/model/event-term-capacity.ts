@@ -18,11 +18,10 @@ export interface EventTermCapacityDTO {
     confirmedCount?: number;
 }
 export namespace EventTermCapacityDTO {
-    export type StatusEnum = 'CONCEPT' | 'QUEUE' | 'ACCEPTED' | 'CONFIRMED';
+    export type StatusEnum = 'CONCEPT' | 'QUEUE' | 'CONFIRMED';
     export const StatusEnum = {
         Concept: 'CONCEPT' as StatusEnum,
         Queue: 'QUEUE' as StatusEnum,
-        Accepted: 'ACCEPTED' as StatusEnum,
         Confirmed: 'CONFIRMED' as StatusEnum
     };
 }

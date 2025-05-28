@@ -215,7 +215,9 @@
               "application/json": {
                 "schema": {
                   "type": "array",
-                  "items": { "$ref": "#/components/schemas/Event_Public" }
+                  "items": {
+                    "$ref": "#/components/schemas/Event_EventInternal"
+                  }
                 }
               }
             }
@@ -407,7 +409,7 @@
         }
       }
     },
-    "/events/detailed": {
+    "/events/detail": {
       "get": {
         "tags": ["event"],
         "operationId": "getDetailedEvents",
@@ -430,6 +432,38 @@
                     "$ref": "#/components/schemas/Event_EventInternal"
                   }
                 }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/events/detail/{eventId}": {
+      "get": {
+        "tags": ["event"],
+        "operationId": "getDetailedEvent",
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/GenericError" }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Event_EventInternal" }
               }
             }
           }
@@ -569,7 +603,7 @@
           "eventTermId": { "type": "integer", "format": "int64" },
           "status": {
             "type": "string",
-            "enum": ["CONCEPT", "QUEUE", "ACCEPTED", "CONFIRMED"]
+            "enum": ["CONCEPT", "QUEUE", "CONFIRMED"]
           },
           "capacity": { "type": "integer", "format": "int32" },
           "registrations": { "type": "integer", "format": "int64" },
@@ -598,8 +632,8 @@
           "depositPaid": { "type": "boolean" },
           "paid": { "type": "boolean" },
           "final_price": { "type": "number" },
-          "hasDiscount": { "type": "boolean" },
           "hasDeposit": { "type": "boolean" },
+          "hasDiscount": { "type": "boolean" },
           "remainingValue": { "type": "number" }
         },
         "required": ["price"]
@@ -634,7 +668,7 @@
           "id": { "type": "integer", "format": "int64" },
           "status": {
             "type": "string",
-            "enum": ["CONCEPT", "QUEUE", "ACCEPTED", "CONFIRMED"]
+            "enum": ["CONCEPT", "QUEUE", "CONFIRMED"]
           },
           "name": { "type": "string" },
           "surname": { "type": "string" },
@@ -684,8 +718,8 @@
           "depositPaid": { "type": "boolean" },
           "paid": { "type": "boolean" },
           "final_price": { "type": "number" },
-          "hasDiscount": { "type": "boolean" },
           "hasDeposit": { "type": "boolean" },
+          "hasDiscount": { "type": "boolean" },
           "remainingValue": { "type": "number" }
         },
         "required": ["price"]
@@ -719,7 +753,7 @@
           "uuid": { "type": "string" },
           "status": {
             "type": "string",
-            "enum": ["CONCEPT", "QUEUE", "ACCEPTED", "CONFIRMED"]
+            "enum": ["CONCEPT", "QUEUE", "CONFIRMED"]
           },
           "name": { "type": "string" },
           "surname": { "type": "string" },
@@ -833,39 +867,13 @@
         "type": "object",
         "properties": { "value": { "type": "string" } }
       },
-      "Event_Public": {
-        "type": "object",
-        "properties": {
-          "createdAt": { "type": "string", "format": "date-time" },
-          "uuid": { "type": "string" },
-          "name": { "type": "string" },
-          "details": { "type": "string" },
-          "place": { "type": "string" },
-          "eventType": {
-            "type": "string",
-            "enum": ["EVENT", "CAMP", "SCHOOL_CLIMB", "ECA"]
-          },
-          "regStartAt": { "type": "string", "format": "date-time" },
-          "regEndAt": { "type": "string", "format": "date-time" },
-          "imageUrl": { "type": "string" },
-          "discountType": { "type": "string" }
-        },
-        "required": [
-          "details",
-          "eventType",
-          "name",
-          "place",
-          "regEndAt",
-          "regStartAt"
-        ]
-      },
       "EventTermCapacity_EventInternal": {
         "type": "object",
         "properties": {
           "eventTermId": { "type": "integer", "format": "int64" },
           "status": {
             "type": "string",
-            "enum": ["CONCEPT", "QUEUE", "ACCEPTED", "CONFIRMED"]
+            "enum": ["CONCEPT", "QUEUE", "CONFIRMED"]
           },
           "capacity": { "type": "integer", "format": "int32" },
           "registrations": { "type": "integer", "format": "int64" },
@@ -898,7 +906,6 @@
           "uuid": { "type": "string" },
           "id": { "type": "integer", "format": "int64" },
           "name": { "type": "string" },
-          "details": { "type": "string" },
           "place": { "type": "string" },
           "eventType": {
             "type": "string",
@@ -914,14 +921,7 @@
             "uniqueItems": true
           }
         },
-        "required": [
-          "details",
-          "eventType",
-          "name",
-          "place",
-          "regEndAt",
-          "regStartAt"
-        ]
+        "required": ["eventType", "name", "place", "regEndAt", "regStartAt"]
       },
       "EventTermCapacity_EventTerm": {
         "type": "object",
@@ -929,7 +929,7 @@
           "eventTermId": { "type": "integer", "format": "int64" },
           "status": {
             "type": "string",
-            "enum": ["CONCEPT", "QUEUE", "ACCEPTED", "CONFIRMED"]
+            "enum": ["CONCEPT", "QUEUE", "CONFIRMED"]
           },
           "capacity": { "type": "integer", "format": "int32" },
           "registrations": { "type": "integer", "format": "int64" },
@@ -967,7 +967,6 @@
           "uuid": { "type": "string" },
           "id": { "type": "integer", "format": "int64" },
           "name": { "type": "string" },
-          "details": { "type": "string" },
           "place": { "type": "string" },
           "eventType": {
             "type": "string",
@@ -978,14 +977,7 @@
           "imageUrl": { "type": "string" },
           "discountType": { "type": "string" }
         },
-        "required": [
-          "details",
-          "eventType",
-          "name",
-          "place",
-          "regEndAt",
-          "regStartAt"
-        ]
+        "required": ["eventType", "name", "place", "regEndAt", "regStartAt"]
       },
       "KnownPerson_EventTerm": {
         "type": "object",
@@ -1010,8 +1002,8 @@
           "depositPaid": { "type": "boolean" },
           "paid": { "type": "boolean" },
           "final_price": { "type": "number" },
-          "hasDiscount": { "type": "boolean" },
           "hasDeposit": { "type": "boolean" },
+          "hasDiscount": { "type": "boolean" },
           "remainingValue": { "type": "number" }
         },
         "required": ["price"]
@@ -1046,7 +1038,7 @@
           "id": { "type": "integer", "format": "int64" },
           "status": {
             "type": "string",
-            "enum": ["CONCEPT", "QUEUE", "ACCEPTED", "CONFIRMED"]
+            "enum": ["CONCEPT", "QUEUE", "CONFIRMED"]
           },
           "name": { "type": "string" },
           "surname": { "type": "string" },

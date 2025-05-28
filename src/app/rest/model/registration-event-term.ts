@@ -28,11 +28,10 @@ export interface RegistrationEventTermDTO {
     payment?: PaymentEventTermDTO;
 }
 export namespace RegistrationEventTermDTO {
-    export type StatusEnum = 'CONCEPT' | 'QUEUE' | 'ACCEPTED' | 'CONFIRMED';
+    export type StatusEnum = 'CONCEPT' | 'QUEUE' | 'CONFIRMED';
     export const StatusEnum = {
         Concept: 'CONCEPT' as StatusEnum,
         Queue: 'QUEUE' as StatusEnum,
-        Accepted: 'ACCEPTED' as StatusEnum,
         Confirmed: 'CONFIRMED' as StatusEnum
     };
 }

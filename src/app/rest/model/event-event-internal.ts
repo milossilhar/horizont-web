@@ -15,7 +15,6 @@ export interface EventEventInternalDTO {
     uuid?: string;
     id?: number;
     name: string;
-    details: string;
     place: string;
     eventType: EventEventInternalDTO.EventTypeEnum;
     regStartAt: string;

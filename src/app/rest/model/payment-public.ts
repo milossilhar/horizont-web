@@ -20,8 +20,8 @@ export interface PaymentPublicDTO {
     depositPaid?: boolean;
     paid?: boolean;
     final_price?: number;
-    hasDiscount?: boolean;
     hasDeposit?: boolean;
+    hasDiscount?: boolean;
     remainingValue?: number;
 }
 
