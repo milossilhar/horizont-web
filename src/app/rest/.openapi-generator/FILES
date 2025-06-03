@@ -5,6 +5,7 @@ api/event-term.service.ts
 api/event.service.ts
 api/health.service.ts
 api/public.service.ts
+api/registration.service.ts
 configuration.ts
 encoder.ts
 model/enumeration-item-public.ts

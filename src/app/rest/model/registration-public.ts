@@ -22,6 +22,9 @@ export interface RegistrationPublicDTO {
     telPhone: string;
     consentGDPR: boolean;
     consentPhoto: boolean;
+    emailConfirmSent?: boolean;
+    emailPaymentInfoSent?: boolean;
+    emailPaymentConfirmSent?: boolean;
     people?: Array<PersonPublicDTO>;
     knownPeople?: Array<KnownPersonPublicDTO>;
     payment?: PaymentPublicDTO;

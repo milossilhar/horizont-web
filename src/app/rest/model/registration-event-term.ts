@@ -23,6 +23,9 @@ export interface RegistrationEventTermDTO {
     telPhone: string;
     consentGDPR: boolean;
     consentPhoto: boolean;
+    emailConfirmSent?: boolean;
+    emailPaymentInfoSent?: boolean;
+    emailPaymentConfirmSent?: boolean;
     people?: Array<PersonEventTermDTO>;
     knownPeople?: Array<KnownPersonEventTermDTO>;
     payment?: PaymentEventTermDTO;

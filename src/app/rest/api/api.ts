@@ -6,4 +6,6 @@ export * from './health.service';
 import { HealthHorizontService } from './health.service';
 export * from './public.service';
 import { PublicHorizontService } from './public.service';
-export const APIS = [EventHorizontService, EventTermHorizontService, HealthHorizontService, PublicHorizontService];
+export * from './registration.service';
+import { RegistrationHorizontService } from './registration.service';
+export const APIS = [EventHorizontService, EventTermHorizontService, HealthHorizontService, PublicHorizontService, RegistrationHorizontService];
