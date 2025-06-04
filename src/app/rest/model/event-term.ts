@@ -20,7 +20,7 @@ export interface EventTermDTO {
     deposit: number;
     price: number;
     event?: EventDTO;
-    registrations?: Array<RegistrationDTO>;
+    registrations?: Set<RegistrationDTO>;
     currentCapacities?: Array<EventTermCapacityDTO>;
 }
 

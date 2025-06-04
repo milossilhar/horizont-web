@@ -626,7 +626,8 @@
           "event": { "$ref": "#/components/schemas/Event" },
           "registrations": {
             "type": "array",
-            "items": { "$ref": "#/components/schemas/Registration" }
+            "items": { "$ref": "#/components/schemas/Registration" },
+            "uniqueItems": true
           },
           "currentCapacities": {
             "type": "array",
@@ -671,9 +672,10 @@
           "paid": { "type": "boolean" },
           "variableSymbol": { "type": "string" },
           "remainingValue": { "type": "number" },
+          "discountPercentValue": { "type": "number" },
+          "finalPrice": { "type": "number" },
           "hasDiscount": { "type": "boolean" },
-          "hasDeposit": { "type": "boolean" },
-          "finalPrice": { "type": "number" }
+          "hasDeposit": { "type": "boolean" }
         },
         "required": ["price"]
       },
@@ -761,9 +763,10 @@
           "paid": { "type": "boolean" },
           "variableSymbol": { "type": "string" },
           "remainingValue": { "type": "number" },
+          "discountPercentValue": { "type": "number" },
+          "finalPrice": { "type": "number" },
           "hasDiscount": { "type": "boolean" },
-          "hasDeposit": { "type": "boolean" },
-          "finalPrice": { "type": "number" }
+          "hasDeposit": { "type": "boolean" }
         },
         "required": ["price"]
       },
@@ -995,7 +998,8 @@
           "event": { "$ref": "#/components/schemas/Event_EventTerm" },
           "registrations": {
             "type": "array",
-            "items": { "$ref": "#/components/schemas/Registration_EventTerm" }
+            "items": { "$ref": "#/components/schemas/Registration_EventTerm" },
+            "uniqueItems": true
           },
           "currentCapacities": {
             "type": "array",
@@ -1049,9 +1053,10 @@
           "paid": { "type": "boolean" },
           "variableSymbol": { "type": "string" },
           "remainingValue": { "type": "number" },
+          "discountPercentValue": { "type": "number" },
+          "finalPrice": { "type": "number" },
           "hasDiscount": { "type": "boolean" },
-          "hasDeposit": { "type": "boolean" },
-          "finalPrice": { "type": "number" }
+          "hasDeposit": { "type": "boolean" }
         },
         "required": ["price"]
       },
