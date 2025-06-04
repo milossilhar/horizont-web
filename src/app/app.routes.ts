@@ -10,6 +10,7 @@ import { RegistrationConfirmComponent } from './registration/registration-confir
 import { EventDetailComponent } from './event/event-detail/event-detail.component';
 import { AuthGuard } from './shared/guards/auth.guard';
 import { EventListComponent } from './event/event-list/event-list.component';
+import { RegistrationResultComponent } from './registration/registration-result/registration-result.component';
 
 export const routes: Routes = [
   {
@@ -33,8 +34,8 @@ export const routes: Routes = [
         children: [
           { path: '', component: RegistrationListComponent },
           { path: ':eventUUID', component: RegistrationFormComponent },
-          { path: 'result/queue', component: RegistrationResultQueueComponent },
-          { path: 'result/success', component: RegistrationResultSuccessComponent },
+          { path: 'result/queue', component: RegistrationResultComponent },
+          { path: 'result/success', component: RegistrationResultComponent },
           { path: 'confirm/:token', component: RegistrationConfirmComponent },
         ]
       }
