@@ -31,7 +31,7 @@
   <p-button label="O nás" [link]="true" />
 </div> -->
 
-<div class="flex flex-row items-baseline justify-around py-10 px-5 bg-surface-100">
+<div class="grid grid-cols-1 sm:grid-cols-2 justify-items-center gap-2 py-10 px-5 bg-surface-100">
   @if(isNotProd()) {
     <p class="text-2xl">#leziemevpezinku [{{environment()}}]</p>
   } @else {
