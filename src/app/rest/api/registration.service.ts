@@ -85,12 +85,13 @@ export class RegistrationHorizontService extends BaseService {
         }
 
         let localVarPath = `/registrations/confirm/${this.configuration.encodeParam({name: "paymentId", value: paymentId, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}`;
-        return this.httpClient.request<RegistrationDTO>('post', `${this.configuration.basePath}${localVarPath}`,
+        const { basePath, withCredentials } = this.configuration;
+        return this.httpClient.request<RegistrationDTO>('post', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 transferCache: localVarTransferCache,

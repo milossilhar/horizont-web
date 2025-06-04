@@ -73,11 +73,12 @@ export class HealthHorizontService extends BaseService {
         }
 
         let localVarPath = `/health/env`;
-        return this.httpClient.request<GenericResponseStringDTO>('get', `${this.configuration.basePath}${localVarPath}`,
+        const { basePath, withCredentials } = this.configuration;
+        return this.httpClient.request<GenericResponseStringDTO>('get', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 transferCache: localVarTransferCache,

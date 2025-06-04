@@ -17,13 +17,13 @@ export interface EnumerationItemPublicDTO {
     visible: boolean;
 }
 export namespace EnumerationItemPublicDTO {
-    export type EnumNameEnum = 'REG_E_EVENT_CONDITION_TYPE' | 'REG_E_EVENT_DISCOUNT_TYPE' | 'REG_E_RELATION' | 'REG_E_SHIRT_SIZE';
     export const EnumNameEnum = {
-        RegEEventConditionType: 'REG_E_EVENT_CONDITION_TYPE' as EnumNameEnum,
-        RegEEventDiscountType: 'REG_E_EVENT_DISCOUNT_TYPE' as EnumNameEnum,
-        RegERelation: 'REG_E_RELATION' as EnumNameEnum,
-        RegEShirtSize: 'REG_E_SHIRT_SIZE' as EnumNameEnum
-    };
+        RegEEventConditionType: 'REG_E_EVENT_CONDITION_TYPE',
+        RegEEventDiscountType: 'REG_E_EVENT_DISCOUNT_TYPE',
+        RegERelation: 'REG_E_RELATION',
+        RegEShirtSize: 'REG_E_SHIRT_SIZE'
+    } as const;
+    export type EnumNameEnum = typeof EnumNameEnum[keyof typeof EnumNameEnum];
 }
 
 
