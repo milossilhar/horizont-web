@@ -18,7 +18,7 @@
   @let selected = selectedEventTerm();
   @if(selected) {
     @if (selected.registrations && !!selected.registrations.length) {
-      <app-registrations [registrations]="selected.registrations"></app-registrations>
+      <app-registrations [registrations]="selected.registrations" (registrationUpdate)="onRegistrationUpdate($event)"></app-registrations>
     } @else {
       <p-message text="Tento termín nemá ešte žiadne registrácie." severity="info"></p-message>
     }

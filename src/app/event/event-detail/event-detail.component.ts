@@ -1,6 +1,6 @@
 import { Component, computed, OnInit, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { EventEventInternalDTO, EventTermEventTermDTO } from '../../rest/model/models';
+import { EventEventInternalDTO, EventTermEventTermDTO, RegistrationDTO } from '../../rest/model/models';
 import { EventHorizontService, EventTermHorizontService } from '../../rest/api/api';
 import { catchError, concatMap, filter, of, takeUntil, tap } from 'rxjs';
 import { CardModule } from 'primeng/card';
@@ -10,6 +10,7 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { DestroyableComponent } from '../../shared/base/destroyable.component';
 import { EventTermSelectorComponent } from "../../shared/form/event-term-selector/event-term-selector.component";
 import { RegistrationsComponent } from '../../registration/registrations/registrations.component';
+import { findIndex, forOwn } from 'lodash';
 
 
 @Component({
@@ -71,6 +72,17 @@ export class EventDetailComponent extends DestroyableComponent implements OnInit
       tap(eventTerm => this.selectedEventTerm.set(eventTerm)),
       takeUntil(this.destroy$)
     ).subscribe();
+  }
+
+  onRegistrationUpdate(registration: RegistrationDTO) {
+    forOwn(this.eventTerms, (eventTerm) => {
+      if (!eventTerm.registrations || !eventTerm.registrations.length) return;
+
+      const index = findIndex(eventTerm.registrations, r => r.id === registration.id);
+      if (index < 0) return;
+      
+      eventTerm.registrations[index] = registration;
+    });
   }
 
 }

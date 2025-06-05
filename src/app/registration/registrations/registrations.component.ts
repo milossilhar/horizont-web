@@ -1,4 +1,4 @@
-import { Component, computed, input, OnInit, signal } from '@angular/core';
+import { Component, computed, input, OnInit, output, signal } from '@angular/core';
 import { RegistrationCardComponent } from '../registration-card/registration-card.component';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
@@ -35,6 +35,8 @@ type DisplayOptionsEnum = 'card' | 'list' | 'table';
 export class RegistrationsComponent extends DestroyableComponent implements OnInit {
 
   public registrations = input.required<Array<RegistrationDTO>>();
+
+  public registrationUpdate = output<RegistrationDTO>();
   
   protected searchValue = signal<string | null>(null);
 
@@ -78,6 +80,10 @@ export class RegistrationsComponent extends DestroyableComponent implements OnIn
   protected onEmailCopyClick() {
     const emails = join(map(this.registrations(), r => r.email), ",");
     from(navigator.clipboard.writeText(emails)).subscribe();
+  }
+
+  protected onRegistrationUpdate(registration: RegistrationDTO) {
+    this.registrationUpdate.emit(registration);
   }
 
   private filterRegistrations(registrations: RegistrationDTO[], searchValue: string | null) {

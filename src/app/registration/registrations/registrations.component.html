@@ -25,7 +25,7 @@
         <app-person-card  [registration]="registration" [person]="person"></app-person-card>
       }
     } @else {
-      <app-registration-card [registration]="registration"></app-registration-card>
+      <app-registration-card [registration]="registration" (registrationUpdate)="onRegistrationUpdate($event)"></app-registration-card>
     }
   }
 </div>
