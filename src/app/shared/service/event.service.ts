@@ -28,8 +28,8 @@ export class EventService {
 
     if (available <= 0) return EventTermCapacityStatus.FILLED;
     if (available === 1) return EventTermCapacityStatus.LAST_ONE;
-    if (remainsPercent <= 45) return EventTermCapacityStatus.ALMOST_FILLED;
-    if (remainsPercent <= 20) return EventTermCapacityStatus.FILLING;
+    if (remainsPercent <= 20) return EventTermCapacityStatus.ALMOST_FILLED;
+    if (remainsPercent <= 45) return EventTermCapacityStatus.FILLING;
     return EventTermCapacityStatus.FREE;
   }
 }
