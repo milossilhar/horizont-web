@@ -19,9 +19,11 @@ export interface PaymentEventTermDTO {
     discountPercent?: number;
     depositPaid?: boolean;
     paid?: boolean;
-    final_price?: number;
-    hasDeposit?: boolean;
-    hasDiscount?: boolean;
+    variableSymbol?: string;
     remainingValue?: number;
+    discountPercentValue?: number;
+    finalPrice?: number;
+    hasDiscount?: boolean;
+    hasDeposit?: boolean;
 }
 

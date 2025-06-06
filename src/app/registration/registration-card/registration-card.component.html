@@ -8,7 +8,7 @@
           <h2 class="text-2xl font-bold">
             {{registration.name}} {{registration.surname}}
           </h2>
-          <p class="text-blue-100 text-sm" *ngIf="registration.createdAt">
+          <p class="text-blue-100 text-sm">
             Registrácia: {{registration.createdAt | date : 'medium'}}
           </p>
         </div>
@@ -62,29 +62,87 @@
     </div>
 
     <!-- Payment Information -->
-    <div *ngIf="registration.payment" class="bg-gray-50 rounded-lg p-4">
-      <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center gap-2">
-        <i class="pi pi-credit-card text-gray-600"></i>
-        Platobné Informácie
-      </h3>
-      <div class="grid md:grid-cols-3 gap-4">
-        <div *ngIf="registration.payment.final_price">
-          <span class="text-sm text-gray-600">Amount</span>
-          <p class="font-semibold text-gray-800">${{registration.payment.final_price}}</p>
-        </div>
-        <div *ngIf="registration.payment.deposit">
-          <span class="text-sm text-gray-600">Deposit</span>
-          <p class="font-semibold text-gray-800">{{registration.payment.deposit}}</p>
-        </div>
-        <div *ngIf="registration.payment.hasDiscount">
-          <span class="text-sm text-gray-600">Discount</span>
-          <p class="font-semibold text-gray-800">{{registration.payment.hasDiscount}}</p>
+     @if(payment) {
+      <div class="grid grid-cols-1 sm:grid-cols-2 border-b border-gray-200 mt-4 mb-2">
+        <h3 class="text-lg font-semibold text-gray-800">
+          Platobné Informácie
+        </h3>
+        <div class="flex flex-row gap-x-1 justify-self-end">
+          @if(payment.hasDeposit) {
+            <app-boolean-tag [value]="!!payment.depositPaid" size="text-xs"
+              trueLabel="Záloha" falseLabel="Záloha">
+            </app-boolean-tag>
+          }
+          <app-boolean-tag [value]="!!payment.paid" size="text-xs" class="justify-self-end"
+            trueLabel="Plná suma" falseLabel="Plná suma">
+          </app-boolean-tag>
         </div>
       </div>
-    </div>
+
+      <!-- Payment Information -->
+      <div class="flex flex-col gap-y-2">
+        @if (payment.hasDiscount) {
+          <!-- Original Price -->
+          <div class="flex justify-between items-center">
+            <span class="text-gray-600">Originálna cena:</span>
+            <span class="font-medium text-gray-900">{{ payment.price | currency }}</span>
+          </div>
+
+          <!-- Discount (if applicable) -->
+          <div class="flex justify-between items-center text-red-600 border-b border-gray-200 pb-1">
+            <span>Zľava {{discountPercent | percent}}:</span>
+            <span class="font-medium">-{{ payment.discountPercentValue || payment.discountValue | currency }}</span>
+          </div>
+        }
+
+        <!-- Final Price -->
+        <div class="flex justify-between items-center">
+          <span class="font-semibold text-gray-800">Výsledná cena:</span>
+          <span class="font-bold text-lg text-gray-900">{{ payment.finalPrice | currency }}</span>
+        </div>
+
+        <!-- Deposit Information -->
+        @if (payment.hasDeposit) {
+          <div class="bg-gray-50 p-3 rounded-md">
+            <div class="flex justify-between items-center mb-2">
+              <span class="text-gray-600">Požadovaná záloha:</span>
+              <span class="font-medium text-gray-900">{{ payment.deposit | currency }}</span>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-gray-600">Zostatok:</span>
+              <span class="font-medium text-gray-900">{{ payment.remainingValue | currency }}</span>
+            </div>
+          </div>
+        }
+
+        <!-- Variable Symbol -->
+        <div class="flex justify-between items-center text-sm">
+          <span class="text-gray-500">Variabilný symbol:</span>
+          <span class="font-mono text-gray-700">{{ payment.variableSymbol }}</span>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+       @if (!payment.paid) {
+         <div class="flex flex-col items-stretch gap-1 mt-2">
+   
+           @if (payment.hasDeposit && !payment.depositPaid) {
+             <p-button size="small" [fluid]="true" icon="pi pi-check" severity="info"
+               (onClick)="paidClick($event, true)" [disabled]="loading()" [loading]="loading()"
+               [label]="`Potvrď zálohu (${payment.deposit | currency})`">
+             </p-button>
+           }
+   
+           <!-- <p-button size="small" [fluid]="true" icon="pi pi-check-square" severity="success"
+             (onClick)="paidClick($event, false)" [disabled]="loading()" [loading]="loading()"
+             [label]="getPaymentButtonText() + ` (${this.payment.remainingValue | currency})`">
+           </p-button> -->
+         </div>
+       }
+     }
 
     <!-- People Information -->
-    <div *ngIf="registration.people && registration.people.length > 0">
+    @if(registration.people && registration.people.length > 0) {
       <p-divider></p-divider>
       <h3 class="text-lg font-semibold text-gray-800 mb-4 flex flex-row justify-start items-center gap-2">
         <i class="pi pi-users text-gray-600"></i>
@@ -104,51 +162,51 @@
             </div>
             
             <div class="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
-              <div *ngIf="person.dateOfBirth">
+              <div>
                 <span class="text-gray-600 block">Dátum narodenia</span>
                 <span class="text-gray-800 font-medium">{{person.dateOfBirth | date}}</span>
               </div>
-              
-              <div *ngIf="person.shirtSize">
+
+              <div>
                 <span class="text-gray-600 block">Veľkosť trička</span>
                 <span class="text-gray-800 font-medium">{{person.shirtSize}}</span>
               </div>
               
-              <div *ngIf="person.healthNotes">
+              <div>
                 <span class="text-gray-600 block">Zdravotné poznámky</span>
-                <span class="text-teal-700 font-medium">{{person.healthNotes}}</span>
+                <span class="text-teal-700 font-medium">{{person.healthNotes | default : 'neuvedené'}}</span>
               </div>
               
-              <div *ngIf="person.foodAllergyNotes">
+              <div>
                 <span class="text-gray-600 block">Alergie na jedlo</span>
-                <span class="text-orange-700 font-medium">{{person.foodAllergyNotes}}</span>
+                <span class="text-orange-700 font-medium">{{person.foodAllergyNotes | default : 'neuvedené'}}</span>
               </div>
             </div>
           </div>
         }
       </div>
-    </div>
+    }
 
     <!-- Known People -->
-    <div *ngIf="registration.knownPeople && registration.knownPeople.length > 0">
+    @if (registration.knownPeople && registration.knownPeople.length > 0) {
       <p-divider></p-divider>
       <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
         <i class="pi pi-user-plus text-gray-600"></i>
         Známe osoby
-        <p-badge [value]="registration.knownPeople.length.toString()" severity="info"></p-badge>
+        <p-badge [value]="`${registration.knownPeople.length}`" severity="info"></p-badge>
       </h3>
       
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
-        <div 
-          *ngFor="let knownPerson of registration.knownPeople; trackBy: trackByKnownPersonName"
-          class="bg-gray-50 rounded-lg p-3 border border-gray-200">
-          <p class="font-medium text-gray-800">
-            {{knownPerson.name}} {{knownPerson.surname}}
-          </p>
-          <p class="text-sm text-gray-600">{{knownPerson.relation | enum : 'REG_E_RELATION'}}</p>
-        </div>
+        @for (knownPerson of registration.knownPeople; track $index) {
+          <div class="bg-gray-50 rounded-lg p-3 border border-gray-200">
+            <p class="font-medium text-gray-800">
+              {{knownPerson.name}} {{knownPerson.surname}}
+            </p>
+            <p class="text-sm text-gray-600">{{knownPerson.relation | enum : 'REG_E_RELATION'}}</p>
+          </div>
+        }
       </div>
-    </div>
+    }
 
   </div>
 

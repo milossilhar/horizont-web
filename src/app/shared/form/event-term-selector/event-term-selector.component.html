@@ -27,7 +27,7 @@
             </p>
             @if (!!eventUUID()) {
               <p class="text-lg">
-                <i class="pi pi-user mr-2"></i>{{capacity?.registered ?? 0}} / {{term.capacity}}
+                <i class="pi pi-user mr-2"></i>{{capacity?.registered || 0}} / {{term.capacity}}
               </p>
             } @else {
               <p class="text-lg">

@@ -14,6 +14,9 @@ import { registerLocaleData } from '@angular/common';
 import localeSk from '@angular/common/locales/sk';
 import { sk } from './app.locale';
 import { from, map, catchError, tap } from 'rxjs';
+import { ToastModule } from 'primeng/toast';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 const OAUTH_CLIENT_CONFIG: AuthConfig = {
   issuer: `${window.location.origin}/api`,
@@ -67,6 +70,7 @@ export const appConfig: ApplicationConfig = {
       }
     }),
     
+    MessageService, ConfirmationService,
     importProvidersFrom(HorizontApiModule.forRoot(() => new Configuration(API_CONFIG))),
 
     provideAppInitializer(() => {

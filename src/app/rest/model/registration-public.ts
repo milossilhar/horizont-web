@@ -22,17 +22,20 @@ export interface RegistrationPublicDTO {
     telPhone: string;
     consentGDPR: boolean;
     consentPhoto: boolean;
+    emailConfirmSent?: boolean;
+    emailPaymentInfoSent?: boolean;
+    emailPaymentConfirmSent?: boolean;
     people?: Array<PersonPublicDTO>;
     knownPeople?: Array<KnownPersonPublicDTO>;
     payment?: PaymentPublicDTO;
 }
 export namespace RegistrationPublicDTO {
-    export type StatusEnum = 'CONCEPT' | 'QUEUE' | 'CONFIRMED';
     export const StatusEnum = {
-        Concept: 'CONCEPT' as StatusEnum,
-        Queue: 'QUEUE' as StatusEnum,
-        Confirmed: 'CONFIRMED' as StatusEnum
-    };
+        Concept: 'CONCEPT',
+        Queue: 'QUEUE',
+        Confirmed: 'CONFIRMED'
+    } as const;
+    export type StatusEnum = typeof StatusEnum[keyof typeof StatusEnum];
 }
 
 

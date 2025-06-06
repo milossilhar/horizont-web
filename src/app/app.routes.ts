@@ -4,12 +4,11 @@ import { RegistrationListComponent } from './registration/registration-list/regi
 import { InitGuard } from './shared/guards/init.guard';
 import { UnavailableComponent } from './standalone/unavailable/unavailable.component';
 import { NotFoundComponent } from './standalone/not-found/not-found.component';
-import { RegistrationResultQueueComponent } from './registration/registration-result-queue/registration-result-queue.component';
-import { RegistrationResultSuccessComponent } from './registration/registration-result-success/registration-result-success.component';
 import { RegistrationConfirmComponent } from './registration/registration-confirm/registration-confirm.component';
 import { EventDetailComponent } from './event/event-detail/event-detail.component';
 import { AuthGuard } from './shared/guards/auth.guard';
 import { EventListComponent } from './event/event-list/event-list.component';
+import { RegistrationResultComponent } from './registration/registration-result/registration-result.component';
 
 export const routes: Routes = [
   {
@@ -33,8 +32,8 @@ export const routes: Routes = [
         children: [
           { path: '', component: RegistrationListComponent },
           { path: ':eventUUID', component: RegistrationFormComponent },
-          { path: 'result/queue', component: RegistrationResultQueueComponent },
-          { path: 'result/success', component: RegistrationResultSuccessComponent },
+          { path: 'result/queue', component: RegistrationResultComponent },
+          { path: 'result/success', component: RegistrationResultComponent },
           { path: 'confirm/:token', component: RegistrationConfirmComponent },
         ]
       }

@@ -102,12 +102,13 @@ export class PublicHorizontService extends BaseService {
         }
 
         let localVarPath = `/public/registration/${this.configuration.encodeParam({name: "eventTermId", value: eventTermId, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}/calculate-price`;
-        return this.httpClient.request<PaymentPublicDTO>('post', `${this.configuration.basePath}${localVarPath}`,
+        const { basePath, withCredentials } = this.configuration;
+        return this.httpClient.request<PaymentPublicDTO>('post', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: registrationPricingRequestPublicDTO,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 transferCache: localVarTransferCache,
@@ -165,12 +166,13 @@ export class PublicHorizontService extends BaseService {
         }
 
         let localVarPath = `/public/registration/confirm`;
-        return this.httpClient.request<RegistrationPublicDTO>('post', `${this.configuration.basePath}${localVarPath}`,
+        const { basePath, withCredentials } = this.configuration;
+        return this.httpClient.request<RegistrationPublicDTO>('post', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: genericRequestStringPublicDTO,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 transferCache: localVarTransferCache,
@@ -232,12 +234,13 @@ export class PublicHorizontService extends BaseService {
         }
 
         let localVarPath = `/public/registration/${this.configuration.encodeParam({name: "eventTermId", value: eventTermId, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}`;
-        return this.httpClient.request<RegistrationPublicDTO>('post', `${this.configuration.basePath}${localVarPath}`,
+        const { basePath, withCredentials } = this.configuration;
+        return this.httpClient.request<RegistrationPublicDTO>('post', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: registrationPublicDTO,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 transferCache: localVarTransferCache,
@@ -286,11 +289,12 @@ export class PublicHorizontService extends BaseService {
         }
 
         let localVarPath = `/public/events/${this.configuration.encodeParam({name: "eventUUID", value: eventUUID, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
-        return this.httpClient.request<EventEventPublicDTO>('get', `${this.configuration.basePath}${localVarPath}`,
+        const { basePath, withCredentials } = this.configuration;
+        return this.httpClient.request<EventEventPublicDTO>('get', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 transferCache: localVarTransferCache,
@@ -339,11 +343,12 @@ export class PublicHorizontService extends BaseService {
         }
 
         let localVarPath = `/public/events/${this.configuration.encodeParam({name: "eventUUID", value: eventUUID, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}/capacity`;
-        return this.httpClient.request<{ [key: string]: EventTermCapacityResponsePublicDTO; }>('get', `${this.configuration.basePath}${localVarPath}`,
+        const { basePath, withCredentials } = this.configuration;
+        return this.httpClient.request<{ [key: string]: EventTermCapacityResponsePublicDTO; }>('get', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 transferCache: localVarTransferCache,
@@ -388,11 +393,12 @@ export class PublicHorizontService extends BaseService {
         }
 
         let localVarPath = `/public/events/current`;
-        return this.httpClient.request<Array<EventEventPublicDTO>>('get', `${this.configuration.basePath}${localVarPath}`,
+        const { basePath, withCredentials } = this.configuration;
+        return this.httpClient.request<Array<EventEventPublicDTO>>('get', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 transferCache: localVarTransferCache,
@@ -437,11 +443,12 @@ export class PublicHorizontService extends BaseService {
         }
 
         let localVarPath = `/public/enums`;
-        return this.httpClient.request<{ [key: string]: Array<EnumerationItemPublicDTO>; }>('get', `${this.configuration.basePath}${localVarPath}`,
+        const { basePath, withCredentials } = this.configuration;
+        return this.httpClient.request<{ [key: string]: Array<EnumerationItemPublicDTO>; }>('get', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 transferCache: localVarTransferCache,

@@ -19,7 +19,7 @@ import { Observable }                                        from 'rxjs';
 // @ts-ignore
 import { GenericErrorDTO } from '../model/generic-error';
 // @ts-ignore
-import { GenericResponseStringDTO } from '../model/generic-response-string';
+import { RegistrationDTO } from '../model/registration';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -31,20 +31,32 @@ import { BaseService } from '../api.base.service';
 @Injectable({
   providedIn: 'root'
 })
-export class HealthHorizontService extends BaseService {
+export class RegistrationHorizontService extends BaseService {
 
     constructor(protected httpClient: HttpClient, @Optional() @Inject(BASE_PATH) basePath: string|string[], @Optional() configuration?: Configuration) {
         super(basePath, configuration);
     }
 
     /**
+     * @param paymentId 
+     * @param deposit 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getEnvironment(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<GenericResponseStringDTO>;
-    public getEnvironment(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<GenericResponseStringDTO>>;
-    public getEnvironment(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<GenericResponseStringDTO>>;
-    public getEnvironment(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public confirmPayment(paymentId: number, deposit: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<RegistrationDTO>;
+    public confirmPayment(paymentId: number, deposit: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<RegistrationDTO>>;
+    public confirmPayment(paymentId: number, deposit: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<RegistrationDTO>>;
+    public confirmPayment(paymentId: number, deposit: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (paymentId === null || paymentId === undefined) {
+            throw new Error('Required parameter paymentId was null or undefined when calling confirmPayment.');
+        }
+        if (deposit === null || deposit === undefined) {
+            throw new Error('Required parameter deposit was null or undefined when calling confirmPayment.');
+        }
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+          <any>deposit, 'deposit');
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -72,11 +84,12 @@ export class HealthHorizontService extends BaseService {
             }
         }
 
-        let localVarPath = `/health/env`;
+        let localVarPath = `/registrations/confirm/${this.configuration.encodeParam({name: "paymentId", value: paymentId, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}`;
         const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<GenericResponseStringDTO>('get', `${basePath}${localVarPath}`,
+        return this.httpClient.request<RegistrationDTO>('post', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,

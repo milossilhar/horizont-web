@@ -21,16 +21,16 @@ export interface EventEventInternalDTO {
     regEndAt: string;
     imageUrl?: string;
     discountType?: string;
-    terms?: Set<EventTermEventInternalDTO>;
+    terms?: Array<EventTermEventInternalDTO>;
 }
 export namespace EventEventInternalDTO {
-    export type EventTypeEnum = 'EVENT' | 'CAMP' | 'SCHOOL_CLIMB' | 'ECA';
     export const EventTypeEnum = {
-        Event: 'EVENT' as EventTypeEnum,
-        Camp: 'CAMP' as EventTypeEnum,
-        SchoolClimb: 'SCHOOL_CLIMB' as EventTypeEnum,
-        Eca: 'ECA' as EventTypeEnum
-    };
+        Event: 'EVENT',
+        Camp: 'CAMP',
+        SchoolClimb: 'SCHOOL_CLIMB',
+        Eca: 'ECA'
+    } as const;
+    export type EventTypeEnum = typeof EventTypeEnum[keyof typeof EventTypeEnum];
 }
 
 

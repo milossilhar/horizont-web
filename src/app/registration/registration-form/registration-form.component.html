@@ -232,7 +232,7 @@
           </p>
         }
         <p class="text-xl font-bold">
-          Výsledná cena: {{ payment().final_price | currency }}
+          Výsledná cena: {{ payment().finalPrice | currency }}
         </p>
         @if (payment().hasDeposit) {
           <p class="text-lg" pTooltip="Zálohu bude potrebné vyplatiť do konca jarných krúžkov. Viac informácii dostanete v potvrdzujúcom maily." tooltipPosition="top">

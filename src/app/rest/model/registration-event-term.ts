@@ -23,17 +23,20 @@ export interface RegistrationEventTermDTO {
     telPhone: string;
     consentGDPR: boolean;
     consentPhoto: boolean;
+    emailConfirmSent?: boolean;
+    emailPaymentInfoSent?: boolean;
+    emailPaymentConfirmSent?: boolean;
     people?: Array<PersonEventTermDTO>;
     knownPeople?: Array<KnownPersonEventTermDTO>;
     payment?: PaymentEventTermDTO;
 }
 export namespace RegistrationEventTermDTO {
-    export type StatusEnum = 'CONCEPT' | 'QUEUE' | 'CONFIRMED';
     export const StatusEnum = {
-        Concept: 'CONCEPT' as StatusEnum,
-        Queue: 'QUEUE' as StatusEnum,
-        Confirmed: 'CONFIRMED' as StatusEnum
-    };
+        Concept: 'CONCEPT',
+        Queue: 'QUEUE',
+        Confirmed: 'CONFIRMED'
+    } as const;
+    export type StatusEnum = typeof StatusEnum[keyof typeof StatusEnum];
 }
 
 

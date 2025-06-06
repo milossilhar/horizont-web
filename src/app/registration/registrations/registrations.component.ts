@@ -1,4 +1,4 @@
-import { Component, computed, input, OnInit, signal } from '@angular/core';
+import { Component, computed, input, OnInit, output, signal } from '@angular/core';
 import { RegistrationCardComponent } from '../registration-card/registration-card.component';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
@@ -35,6 +35,8 @@ type DisplayOptionsEnum = 'card' | 'list' | 'table';
 export class RegistrationsComponent extends DestroyableComponent implements OnInit {
 
   public registrations = input.required<Array<RegistrationDTO>>();
+
+  public registrationUpdate = output<RegistrationDTO>();
   
   protected searchValue = signal<string | null>(null);
 
@@ -80,6 +82,10 @@ export class RegistrationsComponent extends DestroyableComponent implements OnIn
     from(navigator.clipboard.writeText(emails)).subscribe();
   }
 
+  protected onRegistrationUpdate(registration: RegistrationDTO) {
+    this.registrationUpdate.emit(registration);
+  }
+
   private filterRegistrations(registrations: RegistrationDTO[], searchValue: string | null) {
     if (!searchValue) return registrations;
 
@@ -90,13 +96,14 @@ export class RegistrationsComponent extends DestroyableComponent implements OnIn
     return  this.containsString(registration.name, searchValue) ||
       this.containsString(registration.surname, searchValue) ||
       this.containsString(registration.email, searchValue) ||
+      this.containsString(registration.payment?.variableSymbol, searchValue) ||
       some(registration.people, person => {
         return this.containsString(person.name, searchValue) ||
           this.containsString(person.surname, searchValue)
       });
   }
 
-  private containsString(orig: string, search: string): boolean {
+  private containsString(orig: string | undefined, search: string): boolean {
     if (!orig) return false;
 
     return includes(toLower(trim(deburr(orig))), toLower(search));

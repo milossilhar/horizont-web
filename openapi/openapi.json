@@ -80,6 +80,44 @@
         }
       }
     },
+    "/registrations/confirm/{paymentId}": {
+      "post": {
+        "tags": ["registration"],
+        "operationId": "confirmPayment",
+        "parameters": [
+          {
+            "name": "paymentId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          },
+          {
+            "name": "deposit",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "boolean" }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/GenericError" }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Registration" }
+              }
+            }
+          }
+        }
+      }
+    },
     "/public/registration/{eventTermId}": {
       "post": {
         "tags": ["public"],
@@ -588,7 +626,8 @@
           "event": { "$ref": "#/components/schemas/Event" },
           "registrations": {
             "type": "array",
-            "items": { "$ref": "#/components/schemas/Registration" }
+            "items": { "$ref": "#/components/schemas/Registration" },
+            "uniqueItems": true
           },
           "currentCapacities": {
             "type": "array",
@@ -631,10 +670,12 @@
           "discountPercent": { "type": "number" },
           "depositPaid": { "type": "boolean" },
           "paid": { "type": "boolean" },
-          "final_price": { "type": "number" },
-          "hasDeposit": { "type": "boolean" },
+          "variableSymbol": { "type": "string" },
+          "remainingValue": { "type": "number" },
+          "discountPercentValue": { "type": "number" },
+          "finalPrice": { "type": "number" },
           "hasDiscount": { "type": "boolean" },
-          "remainingValue": { "type": "number" }
+          "hasDeposit": { "type": "boolean" }
         },
         "required": ["price"]
       },
@@ -676,6 +717,9 @@
           "telPhone": { "type": "string" },
           "consentGDPR": { "type": "boolean" },
           "consentPhoto": { "type": "boolean" },
+          "emailConfirmSent": { "type": "boolean" },
+          "emailPaymentInfoSent": { "type": "boolean" },
+          "emailPaymentConfirmSent": { "type": "boolean" },
           "people": {
             "type": "array",
             "items": { "$ref": "#/components/schemas/Person" }
@@ -717,10 +761,12 @@
           "discountPercent": { "type": "number" },
           "depositPaid": { "type": "boolean" },
           "paid": { "type": "boolean" },
-          "final_price": { "type": "number" },
-          "hasDeposit": { "type": "boolean" },
+          "variableSymbol": { "type": "string" },
+          "remainingValue": { "type": "number" },
+          "discountPercentValue": { "type": "number" },
+          "finalPrice": { "type": "number" },
           "hasDiscount": { "type": "boolean" },
-          "remainingValue": { "type": "number" }
+          "hasDeposit": { "type": "boolean" }
         },
         "required": ["price"]
       },
@@ -761,6 +807,9 @@
           "telPhone": { "type": "string" },
           "consentGDPR": { "type": "boolean" },
           "consentPhoto": { "type": "boolean" },
+          "emailConfirmSent": { "type": "boolean" },
+          "emailPaymentInfoSent": { "type": "boolean" },
+          "emailPaymentConfirmSent": { "type": "boolean" },
           "people": {
             "type": "array",
             "items": { "$ref": "#/components/schemas/Person_Public" }
@@ -949,7 +998,8 @@
           "event": { "$ref": "#/components/schemas/Event_EventTerm" },
           "registrations": {
             "type": "array",
-            "items": { "$ref": "#/components/schemas/Registration_EventTerm" }
+            "items": { "$ref": "#/components/schemas/Registration_EventTerm" },
+            "uniqueItems": true
           },
           "currentCapacities": {
             "type": "array",
@@ -1001,10 +1051,12 @@
           "discountPercent": { "type": "number" },
           "depositPaid": { "type": "boolean" },
           "paid": { "type": "boolean" },
-          "final_price": { "type": "number" },
-          "hasDeposit": { "type": "boolean" },
+          "variableSymbol": { "type": "string" },
+          "remainingValue": { "type": "number" },
+          "discountPercentValue": { "type": "number" },
+          "finalPrice": { "type": "number" },
           "hasDiscount": { "type": "boolean" },
-          "remainingValue": { "type": "number" }
+          "hasDeposit": { "type": "boolean" }
         },
         "required": ["price"]
       },
@@ -1046,6 +1098,9 @@
           "telPhone": { "type": "string" },
           "consentGDPR": { "type": "boolean" },
           "consentPhoto": { "type": "boolean" },
+          "emailConfirmSent": { "type": "boolean" },
+          "emailPaymentInfoSent": { "type": "boolean" },
+          "emailPaymentConfirmSent": { "type": "boolean" },
           "people": {
             "type": "array",
             "items": { "$ref": "#/components/schemas/Person_EventTerm" }
