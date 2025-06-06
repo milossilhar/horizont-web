@@ -96,13 +96,14 @@ export class RegistrationsComponent extends DestroyableComponent implements OnIn
     return  this.containsString(registration.name, searchValue) ||
       this.containsString(registration.surname, searchValue) ||
       this.containsString(registration.email, searchValue) ||
+      this.containsString(registration.payment?.variableSymbol, searchValue) ||
       some(registration.people, person => {
         return this.containsString(person.name, searchValue) ||
           this.containsString(person.surname, searchValue)
       });
   }
 
-  private containsString(orig: string, search: string): boolean {
+  private containsString(orig: string | undefined, search: string): boolean {
     if (!orig) return false;
 
     return includes(toLower(trim(deburr(orig))), toLower(search));
