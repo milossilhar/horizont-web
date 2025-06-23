@@ -1,0 +1,25 @@
+<p-dataview [paginator]="true" [rows]="DEFAULT_SIZE" [first]="DEFAULT_FIRST" [rowsPerPageOptions]="SIZE_OPTIONS"
+  [value]="data()" [totalRecords]="totalRecords()" [lazy]="true"
+  (onPage)="onPageUpdate($event)"
+  >
+  <ng-template #header>
+    
+  </ng-template>
+  <ng-template #list let-items>
+    <div class="grid grid-cols-2 gap-4 grid-nogutter">
+      @for (item of items; track $index) {
+        @switch(component()) {
+          @case ('registration') {
+            <app-registration-card [registration]="item"></app-registration-card>
+          }
+          @case ('event') {
+            <app-event-card [event]="item" [minimal]="true"></app-event-card>
+          }
+          @default {
+            <p>{{item | json}}</p>
+          }
+        }
+      }
+    </div>
+  </ng-template>
+</p-dataview>

@@ -1,16 +1,26 @@
 import { Injectable } from '@angular/core';
 import { EventDTO } from '../../rest/model/event';
-import { EventStatus } from '../enum/event-status';
+import { EventStatus } from '../types/enum/event-status';
 import { isFuture, isPast } from 'date-fns';
-import { EventTermCapacityStatus } from '../enum/event-term-capacity-status';
+import { EventTermCapacityStatus } from '../types/enum/event-term-capacity-status';
 import { EventTermCapacityResponsePublicDTO } from '../../rest/model/event-term-capacity-response-public';
+import { DataViewableService } from '../types/data-viewable-service';
+import { Observable } from 'rxjs';
+import { FilterOption } from '../types/filter-option';
+import { PageableResponse } from '../types/pageable-response';
+import { SortOption } from '../types/sort-option';
+import { PublicHorizontService } from '../../rest/api/public.service';
+import { dataMapper } from '../util/rxjs-functions';
+import { PageableRequest } from '../types/pageable-request';
 
 @Injectable({
   providedIn: 'root'
 })
-export class EventService {
+export class EventService implements DataViewableService {
 
-  constructor() { }
+  constructor(
+    private publicHorizontService: PublicHorizontService
+  ) { }
 
   public getStatus(event?: EventDTO): EventStatus | null {
     if (!event) return null;
@@ -31,5 +41,21 @@ export class EventService {
     if (remainsPercent <= 20) return EventTermCapacityStatus.ALMOST_FILLED;
     if (remainsPercent <= 45) return EventTermCapacityStatus.FILLING;
     return EventTermCapacityStatus.FREE;
+  }
+
+  loadData(pageable: PageableRequest): Observable<PageableResponse> {
+    return dataMapper(
+      this.publicHorizontService.getEventsPS(pageable)
+    );
+  }
+
+  sortingOptions(): Array<SortOption> {
+    return [
+      { sortField: 'createdAt', sortLabel: 'dátum pridania', availableDir: 'both' }
+    ];
+  }
+
+  filterOptions(): Array<FilterOption> {
+    throw new Error('Method not implemented.');
   }
 }

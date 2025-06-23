@@ -1,6 +1,6 @@
 import { Component, computed, input } from '@angular/core';
 import { TagModule } from 'primeng/tag';
-import { EventTermCapacityStatus } from '../../../enum/event-term-capacity-status';
+import { EventTermCapacityStatus } from '../../../types/enum/event-term-capacity-status';
 
 @Component({
   selector: 'app-remain-capacity-tag',

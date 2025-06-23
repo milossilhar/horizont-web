@@ -9,6 +9,7 @@ import { EventDetailComponent } from './event/event-detail/event-detail.componen
 import { AuthGuard } from './shared/guards/auth.guard';
 import { EventListComponent } from './event/event-list/event-list.component';
 import { RegistrationResultComponent } from './registration/registration-result/registration-result.component';
+import { DataComponent } from './shared/components/data/data.component';
 
 export const routes: Routes = [
   {
@@ -39,6 +40,7 @@ export const routes: Routes = [
       }
     ]
   },
+  { path: 'data/:component', component: DataComponent },
   {
     path: '',
     children: [

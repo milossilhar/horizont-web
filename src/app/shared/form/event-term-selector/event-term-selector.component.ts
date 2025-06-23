@@ -9,7 +9,7 @@ import { Dictionary } from 'lodash';
 import { EventTermCapacityResponsePublicDTO, EventTermPublicDTO } from '../../../rest/model/models';
 import { MessageModule } from 'primeng/message';
 import { EventService } from '../../service/event.service';
-import { EventTermCapacityStatus } from '../../enum/event-term-capacity-status';
+import { EventTermCapacityStatus } from '../../types/enum/event-term-capacity-status';
 
 @Component({
   selector: 'app-event-term-selector',

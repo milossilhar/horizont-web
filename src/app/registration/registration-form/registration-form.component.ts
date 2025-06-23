@@ -18,12 +18,12 @@ import { MeterGroupModule } from 'primeng/metergroup';
 import { SelectModule } from 'primeng/select';
 import { find, some } from 'lodash';
 import { MessageModule } from 'primeng/message';
-import { PRIME_CONSTANTS } from '../../shared/primeng.constant';
+import { PRIME_CONSTANTS } from '../../shared/types/prime-ng-constants';
 import { PublicHorizontService } from '../../rest/api/api';
-import { EnumerationService } from '../../shared/service/enumeration.service';
 import { ProgressBar } from 'primeng/progressbar';
 import { EnumerationItemPublicDTO, EventEventPublicDTO, PaymentPublicDTO, RegistrationPricingRequestPublicDTO, RegistrationPublicDTO } from '../../rest/model/models';
 import { EventCardComponent } from '../../event/event-card/event-card.component';
+import { EnumSelectorComponent } from "../../shared/form/enum-selector/enum-selector.component";
 
 @Component({
   selector: 'app-registration-form',
@@ -43,13 +43,15 @@ import { EventCardComponent } from '../../event/event-card/event-card.component'
     SelectModule,
     MeterGroupModule,
     EventCardComponent,
-    DatePipe, CurrencyPipe, AsyncPipe,
-    EventTermSelectorComponent
+    DatePipe, CurrencyPipe,
+    EventTermSelectorComponent,
+    EnumSelectorComponent
 ],
   templateUrl: './registration-form.component.html',
   styles: ``
 })
 export class RegistrationFormComponent extends DestroyableComponent implements OnInit {
+  protected readonly ENUM_NAMES = EnumerationItemPublicDTO.EnumNameEnum;
   protected today = new Date();
 
   protected event = signal<EventEventPublicDTO | undefined>(undefined);
@@ -76,7 +78,6 @@ export class RegistrationFormComponent extends DestroyableComponent implements O
   constructor(
     private fb: NonNullableFormBuilder,
     private route: ActivatedRoute, private router: Router,
-    private enumerationService: EnumerationService,
     private publicHorizontService: PublicHorizontService,
   ) {
     super();
@@ -167,14 +168,6 @@ export class RegistrationFormComponent extends DestroyableComponent implements O
 
   get isOnlyOneChild() {
     return this.people.controls.length === 1;
-  }
-
-  get relations() {
-    return this.enumerationService.getEnum(EnumerationItemPublicDTO.EnumNameEnum.RegERelation);
-  }
-  
-  get shirtSizes() {
-    return this.enumerationService.getEnum(EnumerationItemPublicDTO.EnumNameEnum.RegEShirtSize);
   }
 
   protected hasError(form: AbstractControl, errorCode: string): boolean {

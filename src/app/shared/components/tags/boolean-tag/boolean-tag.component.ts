@@ -1,7 +1,7 @@
 import { Component, computed, input } from '@angular/core';
 import { TagModule } from 'primeng/tag';
-import { NgTagSeverity } from '../../../enum/prime-ng-severities';
-import { TailwindSize } from '../../../enum/tailwind-size';
+import { NgTagSeverity } from '../../../types/prime-ng-severities';
+import { TailwindSize } from '../../../types/tailwind-size';
 
 @Component({
   selector: 'app-boolean-tag',

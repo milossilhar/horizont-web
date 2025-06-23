@@ -108,13 +108,9 @@
               <label [for]="`child-${$index}-independent`">Je dieťa samostatné?</label>
               <i class="text-blue-900 pi pi-info-circle"></i>
             </div>
-            <div class="flex flex-col gap-2">
-              <p-select formControlName="shirtSize" optionLabel="description" optionValue="code" [checkmark]="true" [showClear]="true"
-                [options]="(shirtSizes | async) || []" placeholder="Veľkosť trička"></p-select>
-              @if(hasError(personForm.controls.shirtSize, 'required')) {
-                <p-message severity="error" variant="simple">Veľkosť trička je povinná.</p-message>
-              }
-            </div>
+            <app-enum-selector formControlName="shirtSize" [enumName]="ENUM_NAMES.RegEShirtSize"
+              placeholder="Veľkosť trička" [errorMessages]="{'required': 'Veľkosť trička je povinná.'}">
+            </app-enum-selector>
           </div>
           <div class="w-full grid grid-cols-1 sm:grid-cols-2 gap-x-2 gap-y-4">
             <p-floatlabel variant="on">
@@ -165,13 +161,9 @@
                   <p-message severity="error" variant="simple">Priezvisko je povinné.</p-message>
                 }
               </div>
-              <div class="flex flex-col gap-2">
-                <p-select formControlName="relation" optionLabel="description" optionValue="code" [checkmark]="true" [showClear]="true"
-                  [options]="(relations | async) || []" placeholder="Vzťah k dieťaťu"></p-select>
-                @if(hasError(knownPersonForm.controls.relation, 'required')) {
-                  <p-message severity="error" variant="simple">Vzťah k dieťaťu je povinný.</p-message>
-                }
-              </div>
+              <app-enum-selector formControlName="relation" [enumName]="ENUM_NAMES.RegERelation"
+                placeholder="Vzťah k dieťaťu" [errorMessages]="{ 'required': 'Vzťah k dieťaťu je povinný.' }">
+              </app-enum-selector>
             </div>
           </div>
         }

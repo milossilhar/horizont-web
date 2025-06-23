@@ -7,7 +7,7 @@ import { Dictionary, groupBy } from 'lodash';
 import { DividerModule } from 'primeng/divider';
 import { MessageModule } from 'primeng/message';
 import { EventService } from '../../shared/service/event.service';
-import { EventStatus } from '../../shared/enum/event-status';
+import { EventStatus } from '../../shared/types/enum/event-status';
 import { PublicHorizontService } from '../../rest/api/public.service';
 import { EventEventPublicDTO } from '../../rest/model/models';
 

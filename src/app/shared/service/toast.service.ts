@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MessageService } from 'primeng/api';
-import { NgToastSeverity } from '../enum/prime-ng-severities';
+import { NgToastSeverity } from '../types/prime-ng-severities';
 
 @Injectable({
   providedIn: 'root'

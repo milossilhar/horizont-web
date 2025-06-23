@@ -31,13 +31,14 @@
   <p-button label="O nás" [link]="true" />
 </div> -->
 
-<div class="grid grid-cols-1 sm:grid-cols-2 justify-items-center gap-2 py-10 px-5 bg-surface-100">
+<div class="grid grid-cols-1 sm:grid-cols-2 justify-items-center gap-2 py-10 px-5 bg-surface-100 z-1000">
   @if(isNotProd()) {
     <p class="text-2xl">#leziemevpezinku [{{environment()}}]</p>
   } @else {
     <p class="text-2xl">#leziemevpezinku</p>
   }
   <div class="flex flex-row items-baseline justify-center gap-x-2">
+    <a pButton [text]="true" routerLinkActive="font-bold" routerLink="/data/event">Events</a>
     <a pButton [text]="true" routerLinkActive="font-bold" routerLink="/registration">Registrácie</a>
     <a *ifLoggedIn pButton [text]="true" routerLinkActive="font-bold" routerLink="/event">Tábory</a>
     <p-button [label]="loginButtonLabel" variant="text" severity="info" (onClick)="onLoginClick()"></p-button>

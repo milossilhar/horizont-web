@@ -4,7 +4,7 @@ import { ButtonModule } from 'primeng/button';
 import { RouterLink } from '@angular/router';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { EventService } from '../../shared/service/event.service';
-import { EventStatus } from '../../shared/enum/event-status';
+import { EventStatus } from '../../shared/types/enum/event-status';
 import { MessageModule } from 'primeng/message';
 import { EventEventPublicDTO } from '../../rest/model/models';
 
