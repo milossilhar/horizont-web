@@ -7,8 +7,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "generate-openapi": "openapi-generator-cli generate",
-    "clean-openapi": "rm -rf src/app/rest/api src/app/rest/model src/app/rest/*.ts"
+    "pregenerate-openapi": "rm -rf src/app/rest/api src/app/rest/model src/app/rest/*.ts",
+    "generate-openapi": "openapi-generator-cli generate"
   },
   "private": true,
   "dependencies": {
