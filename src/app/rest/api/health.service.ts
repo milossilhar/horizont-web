@@ -1,5 +1,5 @@
 /**
- * OpenAPI definition
+ * Registration System API
  *
  * 
  *
@@ -17,9 +17,9 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
-import { GenericErrorDTO } from '../model/generic-error';
+import { GenericErrorDTO } from '../model/generic-error-dto';
 // @ts-ignore
-import { GenericResponseStringDTO } from '../model/generic-response-string';
+import { GenericResponseDTOString } from '../model/generic-response-dto-string';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -31,7 +31,7 @@ import { BaseService } from '../api.base.service';
 @Injectable({
   providedIn: 'root'
 })
-export class HealthHorizontService extends BaseService {
+export class HealthRestService extends BaseService {
 
     constructor(protected httpClient: HttpClient, @Optional() @Inject(BASE_PATH) basePath: string|string[], @Optional() configuration?: Configuration) {
         super(basePath, configuration);
@@ -41,9 +41,9 @@ export class HealthHorizontService extends BaseService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getEnvironment(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<GenericResponseStringDTO>;
-    public getEnvironment(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<GenericResponseStringDTO>>;
-    public getEnvironment(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<GenericResponseStringDTO>>;
+    public getEnvironment(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<GenericResponseDTOString>;
+    public getEnvironment(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<GenericResponseDTOString>>;
+    public getEnvironment(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<GenericResponseDTOString>>;
     public getEnvironment(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
@@ -74,7 +74,7 @@ export class HealthHorizontService extends BaseService {
 
         let localVarPath = `/health/env`;
         const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<GenericResponseStringDTO>('get', `${basePath}${localVarPath}`,
+        return this.httpClient.request<GenericResponseDTOString>('get', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,

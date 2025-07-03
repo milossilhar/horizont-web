@@ -1,5 +1,5 @@
 /**
- * OpenAPI definition
+ * Registration System API
  *
  * 
  *
@@ -12,7 +12,7 @@ import { CustomHttpParameterCodec } from './encoder';
 import { Configuration } from './configuration';
 
 export class BaseService {
-    protected basePath = 'http://localhost:8088/api';
+    protected basePath = 'http://localhost:8080';
     public defaultHeaders = new HttpHeaders();
     public configuration: Configuration;
     public encoder: HttpParameterCodec;

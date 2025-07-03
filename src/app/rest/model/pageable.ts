@@ -1,5 +1,5 @@
 /**
- * OpenAPI definition
+ * Registration System API
  *
  * 
  *
@@ -9,7 +9,9 @@
  */
 
 
-export interface GenericRequestStringPublicDTO { 
-    value?: string;
+export interface Pageable { 
+    page?: number;
+    size?: number;
+    sort?: Array<string>;
 }
 

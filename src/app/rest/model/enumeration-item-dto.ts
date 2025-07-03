@@ -1,5 +1,5 @@
 /**
- * OpenAPI definition
+ * Registration System API
  *
  * 
  *
@@ -9,12 +9,13 @@
  */
 
 
-export interface EventTermEventPublicDTO { 
+export interface EnumerationItemDTO { 
     id?: number;
-    startAt?: string;
-    endAt?: string;
-    capacity: number;
-    deposit: number;
-    price: number;
+    code?: string;
+    name?: string;
+    description?: string;
+    ordering: number;
+    hidden?: boolean;
+    type: string;
 }
 

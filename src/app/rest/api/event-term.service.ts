@@ -1,5 +1,5 @@
 /**
- * OpenAPI definition
+ * Registration System API
  *
  * 
  *
@@ -17,11 +17,11 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
-import { EventTermEventTermDTO } from '../model/event-term-event-term';
+import { EventTermDTO } from '../model/event-term-dto';
 // @ts-ignore
-import { EventTermPublicDTO } from '../model/event-term-public';
+import { GenericErrorDTO } from '../model/generic-error-dto';
 // @ts-ignore
-import { GenericErrorDTO } from '../model/generic-error';
+import { GenericResponseDTOLong } from '../model/generic-response-dto-long';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -33,23 +33,27 @@ import { BaseService } from '../api.base.service';
 @Injectable({
   providedIn: 'root'
 })
-export class EventTermHorizontService extends BaseService {
+export class EventTermRestService extends BaseService {
 
     constructor(protected httpClient: HttpClient, @Optional() @Inject(BASE_PATH) basePath: string|string[], @Optional() configuration?: Configuration) {
         super(basePath, configuration);
     }
 
     /**
-     * @param id 
+     * @param eventId 
+     * @param eventTermDTO 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getEventTerm(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<EventTermEventTermDTO>;
-    public getEventTerm(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<EventTermEventTermDTO>>;
-    public getEventTerm(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<EventTermEventTermDTO>>;
-    public getEventTerm(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
-        if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling getEventTerm.');
+    public createEventTerm(eventId: number, eventTermDTO: EventTermDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<EventTermDTO>;
+    public createEventTerm(eventId: number, eventTermDTO: EventTermDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<EventTermDTO>>;
+    public createEventTerm(eventId: number, eventTermDTO: EventTermDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<EventTermDTO>>;
+    public createEventTerm(eventId: number, eventTermDTO: EventTermDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (eventId === null || eventId === undefined) {
+            throw new Error('Required parameter eventId was null or undefined when calling createEventTerm.');
+        }
+        if (eventTermDTO === null || eventTermDTO === undefined) {
+            throw new Error('Required parameter eventTermDTO was null or undefined when calling createEventTerm.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -67,6 +71,15 @@ export class EventTermHorizontService extends BaseService {
         const localVarTransferCache: boolean = options?.transferCache ?? true;
 
 
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+        }
+
         let responseType_: 'text' | 'json' | 'blob' = 'json';
         if (localVarHttpHeaderAcceptSelected) {
             if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
@@ -78,11 +91,12 @@ export class EventTermHorizontService extends BaseService {
             }
         }
 
-        let localVarPath = `/eventTerms/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}`;
+        let localVarPath = `/events/events/${this.configuration.encodeParam({name: "eventId", value: eventId, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}/terms`;
         const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<EventTermEventTermDTO>('get', `${basePath}${localVarPath}`,
+        return this.httpClient.request<EventTermDTO>('post', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                body: eventTermDTO,
                 responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
@@ -94,13 +108,17 @@ export class EventTermHorizontService extends BaseService {
     }
 
     /**
+     * @param eventId 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getEventTermsCurrent(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<EventTermPublicDTO>>;
-    public getEventTermsCurrent(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<EventTermPublicDTO>>>;
-    public getEventTermsCurrent(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<EventTermPublicDTO>>>;
-    public getEventTermsCurrent(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public getEventTerms(eventId: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<GenericResponseDTOLong>;
+    public getEventTerms(eventId: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<GenericResponseDTOLong>>;
+    public getEventTerms(eventId: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<GenericResponseDTOLong>>;
+    public getEventTerms(eventId: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (eventId === null || eventId === undefined) {
+            throw new Error('Required parameter eventId was null or undefined when calling getEventTerms.');
+        }
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -128,9 +146,9 @@ export class EventTermHorizontService extends BaseService {
             }
         }
 
-        let localVarPath = `/eventTerms/current`;
+        let localVarPath = `/events/events/${this.configuration.encodeParam({name: "eventId", value: eventId, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}/terms`;
         const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<Array<EventTermPublicDTO>>('get', `${basePath}${localVarPath}`,
+        return this.httpClient.request<GenericResponseDTOLong>('get', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,

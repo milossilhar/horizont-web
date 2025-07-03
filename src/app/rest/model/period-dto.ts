@@ -1,5 +1,5 @@
 /**
- * OpenAPI definition
+ * Registration System API
  *
  * 
  *
@@ -9,9 +9,10 @@
  */
 
 
-export interface KnownPersonDTO { 
+export interface PeriodDTO { 
+    id?: number;
     name: string;
-    surname: string;
-    relation: string;
+    startDate?: string;
+    endDate?: string;
 }
 

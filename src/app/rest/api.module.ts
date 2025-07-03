@@ -9,18 +9,18 @@ import { HttpClient } from '@angular/common/http';
   exports:      [],
   providers: []
 })
-export class HorizontApiModule {
-    public static forRoot(configurationFactory: () => Configuration): ModuleWithProviders<HorizontApiModule> {
+export class RegistrationApiModule {
+    public static forRoot(configurationFactory: () => Configuration): ModuleWithProviders<RegistrationApiModule> {
         return {
-            ngModule: HorizontApiModule,
+            ngModule: RegistrationApiModule,
             providers: [ { provide: Configuration, useFactory: configurationFactory } ]
         };
     }
 
-    constructor( @Optional() @SkipSelf() parentModule: HorizontApiModule,
+    constructor( @Optional() @SkipSelf() parentModule: RegistrationApiModule,
                  @Optional() http: HttpClient) {
         if (parentModule) {
-            throw new Error('HorizontApiModule is already loaded. Import in your base AppModule only.');
+            throw new Error('RegistrationApiModule is already loaded. Import in your base AppModule only.');
         }
         if (!http) {
             throw new Error('You need to import the HttpClientModule in your AppModule! \n' +

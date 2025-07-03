@@ -4,7 +4,7 @@
   "generator-cli": {
     "version": "7.13.0",
     "generators": {
-      "horizont-system": {
+      "registration-system": {
         "generatorName": "typescript-angular",
         "output": "./src/app/rest",
         "inputSpec": "./openapi/openapi.json",
@@ -12,9 +12,9 @@
           "ngVersion": "19.0.0",
           "supportsES6": true,
           "fileNaming": "kebab-case",
-          "apiModulePrefix": "Horizont",
-          "modelSuffix": "DTO",
-          "serviceSuffix": "HorizontService",
+          "apiModulePrefix": "Registration",
+          "modelSuffix": "",
+          "serviceSuffix": "RestService",
           "useSquareBracketsInArrayNames": true
         },
         "typeMappings": {
