@@ -4,6 +4,8 @@ DOCKER_PROD_FILE := './docker/compose.prod.yaml'
 # generates Angular client from openapi yaml
 generate-openapi:
     rm -rf src/app/rest/api src/app/rest/model src/app/rest/*.ts
+    cp ./openapi/openapi.json ./openapi/openapi.original.json
+    node ./openapi/oneof_refactor.js ./openapi/openapi.json
     npm run generate-openapi
 
 # starts frontend stack as production configuration in local Docker

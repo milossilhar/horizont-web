@@ -12,8 +12,8 @@ import { PlaceDTO } from './place-dto';
 
 
 /**
- * @type GetEnumItems200ResponseInner
+ * @type EnumerationItemAggregateDTO
  * @export
  */
-export type GetEnumItems200ResponseInner = EnumerationItemDTO | PlaceDTO;
+export type EnumerationItemAggregateDTO = EnumerationItemDTO | PlaceDTO;
 

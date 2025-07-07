@@ -1,78 +1,168 @@
 {
   "openapi": "3.1.0",
-  "info": { "title": "OpenAPI definition", "version": "v0" },
+  "info": {
+    "title": "Registration System API",
+    "version": "1.0.0"
+  },
   "servers": [
     {
-      "url": "http://localhost:8088/api",
-      "description": "Generated server url"
+      "url": "http://localhost:8080",
+      "description": "Development server"
     }
   ],
   "paths": {
-    "/events/{eventId}": {
-      "put": {
-        "tags": ["event"],
-        "operationId": "updateEvent",
+    "/periods/{id}": {
+      "get": {
+        "tags": [
+          "period"
+        ],
+        "operationId": "getPeriod",
         "parameters": [
           {
-            "name": "eventId",
+            "name": "id",
             "in": "path",
             "required": true,
-            "schema": { "type": "integer", "format": "int64" }
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PeriodDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericErrorDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericErrorDTO"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "period"
+        ],
+        "operationId": "updatePeriod",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
           }
         ],
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": { "$ref": "#/components/schemas/Event" }
+              "schema": {
+                "$ref": "#/components/schemas/PeriodDTO"
+              }
             }
           },
           "required": true
         },
         "responses": {
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "*/*": {
-                "schema": { "$ref": "#/components/schemas/GenericError" }
-              }
-            }
-          },
           "200": {
             "description": "OK",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/Event" }
+                "schema": {
+                  "$ref": "#/components/schemas/PeriodDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericErrorDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericErrorDTO"
+                }
               }
             }
           }
         }
       },
       "delete": {
-        "tags": ["event"],
-        "operationId": "deleteEvent",
+        "tags": [
+          "period"
+        ],
+        "operationId": "deletePeriod",
         "parameters": [
           {
-            "name": "eventId",
+            "name": "id",
             "in": "path",
             "required": true,
-            "schema": { "type": "integer", "format": "int64" }
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
           }
         ],
         "responses": {
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "*/*": {
-                "schema": { "$ref": "#/components/schemas/GenericError" }
-              }
-            }
-          },
           "200": {
             "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GenericResponseString"
+                  "$ref": "#/components/schemas/GenericResponseDTOString"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericErrorDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericErrorDTO"
                 }
               }
             }
@@ -80,154 +170,201 @@
         }
       }
     },
-    "/registrations/confirm/{paymentId}": {
-      "post": {
-        "tags": ["registration"],
-        "operationId": "confirmPayment",
-        "parameters": [
-          {
-            "name": "paymentId",
-            "in": "path",
-            "required": true,
-            "schema": { "type": "integer", "format": "int64" }
-          },
-          {
-            "name": "deposit",
-            "in": "query",
-            "required": true,
-            "schema": { "type": "boolean" }
-          }
+    "/events/{eventId}": {
+      "put": {
+        "tags": [
+          "event"
         ],
-        "responses": {
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "*/*": {
-                "schema": { "$ref": "#/components/schemas/GenericError" }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/Registration" }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/public/registration/{eventTermId}": {
-      "post": {
-        "tags": ["public"],
-        "operationId": "createRegistration",
+        "operationId": "updateEvent",
         "parameters": [
           {
-            "name": "eventTermId",
+            "name": "eventId",
             "in": "path",
             "required": true,
-            "schema": { "type": "integer", "format": "int64" }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": { "$ref": "#/components/schemas/Registration_Public" }
+            "schema": {
+              "type": "integer",
+              "format": "int64"
             }
-          },
-          "required": true
-        },
-        "responses": {
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "*/*": {
-                "schema": { "$ref": "#/components/schemas/GenericError" }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/Registration_Public" }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/public/registration/{eventTermId}/calculate-price": {
-      "post": {
-        "tags": ["public"],
-        "operationId": "calculatePriceForRegistration",
-        "parameters": [
-          {
-            "name": "eventTermId",
-            "in": "path",
-            "required": true,
-            "schema": { "type": "integer", "format": "int64" }
           }
         ],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/RegistrationPricingRequest_Public"
+                "$ref": "#/components/schemas/EventDTO"
               }
             }
           },
           "required": true
         },
         "responses": {
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "*/*": {
-                "schema": { "$ref": "#/components/schemas/GenericError" }
-              }
-            }
-          },
           "200": {
             "description": "OK",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/Payment_Public" }
+                "schema": {
+                  "$ref": "#/components/schemas/EventDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericErrorDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericErrorDTO"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "event"
+        ],
+        "operationId": "deleteEvent",
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericResponseDTOString"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericErrorDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericErrorDTO"
+                }
               }
             }
           }
         }
       }
     },
-    "/public/registration/confirm": {
+    "/periods": {
+      "get": {
+        "tags": [
+          "period"
+        ],
+        "operationId": "getPeriods",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PeriodDTO"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericErrorDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericErrorDTO"
+                }
+              }
+            }
+          }
+        }
+      },
       "post": {
-        "tags": ["public"],
-        "operationId": "confirmRegistration",
+        "tags": [
+          "period"
+        ],
+        "operationId": "createPeriod",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/GenericRequestString_Public"
+                "$ref": "#/components/schemas/PeriodDTO"
               }
             }
           },
           "required": true
         },
         "responses": {
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "*/*": {
-                "schema": { "$ref": "#/components/schemas/GenericError" }
-              }
-            }
-          },
           "200": {
             "description": "OK",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/Registration_Public" }
+                "schema": {
+                  "$ref": "#/components/schemas/PeriodDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericErrorDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericErrorDTO"
+                }
               }
             }
           }
@@ -236,26 +373,47 @@
     },
     "/events": {
       "get": {
-        "tags": ["event"],
-        "operationId": "getEvents",
-        "responses": {
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "*/*": {
-                "schema": { "$ref": "#/components/schemas/GenericError" }
-              }
+        "tags": [
+          "event"
+        ],
+        "operationId": "getAll",
+        "parameters": [
+          {
+            "name": "pageable",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Pageable"
             }
-          },
+          }
+        ],
+        "responses": {
           "200": {
             "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Event_EventInternal"
-                  }
+                  "$ref": "#/components/schemas/PageableResponseDTOEventDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericErrorDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericErrorDTO"
                 }
               }
             }
@@ -263,98 +421,47 @@
         }
       },
       "post": {
-        "tags": ["event"],
+        "tags": [
+          "event"
+        ],
         "operationId": "createEvent",
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": { "$ref": "#/components/schemas/Event" }
+              "schema": {
+                "$ref": "#/components/schemas/EventDTO"
+              }
             }
           },
           "required": true
         },
         "responses": {
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "*/*": {
-                "schema": { "$ref": "#/components/schemas/GenericError" }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/Event" }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/public/events/{eventUUID}": {
-      "get": {
-        "tags": ["public"],
-        "operationId": "getEventByUUID",
-        "parameters": [
-          {
-            "name": "eventUUID",
-            "in": "path",
-            "required": true,
-            "schema": { "type": "string" }
-          }
-        ],
-        "responses": {
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "*/*": {
-                "schema": { "$ref": "#/components/schemas/GenericError" }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/Event_EventPublic" }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/public/events/{eventUUID}/capacity": {
-      "get": {
-        "tags": ["public"],
-        "operationId": "getEventCapacities",
-        "parameters": [
-          {
-            "name": "eventUUID",
-            "in": "path",
-            "required": true,
-            "schema": { "type": "string" }
-          }
-        ],
-        "responses": {
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "*/*": {
-                "schema": { "$ref": "#/components/schemas/GenericError" }
-              }
-            }
-          },
           "200": {
             "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "$ref": "#/components/schemas/EventTermCapacityResponse_Public"
-                  }
+                  "$ref": "#/components/schemas/EventDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericErrorDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericErrorDTO"
                 }
               }
             }
@@ -362,58 +469,239 @@
         }
       }
     },
-    "/public/events/current": {
+    "/events/events/{eventId}/terms": {
       "get": {
-        "tags": ["public"],
-        "operationId": "getEventsCurrent",
+        "tags": [
+          "eventTerm"
+        ],
+        "operationId": "getEventTerms",
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
         "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericResponseDTOLong"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericErrorDTO"
+                }
+              }
+            }
+          },
           "401": {
             "description": "Unauthorized",
             "content": {
               "*/*": {
-                "schema": { "$ref": "#/components/schemas/GenericError" }
+                "schema": {
+                  "$ref": "#/components/schemas/GenericErrorDTO"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "eventTerm"
+        ],
+        "operationId": "createEventTerm",
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EventTermDTO"
               }
             }
           },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EventTermDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericErrorDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericErrorDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/enumerations/name/{enumName}": {
+      "get": {
+        "tags": [
+          "enumeration"
+        ],
+        "operationId": "getEnumItems",
+        "parameters": [
+          {
+            "name": "enumName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "REG_EVENT_CONDITION_TYPE",
+                "REG_EVENT_DISCOUNT_TYPE",
+                "REG_EVENT_TYPE",
+                "REG_PLACE",
+                "REG_RELATION",
+                "REG_SHIRT_SIZE"
+              ]
+            }
+          }
+        ],
+        "responses": {
           "200": {
             "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
-                  "items": { "$ref": "#/components/schemas/Event_EventPublic" }
+                  "items": {
+                    "$ref": "#/components/schemas/EnumerationItemAggregateDTO"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericErrorDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericErrorDTO"
                 }
               }
             }
           }
         }
-      }
-    },
-    "/public/enums": {
-      "get": {
-        "tags": ["public"],
-        "operationId": "getPublicEnumerations",
-        "responses": {
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "*/*": {
-                "schema": { "$ref": "#/components/schemas/GenericError" }
+      },
+      "post": {
+        "tags": [
+          "enumeration"
+        ],
+        "operationId": "createEnumItem",
+        "parameters": [
+          {
+            "name": "enumName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "REG_EVENT_CONDITION_TYPE",
+                "REG_EVENT_DISCOUNT_TYPE",
+                "REG_EVENT_TYPE",
+                "REG_PLACE",
+                "REG_RELATION",
+                "REG_SHIRT_SIZE"
+              ]
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EnumerationItemAggregateDTO"
               }
             }
           },
+          "required": true
+        },
+        "responses": {
           "200": {
             "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/EnumerationItem_Public"
-                    }
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EnumerationItemAggregateDTO"
                   }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericErrorDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericErrorDTO"
                 }
               }
             }
@@ -423,23 +711,37 @@
     },
     "/health/env": {
       "get": {
-        "tags": ["health"],
+        "tags": [
+          "health"
+        ],
         "operationId": "getEnvironment",
         "responses": {
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "*/*": {
-                "schema": { "$ref": "#/components/schemas/GenericError" }
-              }
-            }
-          },
           "200": {
             "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GenericResponseString"
+                  "$ref": "#/components/schemas/GenericResponseDTOString"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericErrorDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericErrorDTO"
                 }
               }
             }
@@ -447,19 +749,64 @@
         }
       }
     },
-    "/events/detail": {
+    "/events/id/{id}": {
       "get": {
-        "tags": ["event"],
-        "operationId": "getDetailedEvents",
+        "tags": [
+          "event"
+        ],
+        "operationId": "getEventById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
         "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EventDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericErrorDTO"
+                }
+              }
+            }
+          },
           "401": {
             "description": "Unauthorized",
             "content": {
               "*/*": {
-                "schema": { "$ref": "#/components/schemas/GenericError" }
+                "schema": {
+                  "$ref": "#/components/schemas/GenericErrorDTO"
+                }
               }
             }
-          },
+          }
+        }
+      }
+    },
+    "/enumerations/names/administrated": {
+      "get": {
+        "tags": [
+          "enumeration"
+        ],
+        "operationId": "getNames",
+        "responses": {
           "200": {
             "description": "OK",
             "content": {
@@ -467,8 +814,28 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Event_EventInternal"
+                    "type": "string"
                   }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericErrorDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericErrorDTO"
                 }
               }
             }
@@ -476,90 +843,45 @@
         }
       }
     },
-    "/events/detail/{eventId}": {
+    "/enumerations/administrated": {
       "get": {
-        "tags": ["event"],
-        "operationId": "getDetailedEvent",
-        "parameters": [
-          {
-            "name": "eventId",
-            "in": "path",
-            "required": true,
-            "schema": { "type": "integer", "format": "int64" }
-          }
+        "tags": [
+          "enumeration"
         ],
+        "operationId": "getVisibleItems",
         "responses": {
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "*/*": {
-                "schema": { "$ref": "#/components/schemas/GenericError" }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/Event_EventInternal" }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/eventTerms/{id}": {
-      "get": {
-        "tags": ["eventTerm"],
-        "operationId": "getEventTerm",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": { "type": "integer", "format": "int64" }
-          }
-        ],
-        "responses": {
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "*/*": {
-                "schema": { "$ref": "#/components/schemas/GenericError" }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/EventTerm_EventTerm" }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/eventTerms/current": {
-      "get": {
-        "tags": ["eventTerm"],
-        "operationId": "getEventTermsCurrent",
-        "responses": {
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "*/*": {
-                "schema": { "$ref": "#/components/schemas/GenericError" }
-              }
-            }
-          },
           "200": {
             "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": { "$ref": "#/components/schemas/EventTerm_Public" }
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/EnumerationItemAggregateDTO"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericErrorDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericErrorDTO"
                 }
               }
             }
@@ -570,567 +892,384 @@
   },
   "components": {
     "schemas": {
-      "GenericError": {
+      "GenericErrorDTO": {
         "type": "object",
         "properties": {
-          "code": { "type": "string" },
-          "status_code": { "type": "integer", "format": "int32" },
-          "message": { "type": "string" },
+          "code": {
+            "type": "string"
+          },
+          "status_code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          },
           "parameters": {
             "type": "object",
-            "additionalProperties": { "type": "object" }
+            "additionalProperties": {
+              "type": "object"
+            }
           }
         }
       },
-      "Event": {
+      "PeriodDTO": {
         "type": "object",
         "properties": {
-          "createdAt": { "type": "string", "format": "date-time" },
-          "uuid": { "type": "string" },
-          "id": { "type": "integer", "format": "int64" },
-          "name": { "type": "string" },
-          "details": { "type": "string" },
-          "place": { "type": "string" },
-          "eventType": {
-            "type": "string",
-            "enum": ["EVENT", "CAMP", "SCHOOL_CLIMB", "ECA"]
+          "id": {
+            "type": "integer",
+            "format": "int64"
           },
-          "regStartAt": { "type": "string", "format": "date-time" },
-          "regEndAt": { "type": "string", "format": "date-time" },
-          "imageUrl": { "type": "string" },
-          "discountType": { "type": "string" },
-          "terms": {
-            "type": "array",
-            "items": { "$ref": "#/components/schemas/EventTerm" },
-            "uniqueItems": true
+          "name": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 0
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date"
           }
         },
         "required": [
-          "details",
-          "eventType",
-          "name",
-          "place",
-          "regEndAt",
-          "regStartAt"
+          "name"
         ]
       },
-      "EventTerm": {
+      "EventConditionDTO": {
         "type": "object",
         "properties": {
-          "id": { "type": "integer", "format": "int64" },
-          "startAt": { "type": "string", "format": "date-time" },
-          "endAt": { "type": "string", "format": "date-time" },
-          "capacity": { "type": "integer", "format": "int32" },
-          "deposit": { "type": "number" },
-          "price": { "type": "number" },
-          "event": { "$ref": "#/components/schemas/Event" },
-          "registrations": {
-            "type": "array",
-            "items": { "$ref": "#/components/schemas/Registration" },
-            "uniqueItems": true
-          },
-          "currentCapacities": {
-            "type": "array",
-            "items": { "$ref": "#/components/schemas/EventTermCapacity" }
-          }
-        },
-        "required": ["capacity", "deposit", "price"]
-      },
-      "EventTermCapacity": {
-        "type": "object",
-        "properties": {
-          "eventTermId": { "type": "integer", "format": "int64" },
-          "status": {
-            "type": "string",
-            "enum": ["CONCEPT", "QUEUE", "CONFIRMED"]
-          },
-          "capacity": { "type": "integer", "format": "int32" },
-          "registrations": { "type": "integer", "format": "int64" },
-          "registeredCount": { "type": "integer", "format": "int64" },
-          "confirmedCount": { "type": "integer", "format": "int64" }
-        }
-      },
-      "KnownPerson": {
-        "type": "object",
-        "properties": {
-          "name": { "type": "string" },
-          "surname": { "type": "string" },
-          "relation": { "type": "string" }
-        },
-        "required": ["name", "relation", "surname"]
-      },
-      "Payment": {
-        "type": "object",
-        "properties": {
-          "registration": { "$ref": "#/components/schemas/Registration" },
-          "id": { "type": "integer", "format": "int64" },
-          "price": { "type": "number" },
-          "deposit": { "type": "number" },
-          "discountValue": { "type": "number" },
-          "discountPercent": { "type": "number" },
-          "depositPaid": { "type": "boolean" },
-          "paid": { "type": "boolean" },
-          "variableSymbol": { "type": "string" },
-          "remainingValue": { "type": "number" },
-          "discountPercentValue": { "type": "number" },
-          "finalPrice": { "type": "number" },
-          "hasDiscount": { "type": "boolean" },
-          "hasDeposit": { "type": "boolean" }
-        },
-        "required": ["price"]
-      },
-      "Person": {
-        "type": "object",
-        "properties": {
-          "name": { "type": "string" },
-          "surname": { "type": "string" },
-          "dateOfBirth": { "type": "string", "format": "date" },
-          "healthNotes": {
-            "type": "string",
-            "maxLength": 1000,
-            "minLength": 0
-          },
-          "foodAllergyNotes": {
-            "type": "string",
-            "maxLength": 1000,
-            "minLength": 0
-          },
-          "shirtSize": { "type": "string" },
-          "isIndependent": { "type": "boolean" },
-          "fullName": { "type": "string" }
-        },
-        "required": ["dateOfBirth", "name", "surname"]
-      },
-      "Registration": {
-        "type": "object",
-        "properties": {
-          "createdAt": { "type": "string", "format": "date-time" },
-          "uuid": { "type": "string" },
-          "id": { "type": "integer", "format": "int64" },
-          "status": {
-            "type": "string",
-            "enum": ["CONCEPT", "QUEUE", "CONFIRMED"]
-          },
-          "name": { "type": "string" },
-          "surname": { "type": "string" },
-          "email": { "type": "string" },
-          "telPhone": { "type": "string" },
-          "consentGDPR": { "type": "boolean" },
-          "consentPhoto": { "type": "boolean" },
-          "emailConfirmSent": { "type": "boolean" },
-          "emailPaymentInfoSent": { "type": "boolean" },
-          "emailPaymentConfirmSent": { "type": "boolean" },
-          "people": {
-            "type": "array",
-            "items": { "$ref": "#/components/schemas/Person" }
-          },
-          "knownPeople": {
-            "type": "array",
-            "items": { "$ref": "#/components/schemas/KnownPerson" }
-          },
-          "payment": { "$ref": "#/components/schemas/Payment" }
-        },
-        "required": [
-          "consentGDPR",
-          "consentPhoto",
-          "email",
-          "name",
-          "surname",
-          "telPhone"
-        ]
-      },
-      "KnownPerson_Public": {
-        "type": "object",
-        "properties": {
-          "name": { "type": "string" },
-          "surname": { "type": "string" },
-          "relation": { "type": "string" }
-        },
-        "required": ["name", "relation", "surname"]
-      },
-      "Payment_Public": {
-        "type": "object",
-        "properties": {
-          "registration": {
-            "$ref": "#/components/schemas/Registration_Public"
-          },
-          "id": { "type": "integer", "format": "int64" },
-          "price": { "type": "number" },
-          "deposit": { "type": "number" },
-          "discountValue": { "type": "number" },
-          "discountPercent": { "type": "number" },
-          "depositPaid": { "type": "boolean" },
-          "paid": { "type": "boolean" },
-          "variableSymbol": { "type": "string" },
-          "remainingValue": { "type": "number" },
-          "discountPercentValue": { "type": "number" },
-          "finalPrice": { "type": "number" },
-          "hasDiscount": { "type": "boolean" },
-          "hasDeposit": { "type": "boolean" }
-        },
-        "required": ["price"]
-      },
-      "Person_Public": {
-        "type": "object",
-        "properties": {
-          "name": { "type": "string" },
-          "surname": { "type": "string" },
-          "dateOfBirth": { "type": "string", "format": "date" },
-          "healthNotes": {
-            "type": "string",
-            "maxLength": 1000,
-            "minLength": 0
-          },
-          "foodAllergyNotes": {
-            "type": "string",
-            "maxLength": 1000,
-            "minLength": 0
-          },
-          "shirtSize": { "type": "string" },
-          "isIndependent": { "type": "boolean" },
-          "fullName": { "type": "string" }
-        },
-        "required": ["dateOfBirth", "name", "surname"]
-      },
-      "Registration_Public": {
-        "type": "object",
-        "properties": {
-          "createdAt": { "type": "string", "format": "date-time" },
-          "uuid": { "type": "string" },
-          "status": {
-            "type": "string",
-            "enum": ["CONCEPT", "QUEUE", "CONFIRMED"]
-          },
-          "name": { "type": "string" },
-          "surname": { "type": "string" },
-          "email": { "type": "string" },
-          "telPhone": { "type": "string" },
-          "consentGDPR": { "type": "boolean" },
-          "consentPhoto": { "type": "boolean" },
-          "emailConfirmSent": { "type": "boolean" },
-          "emailPaymentInfoSent": { "type": "boolean" },
-          "emailPaymentConfirmSent": { "type": "boolean" },
-          "people": {
-            "type": "array",
-            "items": { "$ref": "#/components/schemas/Person_Public" }
-          },
-          "knownPeople": {
-            "type": "array",
-            "items": { "$ref": "#/components/schemas/KnownPerson_Public" }
-          },
-          "payment": { "$ref": "#/components/schemas/Payment_Public" }
-        },
-        "required": [
-          "consentGDPR",
-          "consentPhoto",
-          "email",
-          "name",
-          "surname",
-          "telPhone"
-        ]
-      },
-      "RegistrationPricingRequest_Public": {
-        "type": "object",
-        "properties": {
-          "userEmail": { "type": "string" },
-          "numberOfPeople": { "type": "integer", "format": "int64" }
-        },
-        "required": ["numberOfPeople", "userEmail"]
-      },
-      "GenericRequestString_Public": {
-        "type": "object",
-        "properties": { "value": { "type": "string" } }
-      },
-      "EventTerm_EventPublic": {
-        "type": "object",
-        "properties": {
-          "id": { "type": "integer", "format": "int64" },
-          "startAt": { "type": "string", "format": "date-time" },
-          "endAt": { "type": "string", "format": "date-time" },
-          "capacity": { "type": "integer", "format": "int32" },
-          "deposit": { "type": "number" },
-          "price": { "type": "number" }
-        },
-        "required": ["capacity", "deposit", "price"]
-      },
-      "Event_EventPublic": {
-        "type": "object",
-        "properties": {
-          "createdAt": { "type": "string", "format": "date-time" },
-          "uuid": { "type": "string" },
-          "name": { "type": "string" },
-          "details": { "type": "string" },
-          "place": { "type": "string" },
-          "eventType": {
-            "type": "string",
-            "enum": ["EVENT", "CAMP", "SCHOOL_CLIMB", "ECA"]
-          },
-          "regStartAt": { "type": "string", "format": "date-time" },
-          "regEndAt": { "type": "string", "format": "date-time" },
-          "imageUrl": { "type": "string" },
-          "discountType": { "type": "string" },
-          "terms": {
-            "type": "array",
-            "items": { "$ref": "#/components/schemas/EventTerm_EventPublic" },
-            "uniqueItems": true
-          }
-        },
-        "required": [
-          "details",
-          "eventType",
-          "name",
-          "place",
-          "regEndAt",
-          "regStartAt"
-        ]
-      },
-      "EventTermCapacityResponse_Public": {
-        "type": "object",
-        "properties": {
-          "capacity": { "type": "integer", "format": "int32" },
-          "confirmed": { "type": "integer", "format": "int64" },
-          "registered": { "type": "integer", "format": "int64" },
-          "available": { "type": "integer", "format": "int64" }
-        }
-      },
-      "EnumerationItem_Public": {
-        "type": "object",
-        "properties": {
-          "enum_name": {
+          "conditionType": {
             "type": "string",
             "enum": [
-              "REG_E_EVENT_CONDITION_TYPE",
-              "REG_E_EVENT_DISCOUNT_TYPE",
-              "REG_E_RELATION",
-              "REG_E_SHIRT_SIZE"
+              "YEAR_BORN"
             ]
           },
-          "code": { "type": "string" },
-          "description": { "type": "string" },
-          "ordering": { "type": "integer", "format": "int32" },
-          "visible": { "type": "boolean" }
-        },
-        "required": ["code", "description", "enum_name", "ordering", "visible"]
-      },
-      "GenericResponseString": {
-        "type": "object",
-        "properties": { "value": { "type": "string" } }
-      },
-      "EventTermCapacity_EventInternal": {
-        "type": "object",
-        "properties": {
-          "eventTermId": { "type": "integer", "format": "int64" },
-          "status": {
+          "minValue": {
             "type": "string",
-            "enum": ["CONCEPT", "QUEUE", "CONFIRMED"]
-          },
-          "capacity": { "type": "integer", "format": "int32" },
-          "registrations": { "type": "integer", "format": "int64" },
-          "registeredCount": { "type": "integer", "format": "int64" },
-          "confirmedCount": { "type": "integer", "format": "int64" }
-        }
-      },
-      "EventTerm_EventInternal": {
-        "type": "object",
-        "properties": {
-          "id": { "type": "integer", "format": "int64" },
-          "startAt": { "type": "string", "format": "date-time" },
-          "endAt": { "type": "string", "format": "date-time" },
-          "capacity": { "type": "integer", "format": "int32" },
-          "deposit": { "type": "number" },
-          "price": { "type": "number" },
-          "currentCapacities": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/EventTermCapacity_EventInternal"
-            }
-          }
-        },
-        "required": ["capacity", "deposit", "price"]
-      },
-      "Event_EventInternal": {
-        "type": "object",
-        "properties": {
-          "createdAt": { "type": "string", "format": "date-time" },
-          "uuid": { "type": "string" },
-          "id": { "type": "integer", "format": "int64" },
-          "name": { "type": "string" },
-          "place": { "type": "string" },
-          "eventType": {
-            "type": "string",
-            "enum": ["EVENT", "CAMP", "SCHOOL_CLIMB", "ECA"]
-          },
-          "regStartAt": { "type": "string", "format": "date-time" },
-          "regEndAt": { "type": "string", "format": "date-time" },
-          "imageUrl": { "type": "string" },
-          "discountType": { "type": "string" },
-          "terms": {
-            "type": "array",
-            "items": { "$ref": "#/components/schemas/EventTerm_EventInternal" },
-            "uniqueItems": true
-          }
-        },
-        "required": ["eventType", "name", "place", "regEndAt", "regStartAt"]
-      },
-      "EventTermCapacity_EventTerm": {
-        "type": "object",
-        "properties": {
-          "eventTermId": { "type": "integer", "format": "int64" },
-          "status": {
-            "type": "string",
-            "enum": ["CONCEPT", "QUEUE", "CONFIRMED"]
-          },
-          "capacity": { "type": "integer", "format": "int32" },
-          "registrations": { "type": "integer", "format": "int64" },
-          "registeredCount": { "type": "integer", "format": "int64" },
-          "confirmedCount": { "type": "integer", "format": "int64" }
-        }
-      },
-      "EventTerm_EventTerm": {
-        "type": "object",
-        "properties": {
-          "id": { "type": "integer", "format": "int64" },
-          "startAt": { "type": "string", "format": "date-time" },
-          "endAt": { "type": "string", "format": "date-time" },
-          "capacity": { "type": "integer", "format": "int32" },
-          "deposit": { "type": "number" },
-          "price": { "type": "number" },
-          "event": { "$ref": "#/components/schemas/Event_EventTerm" },
-          "registrations": {
-            "type": "array",
-            "items": { "$ref": "#/components/schemas/Registration_EventTerm" },
-            "uniqueItems": true
-          },
-          "currentCapacities": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/EventTermCapacity_EventTerm"
-            }
-          }
-        },
-        "required": ["capacity", "deposit", "price"]
-      },
-      "Event_EventTerm": {
-        "type": "object",
-        "properties": {
-          "createdAt": { "type": "string", "format": "date-time" },
-          "uuid": { "type": "string" },
-          "id": { "type": "integer", "format": "int64" },
-          "name": { "type": "string" },
-          "place": { "type": "string" },
-          "eventType": {
-            "type": "string",
-            "enum": ["EVENT", "CAMP", "SCHOOL_CLIMB", "ECA"]
-          },
-          "regStartAt": { "type": "string", "format": "date-time" },
-          "regEndAt": { "type": "string", "format": "date-time" },
-          "imageUrl": { "type": "string" },
-          "discountType": { "type": "string" }
-        },
-        "required": ["eventType", "name", "place", "regEndAt", "regStartAt"]
-      },
-      "KnownPerson_EventTerm": {
-        "type": "object",
-        "properties": {
-          "name": { "type": "string" },
-          "surname": { "type": "string" },
-          "relation": { "type": "string" }
-        },
-        "required": ["name", "relation", "surname"]
-      },
-      "Payment_EventTerm": {
-        "type": "object",
-        "properties": {
-          "registration": {
-            "$ref": "#/components/schemas/Registration_EventTerm"
-          },
-          "id": { "type": "integer", "format": "int64" },
-          "price": { "type": "number" },
-          "deposit": { "type": "number" },
-          "discountValue": { "type": "number" },
-          "discountPercent": { "type": "number" },
-          "depositPaid": { "type": "boolean" },
-          "paid": { "type": "boolean" },
-          "variableSymbol": { "type": "string" },
-          "remainingValue": { "type": "number" },
-          "discountPercentValue": { "type": "number" },
-          "finalPrice": { "type": "number" },
-          "hasDiscount": { "type": "boolean" },
-          "hasDeposit": { "type": "boolean" }
-        },
-        "required": ["price"]
-      },
-      "Person_EventTerm": {
-        "type": "object",
-        "properties": {
-          "name": { "type": "string" },
-          "surname": { "type": "string" },
-          "dateOfBirth": { "type": "string", "format": "date" },
-          "healthNotes": {
-            "type": "string",
-            "maxLength": 1000,
+            "maxLength": 50,
             "minLength": 0
           },
-          "foodAllergyNotes": {
+          "maxValue": {
             "type": "string",
-            "maxLength": 1000,
+            "maxLength": 50,
             "minLength": 0
           },
-          "shirtSize": { "type": "string" },
-          "isIndependent": { "type": "boolean" },
-          "fullName": { "type": "string" }
-        },
-        "required": ["dateOfBirth", "name", "surname"]
-      },
-      "Registration_EventTerm": {
-        "type": "object",
-        "properties": {
-          "createdAt": { "type": "string", "format": "date-time" },
-          "uuid": { "type": "string" },
-          "id": { "type": "integer", "format": "int64" },
-          "status": {
+          "value": {
             "type": "string",
-            "enum": ["CONCEPT", "QUEUE", "CONFIRMED"]
-          },
-          "name": { "type": "string" },
-          "surname": { "type": "string" },
-          "email": { "type": "string" },
-          "telPhone": { "type": "string" },
-          "consentGDPR": { "type": "boolean" },
-          "consentPhoto": { "type": "boolean" },
-          "emailConfirmSent": { "type": "boolean" },
-          "emailPaymentInfoSent": { "type": "boolean" },
-          "emailPaymentConfirmSent": { "type": "boolean" },
-          "people": {
-            "type": "array",
-            "items": { "$ref": "#/components/schemas/Person_EventTerm" }
-          },
-          "knownPeople": {
-            "type": "array",
-            "items": { "$ref": "#/components/schemas/KnownPerson_EventTerm" }
-          },
-          "payment": { "$ref": "#/components/schemas/Payment_EventTerm" }
+            "maxLength": 50,
+            "minLength": 0
+          }
         },
         "required": [
-          "consentGDPR",
-          "consentPhoto",
-          "email",
-          "name",
-          "surname",
-          "telPhone"
+          "conditionType"
         ]
       },
-      "EventTerm_Public": {
+      "EventDTO": {
         "type": "object",
         "properties": {
-          "id": { "type": "integer", "format": "int64" },
-          "startAt": { "type": "string", "format": "date-time" },
-          "endAt": { "type": "string", "format": "date-time" },
-          "capacity": { "type": "integer", "format": "int32" },
-          "deposit": { "type": "number" },
-          "price": { "type": "number" }
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1
+          },
+          "details": {
+            "type": "string",
+            "maxLength": 2000,
+            "minLength": 1
+          },
+          "eventType": {
+            "type": "string"
+          },
+          "imageUrl": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1
+          },
+          "registrationStarts": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "registrationEnds": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "placeCode": {
+            "type": "string"
+          },
+          "periodId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "conditions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EventConditionDTO"
+            }
+          },
+          "locked": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "DRAFT",
+              "PUBLISHED",
+              "CANCELLED",
+              "DELETED"
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "modifiedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "modifiedBy": {
+            "type": "string"
+          }
         },
-        "required": ["capacity", "deposit", "price"]
+        "required": [
+          "details",
+          "eventType",
+          "name",
+          "placeCode",
+          "registrationEnds",
+          "registrationStarts"
+        ]
+      },
+      "EventTermDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "repeatType": {
+            "type": "string",
+            "enum": [
+              "ONCE",
+              "DAILY",
+              "WEEKLY"
+            ]
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "startTime": {
+            "type": "string",
+            "example": "14:30:00"
+          },
+          "durationMinutes": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "dayOfWeek": {
+            "type": "string",
+            "enum": [
+              "MONDAY",
+              "TUESDAY",
+              "WEDNESDAY",
+              "THURSDAY",
+              "FRIDAY",
+              "SATURDAY",
+              "SUNDAY"
+            ]
+          },
+          "expectedTrainers": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 2147483647,
+            "minItems": 1
+          },
+          "deposit": {
+            "type": "number"
+          },
+          "price": {
+            "type": "number"
+          },
+          "capacity": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "hasAttendance": {
+            "type": "boolean"
+          },
+          "eventId": {
+            "type": "integer",
+            "format": "int64"
+          }
+        },
+        "required": [
+          "capacity",
+          "durationMinutes",
+          "hasAttendance",
+          "price",
+          "repeatType",
+          "startDate",
+          "startTime"
+        ]
+      },
+      "EnumerationItemDTO": {
+        "type": "object",
+        "discriminator": {
+          "propertyName": "type"
+        },
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "code": {
+            "type": "string",
+            "minLength": 1
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 0
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 150,
+            "minLength": 0
+          },
+          "ordering": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "hidden": {
+            "type": "boolean"
+          },
+          "type": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "ordering",
+          "type"
+        ]
+      },
+      "PlaceDTO": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/EnumerationItemDTO"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "latitude": {
+                "type": "number",
+                "maximum": 90,
+                "minimum": -90
+              },
+              "longitude": {
+                "type": "number",
+                "maximum": 180,
+                "minimum": -180
+              }
+            }
+          }
+        ],
+        "required": [
+          "latitude",
+          "longitude",
+          "ordering"
+        ]
+      },
+      "GenericResponseDTOString": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string"
+          }
+        }
+      },
+      "Pageable": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 0
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 1
+          },
+          "sort": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "PageableResponseDTOEventDTO": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EventDTO"
+            }
+          },
+          "pageNumber": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "GenericResponseDTOLong": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "EnumerationItemAggregateDTO": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/EnumerationItemDTO"
+          },
+          {
+            "$ref": "#/components/schemas/PlaceDTO"
+          }
+        ]
       }
     }
   }

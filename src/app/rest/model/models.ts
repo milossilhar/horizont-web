@@ -1,3 +1,4 @@
+export * from './enumeration-item-aggregate-dto';
 export * from './enumeration-item-dto';
 export * from './event-condition-dto';
 export * from './event-dto';
@@ -5,7 +6,6 @@ export * from './event-term-dto';
 export * from './generic-error-dto';
 export * from './generic-response-dto-long';
 export * from './generic-response-dto-string';
-export * from './get-enum-items200-response-inner';
 export * from './pageable';
 export * from './pageable-response-dto-event-dto';
 export * from './period-dto';

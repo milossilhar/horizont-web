@@ -43,3 +43,6 @@ Thumbs.db
 
 # Environments
 docker/.env
+
+# OpenAPI conversion
+openapi/openapi.original.json
