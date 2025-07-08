@@ -11,165 +11,6 @@
     }
   ],
   "paths": {
-    "/periods/{id}": {
-      "get": {
-        "tags": [
-          "period"
-        ],
-        "operationId": "getPeriod",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PeriodDTO"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/GenericErrorDTO"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/GenericErrorDTO"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "period"
-        ],
-        "operationId": "updatePeriod",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PeriodDTO"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PeriodDTO"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/GenericErrorDTO"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/GenericErrorDTO"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "period"
-        ],
-        "operationId": "deletePeriod",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GenericResponseDTOString"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/GenericErrorDTO"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/GenericErrorDTO"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/events/{eventId}": {
       "put": {
         "tags": [
@@ -253,97 +94,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/GenericResponseDTOString"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/GenericErrorDTO"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/GenericErrorDTO"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/periods": {
-      "get": {
-        "tags": [
-          "period"
-        ],
-        "operationId": "getPeriods",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/PeriodDTO"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/GenericErrorDTO"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/GenericErrorDTO"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "period"
-        ],
-        "operationId": "createPeriod",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PeriodDTO"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PeriodDTO"
                 }
               }
             }
@@ -579,66 +329,7 @@
         }
       }
     },
-    "/enumerations/name/{enumName}": {
-      "get": {
-        "tags": [
-          "enumeration"
-        ],
-        "operationId": "getEnumItems",
-        "parameters": [
-          {
-            "name": "enumName",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "enum": [
-                "REG_EVENT_CONDITION_TYPE",
-                "REG_EVENT_DISCOUNT_TYPE",
-                "REG_EVENT_TYPE",
-                "REG_PLACE",
-                "REG_RELATION",
-                "REG_SHIRT_SIZE"
-              ]
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/EnumerationItemAggregateDTO"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/GenericErrorDTO"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/GenericErrorDTO"
-                }
-              }
-            }
-          }
-        }
-      },
+    "/enumerations/{enumName}": {
       "post": {
         "tags": [
           "enumeration"
@@ -655,7 +346,9 @@
                 "REG_EVENT_CONDITION_TYPE",
                 "REG_EVENT_DISCOUNT_TYPE",
                 "REG_EVENT_TYPE",
+                "REG_EVENT_TERM_TAG",
                 "REG_PLACE",
+                "REG_PERIOD",
                 "REG_RELATION",
                 "REG_SHIRT_SIZE"
               ]
@@ -678,10 +371,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/EnumerationItemAggregateDTO"
-                  }
+                  "$ref": "#/components/schemas/EnumerationItemAggregateDTO"
                 }
               }
             }
@@ -805,7 +495,7 @@
         "tags": [
           "enumeration"
         ],
-        "operationId": "getNames",
+        "operationId": "getNamesAdministrated",
         "responses": {
           "200": {
             "description": "OK",
@@ -843,12 +533,75 @@
         }
       }
     },
-    "/enumerations/administrated": {
+    "/enumerations/items/name/{enumName}": {
       "get": {
         "tags": [
           "enumeration"
         ],
-        "operationId": "getVisibleItems",
+        "operationId": "getEnumItems",
+        "parameters": [
+          {
+            "name": "enumName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "REG_EVENT_CONDITION_TYPE",
+                "REG_EVENT_DISCOUNT_TYPE",
+                "REG_EVENT_TYPE",
+                "REG_EVENT_TERM_TAG",
+                "REG_PLACE",
+                "REG_PERIOD",
+                "REG_RELATION",
+                "REG_SHIRT_SIZE"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EnumerationItemAggregateDTO"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericErrorDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericErrorDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/enumerations/items/administrated": {
+      "get": {
+        "tags": [
+          "enumeration"
+        ],
+        "operationId": "getItemsAdministrated",
         "responses": {
           "200": {
             "description": "OK",
@@ -861,6 +614,77 @@
                     "items": {
                       "$ref": "#/components/schemas/EnumerationItemAggregateDTO"
                     }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericErrorDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericErrorDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/enumerations/{enumName}/{enumCode}/hide": {
+      "delete": {
+        "tags": [
+          "enumeration"
+        ],
+        "operationId": "deleteEnumItem",
+        "parameters": [
+          {
+            "name": "enumName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "REG_EVENT_CONDITION_TYPE",
+                "REG_EVENT_DISCOUNT_TYPE",
+                "REG_EVENT_TYPE",
+                "REG_EVENT_TERM_TAG",
+                "REG_PLACE",
+                "REG_PERIOD",
+                "REG_RELATION",
+                "REG_SHIRT_SIZE"
+              ]
+            }
+          },
+          {
+            "name": "enumCode",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EnumerationItemAggregateDTO"
                   }
                 }
               }
@@ -912,31 +736,6 @@
             }
           }
         }
-      },
-      "PeriodDTO": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "name": {
-            "type": "string",
-            "maxLength": 100,
-            "minLength": 0
-          },
-          "startDate": {
-            "type": "string",
-            "format": "date"
-          },
-          "endDate": {
-            "type": "string",
-            "format": "date"
-          }
-        },
-        "required": [
-          "name"
-        ]
       },
       "EventConditionDTO": {
         "type": "object",
@@ -1003,9 +802,8 @@
           "placeCode": {
             "type": "string"
           },
-          "periodId": {
-            "type": "integer",
-            "format": "int64"
+          "periodCode": {
+            "type": "string"
           },
           "conditions": {
             "type": "array",
@@ -1140,8 +938,7 @@
             "format": "int64"
           },
           "code": {
-            "type": "string",
-            "minLength": 1
+            "type": "string"
           },
           "name": {
             "type": "string",
@@ -1165,7 +962,6 @@
           }
         },
         "required": [
-          "ordering",
           "type"
         ]
       },
@@ -1192,8 +988,7 @@
         ],
         "required": [
           "latitude",
-          "longitude",
-          "ordering"
+          "longitude"
         ]
       },
       "GenericResponseDTOString": {

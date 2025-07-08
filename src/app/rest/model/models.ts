@@ -8,5 +8,4 @@ export * from './generic-response-dto-long';
 export * from './generic-response-dto-string';
 export * from './pageable';
 export * from './pageable-response-dto-event-dto';
-export * from './period-dto';
 export * from './place-dto';

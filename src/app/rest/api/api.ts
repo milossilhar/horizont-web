@@ -6,6 +6,4 @@ export * from './event-term.service';
 import { EventTermRestService } from './event-term.service';
 export * from './health.service';
 import { HealthRestService } from './health.service';
-export * from './period.service';
-import { PeriodRestService } from './period.service';
-export const APIS = [EnumerationRestService, EventRestService, EventTermRestService, HealthRestService, PeriodRestService];
+export const APIS = [EnumerationRestService, EventRestService, EventTermRestService, HealthRestService];

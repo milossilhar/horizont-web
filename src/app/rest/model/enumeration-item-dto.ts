@@ -14,7 +14,7 @@ export interface EnumerationItemDTO {
     code?: string;
     name?: string;
     description?: string;
-    ordering: number;
+    ordering?: number;
     hidden?: boolean;
     type: string;
 }

@@ -5,7 +5,6 @@ api/enumeration.service.ts
 api/event-term.service.ts
 api/event.service.ts
 api/health.service.ts
-api/period.service.ts
 configuration.ts
 encoder.ts
 model/enumeration-item-aggregate-dto.ts
@@ -19,7 +18,6 @@ model/generic-response-dto-string.ts
 model/models.ts
 model/pageable-response-dto-event-dto.ts
 model/pageable.ts
-model/period-dto.ts
 model/place-dto.ts
 param.ts
 variables.ts

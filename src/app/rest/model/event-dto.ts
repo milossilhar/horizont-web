@@ -19,7 +19,7 @@ export interface EventDTO {
     registrationStarts: string;
     registrationEnds: string;
     placeCode: string;
-    periodId?: number;
+    periodCode?: string;
     conditions?: Array<EventConditionDTO>;
     locked?: string;
     status?: EventDTO.StatusEnum;
