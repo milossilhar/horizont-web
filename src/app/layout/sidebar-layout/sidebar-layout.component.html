@@ -1,0 +1,15 @@
+<div class="flex flex-row items-stretch h-screen bg-surface-100">
+
+  <app-side-panel [collapsed]="collapsed"></app-side-panel>
+
+  <!-- Main Content Area -->
+  <div class="my-2 ms-0 me-2 p-4 flex-1 flex flex-col space-y-2 bg-white rounded-lg shadow-lg">
+    <div class="flex flex-row">
+      <p-button (onClick)="toggleCollapsed()" [rounded]="true" [text]="true"
+                [icon]="collapsed ? 'pi pi-angle-double-right' : 'pi pi-angle-double-left'"></p-button>
+    </div>
+    <div class="flex-1 overflow-auto">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

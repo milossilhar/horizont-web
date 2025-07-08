@@ -1,98 +1,98 @@
-<p-card styleClass="w-full overflow-hidden">
-  
-  <!-- Header with Status -->
-  <ng-template #header>
-    <div class="flex items-center justify-between bg-gradient-to-bl from-zinc-600 to-emerald-800 text-white py-4 px-6">
-      <div class="flex items-center space-x-3">
-        <p-avatar [label]="initials" size="xlarge" shape="circle" styleClass="bg-gradient-to-br from-blue-500 to-indigo-600 text-white"></p-avatar>
-        <!-- <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-white font-semibold text-lg">
-          {{ initials }}
-        </div> -->
-        <div>
-          <h3 class="text-xl font-bold">
-            {{ person().fullName || person.name + " " + person().surname }}
-          </h3>
-          <p class="text-sm">Osobné detaily</p>
-        </div>
-      </div>
-      <app-independent-tag [independent]="person().isIndependent"></app-independent-tag>
-    </div>
-  </ng-template>
+<!--<p-card styleClass="w-full overflow-hidden">-->
+<!--  -->
+<!--  &lt;!&ndash; Header with Status &ndash;&gt;-->
+<!--  <ng-template #header>-->
+<!--    <div class="flex items-center justify-between bg-gradient-to-bl from-zinc-600 to-emerald-800 text-white py-4 px-6">-->
+<!--      <div class="flex items-center space-x-3">-->
+<!--        <p-avatar [label]="initials" size="xlarge" shape="circle" styleClass="bg-gradient-to-br from-blue-500 to-indigo-600 text-white"></p-avatar>-->
+<!--        &lt;!&ndash; <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-white font-semibold text-lg">-->
+<!--          {{ initials }}-->
+<!--        </div> &ndash;&gt;-->
+<!--        <div>-->
+<!--          <h3 class="text-xl font-bold">-->
+<!--            {{ person().fullName || person.name + " " + person().surname }}-->
+<!--          </h3>-->
+<!--          <p class="text-sm">Osobné detaily</p>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <app-independent-tag [independent]="person().isIndependent"></app-independent-tag>-->
+<!--    </div>-->
+<!--  </ng-template>-->
 
-  <div class="space-y-4 px-2">
-    
-    <!-- Basic Information -->
-    <div class="grid grid-cols-2 gap-3">
-      <div class="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
-        <i class="pi pi-calendar text-blue-500"></i>
-        <div>
-          <span class="text-sm font-medium text-gray-600">Dátum narodenia</span>
-          <p class="text-gray-800">{{ person().dateOfBirth | date }}</p>
-        </div>
-      </div>
+<!--  <div class="space-y-4 px-2">-->
+<!--    -->
+<!--    &lt;!&ndash; Basic Information &ndash;&gt;-->
+<!--    <div class="grid grid-cols-2 gap-3">-->
+<!--      <div class="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">-->
+<!--        <i class="pi pi-calendar text-blue-500"></i>-->
+<!--        <div>-->
+<!--          <span class="text-sm font-medium text-gray-600">Dátum narodenia</span>-->
+<!--          <p class="text-gray-800">{{ person().dateOfBirth | date }}</p>-->
+<!--        </div>-->
+<!--      </div>-->
 
-      @if(person().shirtSize) {
-        <div class="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
-          <i class="pi pi-shopping-bag text-green-500"></i>
-          <div>
-            <span class="text-sm font-medium text-gray-600">Veľkosť trička</span>
-            <p class="text-gray-800">{{ person().shirtSize }}</p>
-          </div>
-        </div>
-      }
+<!--      @if(person().shirtSize) {-->
+<!--        <div class="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">-->
+<!--          <i class="pi pi-shopping-bag text-green-500"></i>-->
+<!--          <div>-->
+<!--            <span class="text-sm font-medium text-gray-600">Veľkosť trička</span>-->
+<!--            <p class="text-gray-800">{{ person().shirtSize }}</p>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      }-->
 
-      @if (registration()) {
-        <div class="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
-          <i class="pi pi-user text-red-500"></i>
-          <div>
-            <p class="text-sm font-medium text-gray-600">Rodič</p>
-            <p class="text-gray-800">{{ `${registration()?.name} ${registration()?.surname}` }}</p>
-          </div>
-        </div>
+<!--      @if (registration()) {-->
+<!--        <div class="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">-->
+<!--          <i class="pi pi-user text-red-500"></i>-->
+<!--          <div>-->
+<!--            <p class="text-sm font-medium text-gray-600">Rodič</p>-->
+<!--            <p class="text-gray-800">{{ `${registration()?.name} ${registration()?.surname}` }}</p>-->
+<!--          </div>-->
+<!--        </div>-->
 
-        <div class="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
-          <i class="pi pi-phone text-fuchsia-500"></i>
-          <div>
-            <p class="text-sm font-medium text-gray-600">Telefón</p>
-            <app-external-link [value]="registration()?.telPhone" type="tel"></app-external-link>
-          </div>
-        </div>
-      }
-    </div>
+<!--        <div class="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">-->
+<!--          <i class="pi pi-phone text-fuchsia-500"></i>-->
+<!--          <div>-->
+<!--            <p class="text-sm font-medium text-gray-600">Telefón</p>-->
+<!--            <app-external-link [value]="registration()?.telPhone" type="tel"></app-external-link>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      }-->
+<!--    </div>-->
 
-    <!-- Health Information -->
-    <div class="space-y-3" *ngIf="person().healthNotes || person().foodAllergyNotes">
-      <h4 class="text-sm font-semibold text-gray-700 border-b border-gray-200 pb-1">
-        Zdravotné informácie
-      </h4>
+<!--    &lt;!&ndash; Health Information &ndash;&gt;-->
+<!--    <div class="space-y-3" *ngIf="person().healthNotes || person().foodAllergyNotes">-->
+<!--      <h4 class="text-sm font-semibold text-gray-700 border-b border-gray-200 pb-1">-->
+<!--        Zdravotné informácie-->
+<!--      </h4>-->
 
-      <div class="grid grid-cols-2 gap-x-2">
-        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-3 rounded-r-lg"
-          *ngIf="person().healthNotes">
-          <div class="flex items-start space-x-2">
-            <i class="pi pi-exclamation-triangle text-yellow-600 mt-1"></i>
-            <div>
-              <span class="text-sm font-medium text-yellow-800">Zdravotné poznámky</span>
-              <p class="text-sm text-yellow-700 mt-1">{{ person().healthNotes }}</p>
-            </div>
-          </div>
-        </div>
-  
-        <div
-          class="bg-red-50 border-l-4 border-red-400 p-3 rounded-r-lg"
-          *ngIf="person().foodAllergyNotes"
-        >
-          <div class="flex items-start space-x-2">
-            <i class="pi pi-times-circle text-red-600 mt-1"></i>
-            <div>
-              <span class="text-sm font-medium text-red-800">Alergie na jedlo</span>
-              <p class="text-sm text-red-700 mt-1">
-                {{ person().foodAllergyNotes }}
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</p-card>
+<!--      <div class="grid grid-cols-2 gap-x-2">-->
+<!--        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-3 rounded-r-lg"-->
+<!--          *ngIf="person().healthNotes">-->
+<!--          <div class="flex items-start space-x-2">-->
+<!--            <i class="pi pi-exclamation-triangle text-yellow-600 mt-1"></i>-->
+<!--            <div>-->
+<!--              <span class="text-sm font-medium text-yellow-800">Zdravotné poznámky</span>-->
+<!--              <p class="text-sm text-yellow-700 mt-1">{{ person().healthNotes }}</p>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--  -->
+<!--        <div-->
+<!--          class="bg-red-50 border-l-4 border-red-400 p-3 rounded-r-lg"-->
+<!--          *ngIf="person().foodAllergyNotes"-->
+<!--        >-->
+<!--          <div class="flex items-start space-x-2">-->
+<!--            <i class="pi pi-times-circle text-red-600 mt-1"></i>-->
+<!--            <div>-->
+<!--              <span class="text-sm font-medium text-red-800">Alergie na jedlo</span>-->
+<!--              <p class="text-sm text-red-700 mt-1">-->
+<!--                {{ person().foodAllergyNotes }}-->
+<!--              </p>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</p-card>-->

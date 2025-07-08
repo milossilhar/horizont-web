@@ -1,25 +1,22 @@
 import { Injectable } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { includes } from 'lodash';
-import { BehaviorSubject, catchError, from, map, Observable, of, tap } from 'rxjs';
+import { BehaviorSubject, catchError, from, map, of, take, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private _user?: any;
   private _user$ = new BehaviorSubject<any | undefined>(undefined);
-  
-  constructor(private oauthService: OAuthService) { }
-  
-  private set user(newUser: any | undefined) {
-    this._user = newUser;
-    this._user$.next(newUser);
+
+  constructor(
+    private oauthService: OAuthService
+  ) {
   }
 
-  public get isLoggedInSnapshot() {
-    return !!this._user && this.oauthService.hasValidAccessToken() && this.oauthService.hasValidIdToken();
+  private set user(newUser: any | undefined) {
+    this._user$.next(newUser);
   }
 
   public get isLoggedIn() {
@@ -46,16 +43,20 @@ export class AuthService {
       );
     } catch (error) {
       return of(true);
-    };
+    }
   }
 
   public toggleLogin() {
-    if (this.isLoggedInSnapshot) {
-      this.logout(true);
-      return;
-    }
-    
-    this.oauthService.initCodeFlow();
+    this.isLoggedIn.pipe(
+      take(1),
+      tap(loggedIn => {
+        if (loggedIn) {
+          this.logout(true);
+        } else {
+          this.oauthService.initCodeFlow();
+        }
+      })
+    ).subscribe();
   }
 
   private logout(redirect: boolean = true) {

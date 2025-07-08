@@ -1,0 +1,20 @@
+<a
+  class="p-3 flex cursor-pointer items-center rounded-lg transition-all duration-200 hover:bg-primary-600 hover:text-white"
+  [class]="{
+      'justify-center': collapsed(),
+      'space-x-3': !collapsed(),
+      'bg-primary-600': rla.isActive,
+      'text-white': rla.isActive,
+     }"
+  [routerLink]="routerLink()" [queryParams]="queryParams()"
+  routerLinkActive #rla="routerLinkActive" [routerLinkActiveOptions]="{ exact: true }"
+>
+  <!-- Icon -->
+  <i [class]="primeNgIcon()"></i>
+
+  <!-- Label (hidden when collapsed) -->
+  <span class="transition-opacity duration-300 whitespace-nowrap"
+        [class]="collapsed() ? 'opacity-0 w-0 overflow-hidden' : 'opacity-100'">
+                {{ label() }}
+        </span>
+</a>

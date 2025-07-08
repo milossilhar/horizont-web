@@ -1,25 +1,58 @@
-<p-dataview [paginator]="true" [rows]="DEFAULT_SIZE" [first]="DEFAULT_FIRST" [rowsPerPageOptions]="SIZE_OPTIONS"
-  [value]="data()" [totalRecords]="totalRecords()" [lazy]="true"
-  (onPage)="onPageUpdate($event)"
+@if (currentConfig && currentConfig.creationFormComponent) {
+  <p-drawer [(visible)]="visibleDrawer" position="right" styleClass="min-w-128">
+    <ng-container *ngComponentOutlet="
+      visibleDrawer ? currentConfig.creationFormComponent : null;
+      inputs: {
+        'shownAs': 'drawer',
+        'onSuccess': this.onDrawerClose.bind(this)
+      }">
+    </ng-container>
+  </p-drawer>
+}
+
+<div class="flex flex-nowrap items-stretch space-x-2">
+  <app-filter [service]="currentConfig?.service"></app-filter>
+  <p-dataview class="flex-1"
+              [paginator]="true" [rows]="DEFAULT_SIZE" [first]="DEFAULT_FIRST" [rowsPerPageOptions]="SIZE_OPTIONS"
+              [showFirstLastIcon]="false"
+              [value]="data()" [totalRecords]="totalRecords()" [lazy]="true" [layout]="layoutForm.value"
+              (onPage)="onPageUpdate($event)"
   >
-  <ng-template #header>
-    
-  </ng-template>
-  <ng-template #list let-items>
-    <div class="grid grid-cols-2 gap-4 grid-nogutter">
-      @for (item of items; track $index) {
-        @switch(component()) {
-          @case ('registration') {
-            <app-registration-card [registration]="item"></app-registration-card>
-          }
-          @case ('event') {
-            <app-event-card [event]="item" [minimal]="true"></app-event-card>
-          }
-          @default {
-            <p>{{item | json}}</p>
-          }
+    <!-- HEADER -->
+    <ng-template #header>
+      <div class="flex flex-row items-center justify-end gap-2">
+        <p-select [formControl]="sortForm" optionLabel="label" optionValue="value" placeholder="Zoradiť"
+                  [showClear]="true" [fluid]="true" size="small" [options]="sortOptions">
+          <ng-template let-item #item>
+            <span class="ml-2">{{ item.label }}</span>
+            <i class="ms-2" [class]="getSortIconClass(item)"></i>
+          </ng-template>
+        </p-select>
+        <p-select-button [formControl]="layoutForm" [options]="LAYOUT_OPTIONS"
+                         [unselectable]="false" [allowEmpty]="false"
+                         optionLabel="value" optionValue="value">
+          <ng-template #item let-item>
+            <i [class]="item.icon"></i>
+          </ng-template>
+        </p-select-button>
+        <p-button icon="pi pi-plus" [rounded]="true" (click)="onCreateNewClick()"/>
+      </div>
+    </ng-template>
+
+    <!-- LIST VIEW -->
+    <ng-template #list #grid let-items>
+      <div class="my-4 grid grid-cols-1 gap-4 grid-nogutter">
+        @for (item of items; track $index) {
+          <ng-container *ngComponentOutlet="
+              currentConfig?.component ?? null;
+              inputs: {
+                'entity': item,
+                'layout': layoutForm.value
+              };
+            ">
+          </ng-container>
         }
-      }
-    </div>
-  </ng-template>
-</p-dataview>
+      </div>
+    </ng-template>
+  </p-dataview>
+</div>

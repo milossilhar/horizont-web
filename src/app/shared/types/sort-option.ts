@@ -1,9 +1,7 @@
-/**
- * 
- * 
- */
+import { Sort } from './sort';
+
 export interface SortOption {
-  sortField: string,
-  sortLabel: string,
-  availableDir: 'asc' | 'desc' | 'both'
+  label: string,
+  type: 'numeric' | 'alpha' | 'amount' | 'date',
+  value: Sort
 }

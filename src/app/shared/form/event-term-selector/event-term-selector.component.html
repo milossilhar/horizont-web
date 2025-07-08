@@ -1,77 +1,71 @@
 <div class="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-  @for (term of terms(); track $index) {
-    @let selected = selectedIndex() === $index;
-    @let capacity = getCapacity(term);
-    @let capacityStatus = getCapacityStatus(term);
+    @for (term of terms(); track $index) {
+        @let selected = selectedIndex() === $index;
+        @let capacityStatus = getCapacityStatus(term);
 
-    <div class="flex flex-col gap-y-2">
-      <div class="p-2 rounded-border cursor-pointer bg-highlight hover:bg-highlight-emphasis"
-        [class]="{ 'bg-highlight-emphasis': selected }"
-        (click)="onTermClick($index)">
-        <div class="flex flex-row w-full justify-between">
-          <p class="text-lg">Termín {{$index +1}}</p>
-          @if(selected) {
-            <i class="pi pi-check-circle"></i>
-          } @else {
-            <i class="pi pi-circle"></i>
-          }
-        </div>
-        
-        @if (showAdmin()) {
-          <div class="flex flex-col justify-start items-start ml-4">
-            <p class="text-lg font-bold">
-              <i class="pi pi-calendar-clock mr-2"></i>{{term.startAt | date : 'medium'}}
-            </p>
-            <p class="text-lg font-bold">
-              <i class="pi pi-calendar-times mr-2"></i>{{term.endAt | date : 'medium'}}
-            </p>
-            @if (!!eventUUID()) {
-              <p class="text-lg">
-                <i class="pi pi-user mr-2"></i>{{capacity?.registered || 0}} / {{term.capacity}}
-              </p>
-            } @else {
-              <p class="text-lg">
-                <i class="pi pi-user mr-2"></i>{{term.capacity}}
-              </p>
-            }
-          </div>
-        } @else {
-          <p class="text-2xl font-bold">{{term.startAt | date : 'd. MMM'}} - {{term.endAt | date : 'd. MMM'}}</p>
+        <div class="flex flex-col gap-y-2">
+            <div class="p-2 rounded-border cursor-pointer bg-highlight hover:bg-highlight-emphasis"
+                 [class]="{ 'bg-highlight-emphasis': selected }"
+                 (click)="onTermClick($index)">
+                <div class="flex flex-row w-full justify-between">
+                    <p class="text-lg">Termín {{ $index + 1 }}</p>
+                    @if (selected) {
+                        <i class="pi pi-check-circle"></i>
+                    } @else {
+                        <i class="pi pi-circle"></i>
+                    }
+                </div>
 
-          <div class="w-full flex flex-row justify-between items-center">
-            <div class="flex flex-col items-start">
-              <p class="text-xl">{{term.price | currency}} / dieťa</p>
-              @if (term.deposit > 0) {
-                <p class="text-sm">Záloha {{term.deposit | currency}} / dieťa</p>
-              }
+                @if (showAdmin()) {
+                    <div class="flex flex-col justify-start items-start ml-4">
+                        <p class="text-lg font-bold">
+                            <i class="pi pi-calendar-clock mr-2"></i>{{ term.startDate | date : 'medium' }}
+                        </p>
+                        <p class="text-lg font-bold">
+                            <i class="pi pi-calendar-times mr-2"></i>{{ term.startTime | date : 'medium' }}
+                        </p>
+                        <p class="text-lg">
+                            <i class="pi pi-user mr-2"></i>{{ term.capacity }}
+                        </p>
+                    </div>
+                } @else {
+                    <p class="text-2xl font-bold">{{ term.startDate | date : 'd. MMM' }}</p>
+
+                    <div class="w-full flex flex-row justify-between items-center">
+                        <div class="flex flex-col items-start">
+                            <p class="text-xl">{{ term.price | currency }} / dieťa</p>
+                            @if (term.deposit && term.deposit > 0) {
+                                <p class="text-sm">Záloha {{ term.deposit | currency }} / dieťa</p>
+                            }
+                        </div>
+                        <div class="flex flex-col items-end">
+                            <p class="text-xl">
+                                <i class="pi pi-user mr-1"></i>{{ term.capacity }}
+                            </p>
+                            <app-remain-capacity-tag [status]="capacityStatus"></app-remain-capacity-tag>
+                        </div>
+                    </div>
+                }
+
             </div>
-            <div class="flex flex-col items-end">
-              <p class="text-xl">
-                <i class="pi pi-user mr-1"></i>{{term.capacity}}
-              </p>
-              <app-remain-capacity-tag [status]="capacityStatus"></app-remain-capacity-tag>
-            </div>
-          </div>
-        }
 
-      </div>
-
-      @if (selected && !showAdmin()) {
-        @if (capacityStatus === EventTermCapacityStatus.FILLED) {
-          <p-message icon="pi pi-exclamation-circle" variant="outlined" severity="warn">
+            @if (selected && !showAdmin()) {
+                @if (capacityStatus === EventTermCapacityStatus.FILLED) {
+                    <p-message icon="pi pi-exclamation-circle" variant="outlined" severity="warn">
             <span>
               V tomto termíne sme už vyčerpali miesta.<br>
-              Vašu registráciu však radi príjmeme a budete <span class="font-semibold">zaradení do poradovníka</span>.<br>
+              Vašu registráciu však radi príjmeme a budete <span
+                class="font-semibold">zaradení do poradovníka</span>.<br>
               Pokiaľ sa uvoľní miesto, kontaktujeme Vás.</span>
-          </p-message>
-        }
-        @if (capacityStatus === EventTermCapacityStatus.LAST_ONE) {
-          <p-message icon="pi pi-info-circle" variant="outlined" severity="info">
+                    </p-message>
+                }
+                @if (capacityStatus === EventTermCapacityStatus.LAST_ONE) {
+                    <p-message icon="pi pi-info-circle" variant="outlined" severity="info">
             <span>Máme len posledné miesto.<br>
               V prípade, že registrujete <span class="font-semibold">viac ako jedno dieťa</span> budete zaradený do poradovníka.</span>
-          </p-message>
-        }
-      }
-    </div>
-  }
+                    </p-message>
+                }
+            }
+        </div>
+    }
 </div>

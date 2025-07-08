@@ -1,0 +1,26 @@
+<app-form-with-errors [errorMessages]="errorMessages()">
+  <p-float-label variant="on">
+    <p-select [formControl]="form" optionValue="code" fluid
+              [showClear]="true" [inputId]="inputId()" [options]="values()">
+      <ng-template let-selectedItem #selectedItem>
+        {{ selectedItem.name }}
+      </ng-template>
+      <ng-template let-item #item>
+        @if (item.description) {
+          <div class="flex flex-col items-start justify-center gap-1">
+            <p class="text-md">{{ item.name }}</p>
+            <p class="text-sm text-gray-500">{{ item.description }}</p>
+          </div>
+        } @else {
+          <p class="text-md">{{ item.name }}</p>
+        }
+      </ng-template>
+      <ng-template #footer>
+        <div class="p-3">
+          <p-button label="Pridaj" fluid [text]="true" icon="pi pi-plus" (click)="onAddClick()"></p-button>
+        </div>
+      </ng-template>
+    </p-select>
+    <label [for]="inputId()">{{ placeholder() }}</label>
+  </p-float-label>
+</app-form-with-errors>

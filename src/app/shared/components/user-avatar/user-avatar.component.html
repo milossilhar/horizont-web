@@ -1,0 +1,21 @@
+<p-menu #loginMenu [model]="items" [popup]="true"
+        (onShow)="menuShown = true" (onHide)="menuShown = false">
+</p-menu>
+<div
+  class="flex items-center cursor-pointer hover:bg-primary-50 rounded-lg"
+  [class]="collapsed() ? 'justify-center' : 'justify-start p-2'"
+  (click)="loginMenu.toggle($event)"
+>
+  <div class="w-10 h-10 flex-shrink-0 flex items-center justify-center">
+    <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" shape="circle"></p-avatar>
+  </div>
+  <div class="flex flex-col transition-all duration-300"
+       [class]="collapsed() ? 'opacity-0 ms-0 w-0 overflow-hidden' : 'ms-4 opacity-100'">
+    <p class="text-sm font-medium text-primary-900">John Doe</p>
+    <p class="text-xs text-primary-600">{{ 'test@test.com' }}</p>
+  </div>
+  @if (!collapsed()) {
+    <div class="flex-1"></div>
+    <i class="me-2" [class]="menuShown ? 'pi pi-chevron-down' : 'pi pi-chevron-up'"></i>
+  }
+</div>

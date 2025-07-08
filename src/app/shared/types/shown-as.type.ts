@@ -1,0 +1,1 @@
+export type ShownAsType = 'popover' | 'drawer' | 'standalone';

@@ -1,0 +1,43 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="flex flex-col gap-4 mt-2" (paste)="onPaste($event)">
+
+  <app-form-with-errors>
+    <p-float-label variant="on">
+      <label for="enum-name">Názov</label>
+      <input id="enum-name" type="text" pInputText formControlName="name">
+    </p-float-label>
+  </app-form-with-errors>
+
+  <app-form-with-errors>
+    <p-float-label variant="on">
+      <label for="enum-description">Popis</label>
+      <input id="enum-description" type="text" pInputText formControlName="description">
+    </p-float-label>
+  </app-form-with-errors>
+
+  @if (!!form.get('latitude')) {
+    <app-form-with-errors>
+      <p-float-label variant="on">
+        <p-input-number inputId="enum-latitude" mode="decimal" formControlName="latitude"
+                        [maxlength]="18" [minFractionDigits]="0" [maxFractionDigits]="15" [min]="-90" [max]="90">
+        </p-input-number>
+        <label for="enum-latitude">Zem. dĺžka</label>
+      </p-float-label>
+    </app-form-with-errors>
+  }
+
+  @if (!!form.get('longitude')) {
+    <app-form-with-errors>
+      <p-float-label variant="on">
+        <p-input-number inputId="enum-longitude" mode="decimal" formControlName="longitude"
+                        [maxlength]="18" [minFractionDigits]="0" [maxFractionDigits]="15" [min]="-180" [max]="180">
+        </p-input-number>
+        <label for="enum-longitude">Zem. šírka</label>
+      </p-float-label>
+    </app-form-with-errors>
+  }
+
+  <div class="grid grid-cols-2 gap-2">
+    <p-button label="Pridať" text icon="pi pi-plus" severity="success" type="submit" fluid></p-button>
+    <p-button label="Zrušiť" text icon="pi pi-times" severity="danger" type="button" fluid (onClick)="onCloseClick()"></p-button>
+  </div>
+</form>

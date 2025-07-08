@@ -11,15 +11,19 @@ export class ToastService {
     private messageService: MessageService
   ) { }
 
-  public success(message: string, header: string) {
+  public info(message: string, header: string = 'Informácia') {
+    this.msg('info', message, header);
+  }
+
+  public success(message: string, header: string = 'Potvrdenie') {
     this.msg('success', message, header);
   }
 
-  public warn(message: string, header: string) {
+  public warn(message: string, header: string = 'Upozornenie') {
     this.msg('warn', message, header);
   }
 
-  public error(message: string, header: string) {
+  public error(message: string, header: string = 'Chyba') {
     this.msg('error', message, header);
   }
 

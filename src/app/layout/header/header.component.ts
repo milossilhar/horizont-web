@@ -5,7 +5,7 @@ import { MenuModule } from 'primeng/menu';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { MessageModule } from 'primeng/message';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { HealthHorizontService } from '../../rest/api/health.service';
+import { HealthRestService } from '../../rest/api/health.service';
 import { catchError, tap } from 'rxjs';
 import { AuthService } from '../../shared/service/auth.service';
 import { IfLoggedInDirective } from '../../shared/directives/if-logged-in.directive';
@@ -52,10 +52,10 @@ export class HeaderComponent implements OnInit {
   constructor(
     private router: Router,
     private authService: AuthService,
-    private healthHorizonService: HealthHorizontService) { }
+    private healthRestService: HealthRestService) { }
 
   ngOnInit(): void {
-    this.healthHorizonService.getEnvironment().pipe(
+    this.healthRestService.getEnvironment().pipe(
       tap(env => this.environment.set(env.value)),
       catchError(() => this.router.navigateByUrl('/unavailable'))
     ).subscribe();

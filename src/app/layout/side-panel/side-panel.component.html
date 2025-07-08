@@ -1,0 +1,26 @@
+<!-- Side Panel -->
+<div
+  class="p-4 text-gray-600 transition-width duration-300 ease-in-out flex flex-col"
+  [class]="collapsed() ? 'w-20' : 'w-64'">
+  <!-- Header with toggle button -->
+  <div class="flex items-center">
+    <div class="w-12 h-12 flex-shrink-0 flex items-center justify-center">
+      <p-overlay-badge badgeSize="small" [badgeDisabled]="true" severity="danger">
+        <p-avatar image="https://picsum.photos/id/121/200" shape="circle" size="large"></p-avatar>
+      </p-overlay-badge>
+    </div>
+    <h2 class="font-bold text-xl transition-all duration-300"
+        [class]="collapsed() ? 'opacity-0 ms-0 w-0 overflow-hidden' : 'ms-4 opacity-100'">
+      Horizont
+    </h2>
+  </div>
+
+  <p-divider></p-divider>
+
+  <app-navigation [collapsed]="collapsed()"></app-navigation>
+
+  <div class="flex-1"></div>
+
+  <!-- Footer -->
+  <app-user-avatar [collapsed]="collapsed()"></app-user-avatar>
+</div>

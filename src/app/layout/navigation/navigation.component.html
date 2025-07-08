@@ -1,0 +1,10 @@
+<!-- Navigation Items -->
+<nav class="space-y-2">
+  @for (item of navigationItems; track $index) {
+    <div class="relative">
+      <app-navigation-link [collapsed]="collapsed()" [label]="item.label"
+                           [routerLink]="item.href" [icon]="item.icon" [queryParams]="item.params">
+      </app-navigation-link>
+    </div>
+  }
+</nav>

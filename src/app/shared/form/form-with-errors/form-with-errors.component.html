@@ -1,0 +1,14 @@
+<div class="flex flex-col gap-2">
+  <ng-content></ng-content>
+  @if (shouldShowErrors) {
+    @for (errorMessage of getErrorMessages(); track $index) {
+      <p-message severity="error" variant="simple">{{ errorMessage }}</p-message>
+    }
+  }
+  @if (hint()) {
+    <small class="text-gray-500">{{ hint() }}</small>
+  }
+  @if (debug()) {
+    <p>errors: {{control?.errors | json}}</p>
+  }
+</div>

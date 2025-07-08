@@ -1,213 +1,213 @@
-<p-card styleClass="w-full overflow-hidden">
-  
-  <!-- Header with Status -->
-  <ng-template #header>
-    <div class="bg-gradient-to-bl from-zinc-600 to-emerald-800 text-white py-4 px-6">
-      <div class="flex justify-between items-start">
-        <div class="flex flex-col gap-y-1">
-          <h2 class="text-2xl font-bold">
-            {{registration.name}} {{registration.surname}}
-          </h2>
-          <p class="text-blue-100 text-sm">
-            Registrácia: {{registration.createdAt | date : 'medium'}}
-          </p>
-        </div>
-        <p-tag
-          [value]="statusText"
-          [severity]="statusSeverity"
-          [rounded]="true"
-          styleClass="text-sm font-semibold px-3 py-1">
-        </p-tag>
-      </div>
-    </div>
-  </ng-template>
+<!--<p-card styleClass="w-full overflow-hidden">-->
+<!--  -->
+<!--  &lt;!&ndash; Header with Status &ndash;&gt;-->
+<!--  <ng-template #header>-->
+<!--    <div class="bg-gradient-to-bl from-zinc-600 to-emerald-800 text-white py-4 px-6">-->
+<!--      <div class="flex justify-between items-start">-->
+<!--        <div class="flex flex-col gap-y-1">-->
+<!--          <h2 class="text-2xl font-bold">-->
+<!--            {{registration.name}} {{registration.surname}}-->
+<!--          </h2>-->
+<!--          <p class="text-blue-100 text-sm">-->
+<!--            Registrácia: {{registration.createdAt | date : 'medium'}}-->
+<!--          </p>-->
+<!--        </div>-->
+<!--        <p-tag-->
+<!--          [value]="statusText"-->
+<!--          [severity]="statusSeverity"-->
+<!--          [rounded]="true"-->
+<!--          styleClass="text-sm font-semibold px-3 py-1">-->
+<!--        </p-tag>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </ng-template>-->
 
-  <!-- Main Content -->
-  <div class="px-2 py-0">
-    
-    <!-- Contact Information -->
-    <div class="grid sm:grid-cols-2 gap-6">
-      <div class="flex flex-col gap-y-4">
-        <h3 class="text-lg font-semibold text-gray-800 border-b border-gray-200">
-          Kontaktné Informácie
-        </h3>
-        <div class="space-y-2">
-          <div class="flex items-center gap-3">
-            <i class="pi pi-envelope text-gray-500"></i>
-            <app-external-link [value]="registration.email" type="email"></app-external-link>
-          </div>
-          <div class="flex items-center gap-3">
-            <i class="pi pi-phone text-gray-500"></i>
-            <app-external-link [value]="registration.telPhone" type="tel"></app-external-link>
-          </div>
-        </div>
-      </div>
+<!--  &lt;!&ndash; Main Content &ndash;&gt;-->
+<!--  <div class="px-2 py-0">-->
+<!--    -->
+<!--    &lt;!&ndash; Contact Information &ndash;&gt;-->
+<!--    <div class="grid sm:grid-cols-2 gap-6">-->
+<!--      <div class="flex flex-col gap-y-4">-->
+<!--        <h3 class="text-lg font-semibold text-gray-800 border-b border-gray-200">-->
+<!--          Kontaktné Informácie-->
+<!--        </h3>-->
+<!--        <div class="space-y-2">-->
+<!--          <div class="flex items-center gap-3">-->
+<!--            <i class="pi pi-envelope text-gray-500"></i>-->
+<!--            <app-external-link [value]="registration.email" type="email"></app-external-link>-->
+<!--          </div>-->
+<!--          <div class="flex items-center gap-3">-->
+<!--            <i class="pi pi-phone text-gray-500"></i>-->
+<!--            <app-external-link [value]="registration.telPhone" type="tel"></app-external-link>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
 
-      <!-- Consent Information -->
-      <div class="flex flex-col gap-y-4">
-        <h3 class="text-lg font-semibold text-gray-800 border-b border-gray-200">
-          Súhlasy
-        </h3>
-        <div class="space-y-2">
-          <div class="flex items-center justify-between">
-            <span class="text-gray-700">GDPR</span>
-            <app-consent-tag [consent]="registration.consentGDPR"></app-consent-tag>
-          </div>
-          <div class="flex items-center justify-between">
-            <span class="text-gray-700">Fotenie</span>
-            <app-consent-tag [consent]="registration.consentPhoto"></app-consent-tag>
-          </div>
-        </div>
-      </div>
-    </div>
+<!--      &lt;!&ndash; Consent Information &ndash;&gt;-->
+<!--      <div class="flex flex-col gap-y-4">-->
+<!--        <h3 class="text-lg font-semibold text-gray-800 border-b border-gray-200">-->
+<!--          Súhlasy-->
+<!--        </h3>-->
+<!--        <div class="space-y-2">-->
+<!--          <div class="flex items-center justify-between">-->
+<!--            <span class="text-gray-700">GDPR</span>-->
+<!--            <app-consent-tag [consent]="registration.consentGDPR"></app-consent-tag>-->
+<!--          </div>-->
+<!--          <div class="flex items-center justify-between">-->
+<!--            <span class="text-gray-700">Fotenie</span>-->
+<!--            <app-consent-tag [consent]="registration.consentPhoto"></app-consent-tag>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
 
-    <!-- Payment Information -->
-     @if(payment) {
-      <div class="grid grid-cols-1 sm:grid-cols-2 border-b border-gray-200 mt-4 mb-2">
-        <h3 class="text-lg font-semibold text-gray-800">
-          Platobné Informácie
-        </h3>
-        <div class="flex flex-row gap-x-1 justify-self-end">
-          @if(payment.hasDeposit) {
-            <app-boolean-tag [value]="!!payment.depositPaid" size="text-xs"
-              trueLabel="Záloha" falseLabel="Záloha">
-            </app-boolean-tag>
-          }
-          <app-boolean-tag [value]="!!payment.paid" size="text-xs" class="justify-self-end"
-            trueLabel="Plná suma" falseLabel="Plná suma">
-          </app-boolean-tag>
-        </div>
-      </div>
+<!--    &lt;!&ndash; Payment Information &ndash;&gt;-->
+<!--     @if(payment) {-->
+<!--      <div class="grid grid-cols-1 sm:grid-cols-2 border-b border-gray-200 mt-4 mb-2">-->
+<!--        <h3 class="text-lg font-semibold text-gray-800">-->
+<!--          Platobné Informácie-->
+<!--        </h3>-->
+<!--        <div class="flex flex-row gap-x-1 justify-self-end">-->
+<!--          @if(payment.hasDeposit) {-->
+<!--            <app-boolean-tag [value]="!!payment.depositPaid" size="text-xs"-->
+<!--              trueLabel="Záloha" falseLabel="Záloha">-->
+<!--            </app-boolean-tag>-->
+<!--          }-->
+<!--          <app-boolean-tag [value]="!!payment.paid" size="text-xs" class="justify-self-end"-->
+<!--            trueLabel="Plná suma" falseLabel="Plná suma">-->
+<!--          </app-boolean-tag>-->
+<!--        </div>-->
+<!--      </div>-->
 
-      <!-- Payment Information -->
-      <div class="flex flex-col gap-y-2">
-        @if (payment.hasDiscount) {
-          <!-- Original Price -->
-          <div class="flex justify-between items-center">
-            <span class="text-gray-600">Originálna cena:</span>
-            <span class="font-medium text-gray-900">{{ payment.price | currency }}</span>
-          </div>
+<!--      &lt;!&ndash; Payment Information &ndash;&gt;-->
+<!--      <div class="flex flex-col gap-y-2">-->
+<!--        @if (payment.hasDiscount) {-->
+<!--          &lt;!&ndash; Original Price &ndash;&gt;-->
+<!--          <div class="flex justify-between items-center">-->
+<!--            <span class="text-gray-600">Originálna cena:</span>-->
+<!--            <span class="font-medium text-gray-900">{{ payment.price | currency }}</span>-->
+<!--          </div>-->
 
-          <!-- Discount (if applicable) -->
-          <div class="flex justify-between items-center text-red-600 border-b border-gray-200 pb-1">
-            <span>Zľava {{discountPercent | percent}}:</span>
-            <span class="font-medium">-{{ payment.discountPercentValue || payment.discountValue | currency }}</span>
-          </div>
-        }
+<!--          &lt;!&ndash; Discount (if applicable) &ndash;&gt;-->
+<!--          <div class="flex justify-between items-center text-red-600 border-b border-gray-200 pb-1">-->
+<!--            <span>Zľava {{discountPercent | percent}}:</span>-->
+<!--            <span class="font-medium">-{{ payment.discountPercentValue || payment.discountValue | currency }}</span>-->
+<!--          </div>-->
+<!--        }-->
 
-        <!-- Final Price -->
-        <div class="flex justify-between items-center">
-          <span class="font-semibold text-gray-800">Výsledná cena:</span>
-          <span class="font-bold text-lg text-gray-900">{{ payment.finalPrice | currency }}</span>
-        </div>
+<!--        &lt;!&ndash; Final Price &ndash;&gt;-->
+<!--        <div class="flex justify-between items-center">-->
+<!--          <span class="font-semibold text-gray-800">Výsledná cena:</span>-->
+<!--          <span class="font-bold text-lg text-gray-900">{{ payment.finalPrice | currency }}</span>-->
+<!--        </div>-->
 
-        <!-- Deposit Information -->
-        @if (payment.hasDeposit) {
-          <div class="bg-gray-50 p-3 rounded-md">
-            <div class="flex justify-between items-center mb-2">
-              <span class="text-gray-600">Požadovaná záloha:</span>
-              <span class="font-medium text-gray-900">{{ payment.deposit | currency }}</span>
-            </div>
-            <div class="flex justify-between items-center">
-              <span class="text-gray-600">Zostatok:</span>
-              <span class="font-medium text-gray-900">{{ payment.remainingValue | currency }}</span>
-            </div>
-          </div>
-        }
+<!--        &lt;!&ndash; Deposit Information &ndash;&gt;-->
+<!--        @if (payment.hasDeposit) {-->
+<!--          <div class="bg-gray-50 p-3 rounded-md">-->
+<!--            <div class="flex justify-between items-center mb-2">-->
+<!--              <span class="text-gray-600">Požadovaná záloha:</span>-->
+<!--              <span class="font-medium text-gray-900">{{ payment.deposit | currency }}</span>-->
+<!--            </div>-->
+<!--            <div class="flex justify-between items-center">-->
+<!--              <span class="text-gray-600">Zostatok:</span>-->
+<!--              <span class="font-medium text-gray-900">{{ payment.remainingValue | currency }}</span>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        }-->
 
-        <!-- Variable Symbol -->
-        <div class="flex justify-between items-center text-sm">
-          <span class="text-gray-500">Variabilný symbol:</span>
-          <span class="font-mono text-gray-700">{{ payment.variableSymbol }}</span>
-        </div>
-      </div>
+<!--        &lt;!&ndash; Variable Symbol &ndash;&gt;-->
+<!--        <div class="flex justify-between items-center text-sm">-->
+<!--          <span class="text-gray-500">Variabilný symbol:</span>-->
+<!--          <span class="font-mono text-gray-700">{{ payment.variableSymbol }}</span>-->
+<!--        </div>-->
+<!--      </div>-->
 
-      <!-- Action Buttons -->
-       @if (!payment.paid) {
-         <div class="flex flex-col items-stretch gap-1 mt-2">
-   
-           @if (payment.hasDeposit && !payment.depositPaid) {
-             <p-button size="small" [fluid]="true" icon="pi pi-check" severity="info"
-               (onClick)="paidClick($event, true)" [disabled]="loading()" [loading]="loading()"
-               [label]="`Potvrď zálohu (${payment.deposit | currency})`">
-             </p-button>
-           }
-   
-           <!-- <p-button size="small" [fluid]="true" icon="pi pi-check-square" severity="success"
-             (onClick)="paidClick($event, false)" [disabled]="loading()" [loading]="loading()"
-             [label]="getPaymentButtonText() + ` (${this.payment.remainingValue | currency})`">
-           </p-button> -->
-         </div>
-       }
-     }
+<!--      &lt;!&ndash; Action Buttons &ndash;&gt;-->
+<!--       @if (!payment.paid) {-->
+<!--         <div class="flex flex-col items-stretch gap-1 mt-2">-->
+<!--   -->
+<!--           @if (payment.hasDeposit && !payment.depositPaid) {-->
+<!--             <p-button size="small" [fluid]="true" icon="pi pi-check" severity="info"-->
+<!--               (onClick)="paidClick($event, true)" [disabled]="loading()" [loading]="loading()"-->
+<!--               [label]="`Potvrď zálohu (${payment.deposit | currency})`">-->
+<!--             </p-button>-->
+<!--           }-->
+<!--   -->
+<!--           &lt;!&ndash; <p-button size="small" [fluid]="true" icon="pi pi-check-square" severity="success"-->
+<!--             (onClick)="paidClick($event, false)" [disabled]="loading()" [loading]="loading()"-->
+<!--             [label]="getPaymentButtonText() + ` (${this.payment.remainingValue | currency})`">-->
+<!--           </p-button> &ndash;&gt;-->
+<!--         </div>-->
+<!--       }-->
+<!--     }-->
 
-    <!-- People Information -->
-    @if(registration.people && registration.people.length > 0) {
-      <p-divider></p-divider>
-      <h3 class="text-lg font-semibold text-gray-800 mb-4 flex flex-row justify-start items-center gap-2">
-        <i class="pi pi-users text-gray-600"></i>
-        Registrované deti
-        <p-badge [value]="registration.people.length" severity="info"></p-badge>
-      </h3>
-      
-      <div class="grid gap-4">
-        @for (person of registration.people; track $index) {
-          <div class="bg-white border border-gray-200 rounded-lg p-3 flex flex-col gap-y-1">
-            
-            <div class="flex justify-between items-start">
-              <h4 class="font-semibold text-gray-800">
-                {{person.name}} {{person.surname}}
-              </h4>
-              <app-independent-tag [independent]="person.isIndependent" size="small"></app-independent-tag>
-            </div>
-            
-            <div class="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
-              <div>
-                <span class="text-gray-600 block">Dátum narodenia</span>
-                <span class="text-gray-800 font-medium">{{person.dateOfBirth | date}}</span>
-              </div>
+<!--    &lt;!&ndash; People Information &ndash;&gt;-->
+<!--    @if(registration.people && registration.people.length > 0) {-->
+<!--      <p-divider></p-divider>-->
+<!--      <h3 class="text-lg font-semibold text-gray-800 mb-4 flex flex-row justify-start items-center gap-2">-->
+<!--        <i class="pi pi-users text-gray-600"></i>-->
+<!--        Registrované deti-->
+<!--        <p-badge [value]="registration.people.length" severity="info"></p-badge>-->
+<!--      </h3>-->
+<!--      -->
+<!--      <div class="grid gap-4">-->
+<!--        @for (person of registration.people; track $index) {-->
+<!--          <div class="bg-white border border-gray-200 rounded-lg p-3 flex flex-col gap-y-1">-->
+<!--            -->
+<!--            <div class="flex justify-between items-start">-->
+<!--              <h4 class="font-semibold text-gray-800">-->
+<!--                {{person.name}} {{person.surname}}-->
+<!--              </h4>-->
+<!--              <app-independent-tag [independent]="person.isIndependent" size="small"></app-independent-tag>-->
+<!--            </div>-->
+<!--            -->
+<!--            <div class="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">-->
+<!--              <div>-->
+<!--                <span class="text-gray-600 block">Dátum narodenia</span>-->
+<!--                <span class="text-gray-800 font-medium">{{person.dateOfBirth | date}}</span>-->
+<!--              </div>-->
 
-              <div>
-                <span class="text-gray-600 block">Veľkosť trička</span>
-                <span class="text-gray-800 font-medium">{{person.shirtSize}}</span>
-              </div>
-              
-              <div>
-                <span class="text-gray-600 block">Zdravotné poznámky</span>
-                <span class="text-teal-700 font-medium">{{person.healthNotes | default : 'neuvedené'}}</span>
-              </div>
-              
-              <div>
-                <span class="text-gray-600 block">Alergie na jedlo</span>
-                <span class="text-orange-700 font-medium">{{person.foodAllergyNotes | default : 'neuvedené'}}</span>
-              </div>
-            </div>
-          </div>
-        }
-      </div>
-    }
+<!--              <div>-->
+<!--                <span class="text-gray-600 block">Veľkosť trička</span>-->
+<!--                <span class="text-gray-800 font-medium">{{person.shirtSize}}</span>-->
+<!--              </div>-->
+<!--              -->
+<!--              <div>-->
+<!--                <span class="text-gray-600 block">Zdravotné poznámky</span>-->
+<!--                <span class="text-teal-700 font-medium">{{person.healthNotes | default : 'neuvedené'}}</span>-->
+<!--              </div>-->
+<!--              -->
+<!--              <div>-->
+<!--                <span class="text-gray-600 block">Alergie na jedlo</span>-->
+<!--                <span class="text-orange-700 font-medium">{{person.foodAllergyNotes | default : 'neuvedené'}}</span>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        }-->
+<!--      </div>-->
+<!--    }-->
 
-    <!-- Known People -->
-    @if (registration.knownPeople && registration.knownPeople.length > 0) {
-      <p-divider></p-divider>
-      <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-        <i class="pi pi-user-plus text-gray-600"></i>
-        Známe osoby
-        <p-badge [value]="`${registration.knownPeople.length}`" severity="info"></p-badge>
-      </h3>
-      
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
-        @for (knownPerson of registration.knownPeople; track $index) {
-          <div class="bg-gray-50 rounded-lg p-3 border border-gray-200">
-            <p class="font-medium text-gray-800">
-              {{knownPerson.name}} {{knownPerson.surname}}
-            </p>
-            <p class="text-sm text-gray-600">{{knownPerson.relation | enum : 'REG_E_RELATION'}}</p>
-          </div>
-        }
-      </div>
-    }
+<!--    &lt;!&ndash; Known People &ndash;&gt;-->
+<!--    @if (registration.knownPeople && registration.knownPeople.length > 0) {-->
+<!--      <p-divider></p-divider>-->
+<!--      <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">-->
+<!--        <i class="pi pi-user-plus text-gray-600"></i>-->
+<!--        Známe osoby-->
+<!--        <p-badge [value]="`${registration.knownPeople.length}`" severity="info"></p-badge>-->
+<!--      </h3>-->
+<!--      -->
+<!--      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-3">-->
+<!--        @for (knownPerson of registration.knownPeople; track $index) {-->
+<!--          <div class="bg-gray-50 rounded-lg p-3 border border-gray-200">-->
+<!--            <p class="font-medium text-gray-800">-->
+<!--              {{knownPerson.name}} {{knownPerson.surname}}-->
+<!--            </p>-->
+<!--            <p class="text-sm text-gray-600">{{knownPerson.relation | enum : 'REG_E_RELATION'}}</p>-->
+<!--          </div>-->
+<!--        }-->
+<!--      </div>-->
+<!--    }-->
 
-  </div>
+<!--  </div>-->
 
-</p-card>
+<!--</p-card>-->

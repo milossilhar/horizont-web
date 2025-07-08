@@ -4,15 +4,16 @@ import { AuthService } from '../service/auth.service';
 
 @Injectable({providedIn: 'root'})
 export class AuthGuard implements CanActivate {
-  
+
   constructor(
       private authService: AuthService
     ) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): MaybeAsync<GuardResult> {
-    if (this.authService.isLoggedInSnapshot) return true;
+    return true;
+    // if (this.authService.isLoggedInSnapshot) return true;
 
-    return createUrlTreeFromSnapshot(route, ['/']);
+    // return createUrlTreeFromSnapshot(route, ['/']);
   }
 
 }

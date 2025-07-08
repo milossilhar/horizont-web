@@ -1,31 +1,31 @@
-<div class="flex flex-row justify-between my-4">
-  <div class="flex gap-x-2 items-center">
-    <p-iconfield>
-        <p-inputicon styleClass="pi pi-search" />
-        <input type="text" pInputText placeholder="Vyhľadaj..." [formControl]="searchForm" />
-        <p-inputicon [class]="{ 'invisible': !searching }" styleClass="pi pi-spinner pi-spin" />
-    </p-iconfield>
-    @if (!!searchValue()) {
-      <p-button icon="pi pi-times" (onClick)="onClearClick()" [rounded]="true" [text]="true" severity="secondary"></p-button>
-    }
-  </div>
-  <div class="flex flex-row gap-x-2 items-baseline">
-    <p-button icon="pi pi-copy" label="e-mail" (click)="onEmailCopyClick()" size="small" severity="secondary"></p-button>
-    <p-selectbutton [options]="displayOptions" [formControl]="displayForm" optionValue="value" [allowEmpty]="false">
-        <ng-template #item let-item>
-            <i class="pi" [class]="item.icon"></i>
-        </ng-template>
-    </p-selectbutton>
-  </div>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-  @for (registration of filteredRegistrations(); track $index) {
-    @if(hasDisplay('card')) {
-      @for (person of registration.people; track $index) {
-        <app-person-card  [registration]="registration" [person]="person"></app-person-card>
-      }
-    } @else {
-      <app-registration-card [registration]="registration" (registrationUpdate)="onRegistrationUpdate($event)"></app-registration-card>
-    }
-  }
-</div>
+<!--<div class="flex flex-row justify-between my-4">-->
+<!--  <div class="flex gap-x-2 items-center">-->
+<!--    <p-iconfield>-->
+<!--        <p-inputicon styleClass="pi pi-search" />-->
+<!--        <input type="text" pInputText placeholder="Vyhľadaj..." [formControl]="searchForm" />-->
+<!--        <p-inputicon [class]="{ 'invisible': !searching }" styleClass="pi pi-spinner pi-spin" />-->
+<!--    </p-iconfield>-->
+<!--    @if (!!searchValue()) {-->
+<!--      <p-button icon="pi pi-times" (onClick)="onClearClick()" [rounded]="true" [text]="true" severity="secondary"></p-button>-->
+<!--    }-->
+<!--  </div>-->
+<!--  <div class="flex flex-row gap-x-2 items-baseline">-->
+<!--    <p-button icon="pi pi-copy" label="e-mail" (click)="onEmailCopyClick()" size="small" severity="secondary"></p-button>-->
+<!--    <p-selectbutton [options]="displayOptions" [formControl]="displayForm" optionValue="value" [allowEmpty]="false">-->
+<!--        <ng-template #item let-item>-->
+<!--            <i class="pi" [class]="item.icon"></i>-->
+<!--        </ng-template>-->
+<!--    </p-selectbutton>-->
+<!--  </div>-->
+<!--</div>-->
+<!--<div class="grid grid-cols-1 md:grid-cols-2 gap-2">-->
+<!--  @for (registration of filteredRegistrations(); track $index) {-->
+<!--    @if(hasDisplay('card')) {-->
+<!--      @for (person of registration.people; track $index) {-->
+<!--        <app-person-card  [registration]="registration" [person]="person"></app-person-card>-->
+<!--      }-->
+<!--    } @else {-->
+<!--      <app-registration-card [registration]="registration" (registrationUpdate)="onRegistrationUpdate($event)"></app-registration-card>-->
+<!--    }-->
+<!--  }-->
+<!--</div>-->

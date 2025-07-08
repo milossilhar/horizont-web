@@ -1,7 +1,0 @@
-<div class="flex flex-col gap-2">
-  <p-select [formControl]="form" optionLabel="text" optionValue="value" [checkmark]="true" [showClear]="true"
-    [options]="values()" [placeholder]="placeholder()"></p-select>
-  @if(hasError('required')) {
-    <p-message severity="error" variant="simple">{{errorMessages()['required']}}</p-message>
-  }
-</div>

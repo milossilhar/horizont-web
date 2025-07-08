@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { FilterOption } from '../types/filter-option';
 import { PageableResponse } from '../types/pageable-response';
 import { SortOption } from '../types/sort-option';
-import { dataMapper } from '../util/rxjs-functions';
+import { dataMapper } from '../util/rxjs-utils';
 import { PageableRequest } from '../types/pageable-request';
 
 @Injectable({
