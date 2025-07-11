@@ -1,7 +1,5 @@
-import { JsonPipe } from '@angular/common';
-import { Component, computed, inject, input, OnInit, signal } from '@angular/core';
+import { Component, inject, input, OnInit, signal } from '@angular/core';
 import { Button } from 'primeng/button';
-import { DialogService } from 'primeng/dynamicdialog';
 import { FloatLabel } from 'primeng/floatlabel';
 import { HostControlDirective } from '../../directives/host-control.directive';
 import { SelectModule } from 'primeng/select';
@@ -11,6 +9,7 @@ import { MessageModule } from 'primeng/message';
 import { filter, takeUntil, tap } from 'rxjs';
 import { DestroyableComponent } from '../../base/destroyable.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { Enumeration } from '../../types/enumeration';
 import { EnumerationItem } from '../../types/enumeration-item';
 import { EnumFormComponent } from '../enum-form/enum-form.component';
 import { FormWithErrorsComponent } from '../form-with-errors/form-with-errors.component';
@@ -27,9 +26,10 @@ export class EnumSelectComponent extends DestroyableComponent implements OnInit 
 
   public enumName = input.required<string>();
   public inputId = input.required<string>();
-  public placeholder = input.required<string>();
+  public label = input.required<string>();
   public errorMessages = input<Record<string, string>>();
 
+  protected enumeration = signal<Enumeration | undefined>(undefined);
   protected values = signal<Array<EnumerationItem>>([]);
 
   constructor(
@@ -40,8 +40,9 @@ export class EnumSelectComponent extends DestroyableComponent implements OnInit 
   }
 
   ngOnInit(): void {
-    this.enumerationService.getEnum(this.enumName()).pipe(
-      tap(enums => this.values.set(enums)),
+    this.enumerationService.getEnum$(this.enumName()).pipe(
+      tap(e => this.enumeration.set(e)),
+      tap(e => this.values.set(e.values ?? [])),
       takeUntil(this.destroy$)
     ).subscribe();
   }
@@ -51,6 +52,8 @@ export class EnumSelectComponent extends DestroyableComponent implements OnInit 
   }
 
   protected onAddClick() {
+    if (!this.enumeration()?.administrated) return;
+
     this.overlayService.open(EnumFormComponent, { enumName: this.enumName() }).pipe(
       filter(result => !!result),
       tap(code => this.hcd.control.setValue(code, { emitEvent: false })),

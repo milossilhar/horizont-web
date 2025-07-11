@@ -1,17 +1,43 @@
 import { Injectable } from '@angular/core';
-import { map, Observable, ReplaySubject, tap } from 'rxjs';
-import { Dictionary, find, filter, sortBy } from 'lodash';
+import { filter, map, Observable, ReplaySubject, tap } from 'rxjs';
+import { Dictionary, find, filter as lodashFilter, sortBy, forOwn } from 'lodash';
 import { EnumerationRestService } from '../../rest/api/enumeration.service';
+import { EnumerationDTO } from '../../rest/model/enumeration-dto';
+import { EnumerationItemAggregateDTO } from '../../rest/model/enumeration-item-aggregate-dto';
 import { EventDTO } from '../../rest/model/event-dto';
+import { Enumeration } from '../types/enumeration';
 import { EnumerationItem } from '../types/enumeration-item';
+import { EnumerationName } from '../types/enumeration-name';
 
-const LOCAL_ENUMS: Dictionary<Array<EnumerationItem>> = {
-  'EVENT_STATUS': [
-    { code: EventDTO.StatusEnum.Draft, name: 'Koncept', description: 'Nepublikovaná udalosť', type: 'item', ordering: 1, severity: 'info' },
-    { code: EventDTO.StatusEnum.Published, name: 'Publikovaný', type: 'item', ordering: 2 },
-    { code: EventDTO.StatusEnum.Deleted, name: 'Vymazaný', type: 'item', ordering: 3 },
-    { code: EventDTO.StatusEnum.Cancelled, name: 'Zrušený', type: 'item', ordering: 4 },
-  ]
+const ENUM_NAMES: Record<EnumerationName, string> = {
+  'REG_EVENT_CONDITION_TYPE': 'Druhy obmedzení udalostí',
+  'REG_EVENT_DISCOUNT_TYPE': 'Druhy zľavy',
+  'REG_EVENT_TERM_TAG': 'Označenia termínov',
+  'REG_PLACE': 'Miesta',
+  'REG_PERIOD': 'Obdobia',
+  'REG_RELATION': 'Vzťahy',
+  'REG_SHIRT_SIZE': 'Veľkosti tričiek'
+}
+
+const LOCAL_ENUMS: Dictionary<Enumeration> = {
+  'EVENT_STATUS': {
+    name: 'Stavy udalostí',
+    administrated: false,
+    values: [
+      { code: EventDTO.StatusEnum.Draft, name: 'Koncept', description: 'Nepublikovaná udalosť', type: 'local', ordering: 1 },
+      { code: EventDTO.StatusEnum.Published, name: 'Publikovaný', type: 'local', ordering: 2 },
+      { code: EventDTO.StatusEnum.Deleted, name: 'Vymazaný', type: 'local', ordering: 3 },
+      { code: EventDTO.StatusEnum.Cancelled, name: 'Zrušený', type: 'local', ordering: 4 },
+    ]
+  },
+  'EVENT_TYPE': {
+    name: 'Typy udalostí',
+    administrated: false,
+    values: [
+      { code: EventDTO.EventTypeEnum.Event, name: 'Udalosť', description: 'Všeobecná udalosť', type: 'local', ordering: 1 },
+      { code: EventDTO.EventTypeEnum.Eca, name: 'Krúžok', description: 'Pravidelné krúžky', type: 'local', ordering: 2 },
+    ]
+  },
 };
 
 @Injectable({
@@ -19,11 +45,14 @@ const LOCAL_ENUMS: Dictionary<Array<EnumerationItem>> = {
 })
 export class EnumerationService {
 
-  private _cachedEnums: Dictionary<Array<EnumerationItem>> = {};
-  private _cachedEnums$ = new ReplaySubject<Dictionary<Array<EnumerationItem>>>(1);
+  private _cachedEnums: Dictionary<Enumeration> = {};
+  private _cachedEnums$ = new ReplaySubject<Dictionary<Enumeration>>(1);
 
-  private set cachedEnums(enums: Dictionary<Array<EnumerationItem>>) {
-    const fullEnums = {...LOCAL_ENUMS, ...enums};
+  private set cachedEnums(enums: Dictionary<EnumerationDTO>) {
+    const fullEnums: Dictionary<Enumeration> = {...LOCAL_ENUMS, ...enums};
+    forOwn(fullEnums, (e, name) => { if (!e.name) e.name = ENUM_NAMES[name as EnumerationName] ?? name });
+
+    // console.log(`setting enums: \n${JSON.stringify(fullEnums, null, 2)}\n`);
     this._cachedEnums = fullEnums;
     this._cachedEnums$.next(fullEnums);
   }
@@ -32,34 +61,40 @@ export class EnumerationService {
     private enumerationRestService: EnumerationRestService
   ) { }
 
-  public init(): Observable<any> {
-    return this.enumerationRestService.getItemsAdministrated().pipe(
-      tap(enumerations => this.cachedEnums = enumerations)
+  public init(): Observable<boolean> {
+    return this.enumerationRestService.getEnumeration().pipe(
+      tap(enumerations => this.cachedEnums = enumerations),
+      map(() => true)
     );
   }
 
-  public created(enumName: string, item: EnumerationItem) {
-    if (!this._cachedEnums[enumName]) this._cachedEnums[enumName] = [];
+  public created(enumName: string, item: EnumerationItemAggregateDTO): void {
+    if (!this._cachedEnums[enumName]) this._cachedEnums[enumName] = { };
+    if (!this._cachedEnums[enumName].values) this._cachedEnums[enumName].values = [];
 
-    this._cachedEnums[enumName].push(item);
+    this._cachedEnums[enumName].values.push(item);
     this._cachedEnums$.next(this._cachedEnums);
   }
 
-  public update(enumName: string, items: Array<EnumerationItem>) {
-    if (!this._cachedEnums[enumName]) return;
-
-    this._cachedEnums[enumName] = items;
-    this._cachedEnums$.next(this._cachedEnums);
+  public getEnum(enumName: string): Enumeration | undefined {
+    return this._cachedEnums[enumName];
   }
 
-  public getEnum(enumName: string, includeInvisible: boolean = false): Observable<Array<EnumerationItem>> {
+  public getEnum$(enumName: string, includeInvisible: boolean = false): Observable<Enumeration> {
     return this._cachedEnums$.asObservable().pipe(
-      map(enums => sortBy(enums[enumName] ?? [], e => e.ordering)),
-      map(values => includeInvisible ? values : filter(values, e => !e.hidden))
+      map(enums => enums[enumName]),
+      filter(e => !!e),
+      map(({values, ...rest}) => {
+        const filtered = includeInvisible ? values : lodashFilter(values, e => !e.hidden);
+        return {
+          values: sortBy(filtered, ['ordering', 'name']),
+          ...rest,
+        };
+      })
     );
   }
 
   public getEnumItem(name: string, code: string): EnumerationItem | undefined {
-    return find(this._cachedEnums[name] ?? [], e => e.code === code);
+    return find(this._cachedEnums[name]?.values ?? [], e => e.code === code);
   }
 }

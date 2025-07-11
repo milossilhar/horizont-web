@@ -57,6 +57,7 @@ export class OverlayService {
 
   public open<T, DataType = any, R = any>(component: Type<T>, inputValues: Record<string, any> = {}, data?: DataType): Observable<R> {
     return this.dialogService.open<T, DataType>(component, {
+      showHeader: false,
       data: data,
       inputValues: inputValues,
       modal: true,

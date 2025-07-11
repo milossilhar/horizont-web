@@ -3,8 +3,7 @@ import {
   HttpEventType,
   HttpHandler,
   HttpInterceptor,
-  HttpRequest,
-  HttpStatusCode
+  HttpRequest
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, filter, Observable, tap, throwError } from 'rxjs';
@@ -48,6 +47,15 @@ export class ToastInterceptor implements HttpInterceptor {
     DEFAULT: 'Všeobecná chyba servera. Kontaktujte podporu.'
   };
 
+  private readonly SUCCESS_MESSAGES: Record<string, {message:string, header:string}> = {
+    'POST-200': { message: 'Úspešne.', header: 'Vytvorené' },
+    'POST-201': { message: 'Úspešne.', header: 'Vytvorené' },
+    'PUT-200': { message: 'Úspešne.', header: 'Aktualizované' },
+    'PUT-201': { message: 'Úspešne.', header: 'Aktualizované' },
+    'DELETE-200': { message: 'Úspešne.', header: 'Vymazané' },
+    'DEFAULT': { message: 'Úspešne.', header: 'Uložené' },
+  }
+
   private readonly STATUS_SEVERITY: Record<number, 'error' | 'warn' | 'info' | 'success'> = {
     200: 'success',
     201: 'success',
@@ -67,8 +75,14 @@ export class ToastInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(
       filter(event => event.type === HttpEventType.Response),
-      tap(() => {
-        console.log(`completed ${req.method} ${req.urlWithParams}`);
+      tap(res => {
+        if (req.method === 'GET') return;
+
+        const index = `${req.method}-${res.status}`;
+        const severity = this.STATUS_SEVERITY[res.status] ?? 'success';
+        const message = this.SUCCESS_MESSAGES[index ?? 'DEFAULT'] ?? this.SUCCESS_MESSAGES['DEFAULT'];
+
+        this.toastService[severity](message.message, message.header);
       }),
       catchError(err => {
         const code = err?.error?.code as string | undefined;
@@ -77,7 +91,7 @@ export class ToastInterceptor implements HttpInterceptor {
         const message = this.ERROR_MESSAGES[code ?? 'DEFAULT'] ?? this.ERROR_MESSAGES['DEFAULT'];
         const renderedMessage = this.mustacheService.render(message, err?.error?.parameters ?? {});
 
-        const severity = this.STATUS_SEVERITY[status ?? 0] ?? this.STATUS_SEVERITY[0];
+        const severity = this.STATUS_SEVERITY[status ?? 0] ?? 'error';
         this.toastService[severity](renderedMessage);
 
         return throwError(() => err);

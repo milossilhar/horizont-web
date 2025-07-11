@@ -9,7 +9,7 @@ export class EnumPipe implements PipeTransform {
   constructor(private enumerationService: EnumerationService) { }
 
   transform(value: string, name: string): string {
-    return this.enumerationService.getEnumItem(name, value)?.description ?? value;
+    return this.enumerationService.getEnumItem(name, value)?.name ?? value;
   }
 
 }

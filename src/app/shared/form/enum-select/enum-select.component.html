@@ -1,7 +1,7 @@
 <app-form-with-errors [errorMessages]="errorMessages()">
   <p-float-label variant="on">
     <p-select [formControl]="form" optionValue="code" fluid
-              [showClear]="true" [inputId]="inputId()" [options]="values()">
+              [showClear]="true" [inputId]="inputId()" [options]="values()" #selectComponent>
       <ng-template let-selectedItem #selectedItem>
         {{ selectedItem.name }}
       </ng-template>
@@ -16,11 +16,15 @@
         }
       </ng-template>
       <ng-template #footer>
-        <div class="p-3">
-          <p-button label="Pridaj" fluid [text]="true" icon="pi pi-plus" (click)="onAddClick()"></p-button>
-        </div>
+        @if (enumeration()?.administrated) {
+          <div class="p-3">
+            <p-button label="Pridaj" fluid [text]="true" icon="pi pi-plus"
+                      (click)="selectComponent.hide(); onAddClick()">
+            </p-button>
+          </div>
+        }
       </ng-template>
     </p-select>
-    <label [for]="inputId()">{{ placeholder() }}</label>
+    <label [for]="inputId()">{{ label() }}</label>
   </p-float-label>
 </app-form-with-errors>

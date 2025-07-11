@@ -1,14 +1,14 @@
 <div class="w-full flex flex-col gap-2">
-  <h2 class="text-xl">Obmedzenia</h2>
-  <p class="text-sm text-gray-500">Obmedzujúce podmienky prihlásenia / registrácie k udalosti</p>
+  <h2 class="text-xl">Termíny</h2>
+  <p class="text-sm text-gray-500">Termíny udalosti na prihlasovanie</p>
   <div class="p-4 space-y-4 bg-neutral-100 rounded-lg">
     @if (controls.length === 0) {
-      <p class="text-center">Bez obmedzení</p>
+      <p class="text-center">Bez termínov</p>
     } @else {
       @for (control of controls; track $index) {
         <div class="flex items-center justify-start space-x-2">
-          <p-button rounded text icon="pi pi-times" severity="danger"
-                    (onClick)="removeCondition($event, $index)"></p-button>
+          <p-button rounded text icon="pi pi-times" severity="danger">
+          </p-button>
           <div [formGroup]="control" class="flex flex-col space-y-2 flex-1">
             <app-enum-select formControlName="conditionType" enumName="REG_EVENT_CONDITION_TYPE" label="Podmienka"
                              [inputId]="`condition-${$index}-value`">
@@ -26,5 +26,6 @@
       </div>
     }
   </div>
-  <p-button label="Pridaj obmedzenie" text fluid icon="pi pi-plus" severity="success" (onClick)="addCondition()"></p-button>
+  <p-button label="Pridaj termín" text fluid icon="pi pi-plus" severity="success">
+  </p-button>
 </div>

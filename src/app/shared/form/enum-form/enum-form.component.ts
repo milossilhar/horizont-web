@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, input, Input, OnInit } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -11,11 +11,13 @@ import { DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FloatLabel } from 'primeng/floatlabel';
 import { InputNumber } from 'primeng/inputnumber';
 import { InputText } from 'primeng/inputtext';
-import { filter, map, of, switchMap, tap } from 'rxjs';
+import { filter, map, of, switchMap, take, tap } from 'rxjs';
 import { EnumerationRestService } from '../../../rest/api/enumeration.service';
 import { EnumerationService } from '../../service/enumeration.service';
+import { Enumeration } from '../../types/enumeration';
 import { EnumerationName } from '../../types/enumeration-name';
 import { markAllAsDirty } from '../../util/angular-utils';
+import { EnumSelectComponent } from '../enum-select/enum-select.component';
 import { FormWithErrorsComponent } from '../form-with-errors/form-with-errors.component';
 
 type EnumFormType = FormGroup<{
@@ -23,7 +25,7 @@ type EnumFormType = FormGroup<{
   name: FormControl<string>,
   description: FormControl<string | null>,
   latitude?: FormControl<number | null>,
-  longitude?: FormControl<number | null>
+  longitude?: FormControl<number | null>,
 }>;
 
 @Component({
@@ -41,10 +43,10 @@ type EnumFormType = FormGroup<{
 })
 export class EnumFormComponent implements OnInit {
 
-  @Input({ required: true })
-  public enumName!: EnumerationName;
+  public enumName = input.required<EnumerationName>();
 
   protected form: EnumFormType;
+  protected enumeration?: Enumeration;
 
   constructor(
     private fb: NonNullableFormBuilder,
@@ -60,7 +62,9 @@ export class EnumFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.enumName === 'REG_PLACE') {
+    this.enumeration = this.enumerationService.getEnum(this.enumName());
+
+    if (this.enumName() === EnumerationName.REG_PLACE) {
       this.form.patchValue({ type: 'place' }, { emitEvent: false });
       this.form.addControl('latitude', this.fb.control<number | null>(null, Validators.required));
       this.form.addControl('longitude', this.fb.control<number | null>(null, Validators.required));
@@ -78,8 +82,8 @@ export class EnumFormComponent implements OnInit {
     of(this.form.valid).pipe(
       filter(valid => valid),
       map(() => this.form.getRawValue()),
-      switchMap(req => this.enumerationRestService.createEnumItem(this.enumName, req as any)),
-      tap(item => this.enumerationService.created(this.enumName, item)),
+      switchMap(req => this.enumerationRestService.createEnumItem(this.enumName(), req as any)),
+      tap(item => this.enumerationService.created(this.enumName(), item)),
       tap(item => this.dialogRef.close(item.code)),
     ).subscribe();
   }
@@ -92,6 +96,7 @@ export class EnumFormComponent implements OnInit {
     if (!text) return;
 
     if (this.form.contains('latitude') && this.form.contains('longitude')) {
+      // pasting coordinates from Google Maps
       if (text.match(/^\d+.\d+\s*,\s*\d+.\d+$/)) {
         const [latitude, longitude] = text.split(',').map(s => parseFloat(s.trim()));
         this.form.patchValue({ latitude, longitude }, { emitEvent: false });

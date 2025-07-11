@@ -1,23 +1,31 @@
+<div class="p-2 mt-2">
+  <h2 class="text-lg font-semibold">Vytvorenie záznamu</h2>
+  <p class="text-md text-gray-500">Pridanie nového záznamu
+    @if (enumeration) {
+      do číselníka <span class="font-semibold">{{enumeration.name}}</span>
+    }
+  </p>
+</div>
 <form [formGroup]="form" (ngSubmit)="onSubmit()" class="flex flex-col gap-4 mt-2" (paste)="onPaste($event)">
 
   <app-form-with-errors>
     <p-float-label variant="on">
       <label for="enum-name">Názov</label>
-      <input id="enum-name" type="text" pInputText formControlName="name">
+      <input id="enum-name" type="text" pInputText fluid formControlName="name">
     </p-float-label>
   </app-form-with-errors>
 
   <app-form-with-errors>
     <p-float-label variant="on">
       <label for="enum-description">Popis</label>
-      <input id="enum-description" type="text" pInputText formControlName="description">
+      <input id="enum-description" type="text" pInputText fluid formControlName="description">
     </p-float-label>
   </app-form-with-errors>
 
   @if (!!form.get('latitude')) {
     <app-form-with-errors>
       <p-float-label variant="on">
-        <p-input-number inputId="enum-latitude" mode="decimal" formControlName="latitude"
+        <p-input-number inputId="enum-latitude" mode="decimal" fluid formControlName="latitude"
                         [maxlength]="18" [minFractionDigits]="0" [maxFractionDigits]="15" [min]="-90" [max]="90">
         </p-input-number>
         <label for="enum-latitude">Zem. dĺžka</label>
@@ -28,7 +36,7 @@
   @if (!!form.get('longitude')) {
     <app-form-with-errors>
       <p-float-label variant="on">
-        <p-input-number inputId="enum-longitude" mode="decimal" formControlName="longitude"
+        <p-input-number inputId="enum-longitude" mode="decimal" fluid formControlName="longitude"
                         [maxlength]="18" [minFractionDigits]="0" [maxFractionDigits]="15" [min]="-180" [max]="180">
         </p-input-number>
         <label for="enum-longitude">Zem. šírka</label>

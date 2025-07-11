@@ -1,30 +1,30 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { FormGroup, FormsModule, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Button } from 'primeng/button';
 import { FloatLabel } from 'primeng/floatlabel';
 import { InputText } from 'primeng/inputtext';
-import { FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { filter, take, tap } from 'rxjs';
 import { HostControlArrayDirective } from '../../directives/host-control-array.directive';
 import { OverlayService } from '../../service/overlay.service';
 import { EnumSelectComponent } from '../enum-select/enum-select.component';
 import { FormWithErrorsComponent } from '../form-with-errors/form-with-errors.component';
 
 @Component({
-  selector: 'app-event-condition-form',
+  selector: 'app-event-term-form',
   imports: [
-    ReactiveFormsModule,
     Button,
-    FormWithErrorsComponent,
+    EnumSelectComponent,
     FloatLabel,
+    FormWithErrorsComponent,
+    FormsModule,
     InputText,
-    EnumSelectComponent
+    ReactiveFormsModule
   ],
-  templateUrl: './event-condition-form.component.html',
+  templateUrl: './event-term-form.component.html',
   styles: ``,
   hostDirectives: [ HostControlArrayDirective ]
 })
-export class EventConditionFormComponent {
-  private hcad = inject(HostControlArrayDirective);
+export class EventTermFormComponent {
+  private hcd = inject(HostControlArrayDirective);
 
   constructor(
     private fb: NonNullableFormBuilder,
@@ -33,23 +33,11 @@ export class EventConditionFormComponent {
   }
 
   protected get form() {
-    return this.hcad.array;
+    return this.hcd.array;
   }
 
   protected get controls() {
     return this.form.controls as FormGroup[];
-  }
-
-  protected addCondition() {
-    this.form.push(this.createForm());
-  }
-
-  protected removeCondition(event: Event, index: number) {
-    this.overlayService.confirm("popup", event, "Naozaj chceš vymazať podmienku?", "", { acceptSeverity: 'danger' }).pipe(
-      take(1),
-      filter(result => result),
-      tap(() => this.form.removeAt(index)),
-    ).subscribe();
   }
 
   private createForm() {

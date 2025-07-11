@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { includes } from 'lodash';
-import { BehaviorSubject, catchError, from, map, of, take, tap } from 'rxjs';
+import { BehaviorSubject, catchError, from, map, Observable, of, take, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +31,7 @@ export class AuthService {
     );
   }
 
-  public init() {
+  public init(): Observable<boolean> {
     try {
       return from(this.oauthService.loadUserProfile()).pipe(
         tap((user: any) => this.user = user.info ?? user),

@@ -2,6 +2,7 @@ import { JsonPipe } from '@angular/common';
 import { AfterContentInit, booleanAttribute, Component, ContentChild, input } from '@angular/core';
 import { AbstractControl, NgControl } from '@angular/forms';
 import { Message } from 'primeng/message';
+import { DestroyableComponent } from '../../base/destroyable.component';
 
 @Component({
   selector: 'app-form-with-errors',
@@ -9,7 +10,7 @@ import { Message } from 'primeng/message';
   templateUrl: './form-with-errors.component.html',
   styles: ``
 })
-export class FormWithErrorsComponent implements AfterContentInit {
+export class FormWithErrorsComponent extends DestroyableComponent implements AfterContentInit {
   @ContentChild(NgControl) ngControl?: NgControl;
 
   public errorMessages = input<Record<string, string>>();
@@ -18,11 +19,33 @@ export class FormWithErrorsComponent implements AfterContentInit {
   public debug = input(false, { transform: booleanAttribute });
 
   protected control: AbstractControl | null = null;
+  // protected currentLength = signal<number>(0);
+  // protected maxLength = signal<number | undefined>(undefined);
 
   ngAfterContentInit(): void {
     if (this.ngControl && this.ngControl.control) {
       this.control = this.ngControl.control;
     }
+
+    if (!this.control) return;
+
+    // if (this.control.validator) {
+    //   // this is some hacky way to get maxLength validation, other way is const reference for every maxLength validator used in APP
+    //   const validation = this.control.validator(new FormControl(repeat('a', 10000)));
+    //   if (validation && validation['maxlength']) {
+    //     this.maxLength.set(validation['maxlength'].requiredLength);
+    //   }
+    // }
+    //
+    // this.control.valueChanges.pipe(
+    //   map(v => (v ?? { length: 0 }).length as number ?? 0),
+    //   tap(length => this.currentLength.set(length)),
+    //   takeUntil(this.destroy$)
+    // ).subscribe();
+  }
+
+  get shouldShowHint(): boolean {
+    return !!this.hint();
   }
 
   get shouldShowErrors(): boolean {

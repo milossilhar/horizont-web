@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { EnumerationService } from '../service/enumeration.service';
 import { AuthService } from '../service/auth.service';
 import { RedirectService } from '../service/redirect.service';
+import { UserService } from '../service/user.service';
 
 @Injectable({providedIn: 'root'})
 export class InitGuard implements CanActivate {
@@ -12,12 +13,14 @@ export class InitGuard implements CanActivate {
     private redirectService: RedirectService,
     private authService: AuthService,
     private enumerationService: EnumerationService,
+    private userService: UserService
   ) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
     return forkJoin([
       this.authService.init(),
       this.enumerationService.init(),
+      this.userService.init()
     ]).pipe(
       map(() => true),
       catchError((err) => {

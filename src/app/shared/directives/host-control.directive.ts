@@ -5,13 +5,11 @@ import { takeUntil, tap } from 'rxjs';
 
 @Directive({
   standalone: true,
-  providers: [
-    {
+  providers: [{
       provide: NG_VALUE_ACCESSOR,
       multi: true,
       useExisting: HostControlDirective
-    }
-  ]
+  }]
 })
 export class HostControlDirective extends DestroyableDirective implements ControlValueAccessor {
 

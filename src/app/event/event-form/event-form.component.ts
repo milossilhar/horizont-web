@@ -10,6 +10,7 @@ import { EventRestService } from '../../rest/api/event.service';
 import { DestroyableComponent } from '../../shared/base/destroyable.component';
 import { EnumSelectComponent } from '../../shared/form/enum-select/enum-select.component';
 import { EventConditionFormComponent } from '../../shared/form/event-condition-form/event-condition-form.component';
+import { EventTermFormComponent } from '../../shared/form/event-term-form/event-term-form.component';
 import { FormWithErrorsComponent } from '../../shared/form/form-with-errors/form-with-errors.component';
 import { ShownAsType } from '../../shared/types/shown-as.type';
 import { markAllAsDirty } from '../../shared/util/angular-utils';
@@ -19,7 +20,7 @@ import { markAllAsDirty } from '../../shared/util/angular-utils';
   imports: [
     FloatLabel,
     InputText,
-    ReactiveFormsModule, FormWithErrorsComponent, Button, EnumSelectComponent, JsonPipe, DatePicker, EventConditionFormComponent
+    ReactiveFormsModule, FormWithErrorsComponent, Button, EnumSelectComponent, JsonPipe, DatePicker, EventConditionFormComponent, EventTermFormComponent
   ],
   templateUrl: './event-form.component.html',
   styles: ``
@@ -40,13 +41,13 @@ export class EventFormComponent extends DestroyableComponent implements OnInit {
     super();
 
     this.form = this.fb.group({
-      name: this.fb.control('', Validators.required),
-      details: this.fb.control(''),
+      name: this.fb.control('', [Validators.required, Validators.maxLength(200)]),
+      details: this.fb.control('', [Validators.required, Validators.maxLength(2000)]),
       eventType: this.fb.control<string | null>(null, Validators.required),
       registrationStarts: this.fb.control<Date | null>(null, Validators.required),
       registrationEnds: this.fb.control<Date | null>(null, Validators.required),
-      placeCode: this.fb.control<string | null>(null),
-      periodId: this.fb.control(''),
+      placeCode: this.fb.control<string | null>(null, Validators.required),
+      periodCode: this.fb.control<string | null>(null),
       conditions: this.fb.array([]),
     });
   }
@@ -66,7 +67,7 @@ export class EventFormComponent extends DestroyableComponent implements OnInit {
     this.form.updateValueAndValidity();
     markAllAsDirty(this.form);
 
-    of(this.form.invalid).pipe(
+    of(this.form.valid).pipe(
       filter(value => !!value),
       map(() => this.request),
       switchMap(req => this.eventRestService.createEvent(req)),

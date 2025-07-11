@@ -7,8 +7,9 @@
         <input pInputText fluid id="event-name" formControlName="name" autocomplete="off" pSize="large"/>
       </p-floatlabel>
     </app-form-with-errors>
-    <app-enum-select formControlName="eventType" enumName="REG_EVENT_TYPE" placeholder="Typ" inputId="event-type"></app-enum-select>
-    <app-enum-select formControlName="placeCode" enumName="REG_PLACE" placeholder="Miesto" inputId="event-place"></app-enum-select>
+    <app-enum-select formControlName="eventType" enumName="EVENT_TYPE" inputId="event-type" label="Typ udalosti"></app-enum-select>
+    <app-enum-select formControlName="periodCode" enumName="REG_PERIOD" inputId="event-period" label="Obdobie"></app-enum-select>
+    <app-enum-select formControlName="placeCode" enumName="REG_PLACE" inputId="event-place" label="Miesto*"></app-enum-select>
     <app-form-with-errors>
       <p-float-label variant="on">
         <p-date-picker formControlName="registrationStarts" fluid showIcon iconDisplay="input" inputId="event-reg-start"
@@ -26,7 +27,7 @@
         <label for="event-reg-end">Registrácia - koniec</label>
       </p-float-label>
     </app-form-with-errors>
-    <app-event-condition-form [formArray]="form.controls.conditions"></app-event-condition-form>
+    <app-event-condition-form formArrayName="conditions"></app-event-condition-form>
     <p-button label="Uložiť" type="submit"></p-button>
   </form>
   <p>{{form.getRawValue() | json}}</p>
