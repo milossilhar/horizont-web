@@ -14,7 +14,7 @@ export interface EventDTO {
     id?: number;
     name: string;
     details: string;
-    eventType: string;
+    eventType: EventDTO.EventTypeEnum;
     imageUrl?: string;
     registrationStarts: string;
     registrationEnds: string;
@@ -29,6 +29,11 @@ export interface EventDTO {
     modifiedBy?: string;
 }
 export namespace EventDTO {
+    export const EventTypeEnum = {
+        Event: 'EVENT',
+        Eca: 'ECA'
+    } as const;
+    export type EventTypeEnum = typeof EventTypeEnum[keyof typeof EventTypeEnum];
     export const StatusEnum = {
         Draft: 'DRAFT',
         Published: 'PUBLISHED',

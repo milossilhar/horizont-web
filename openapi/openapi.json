@@ -490,21 +490,21 @@
         }
       }
     },
-    "/enumerations/names/administrated": {
+    "/enumerations": {
       "get": {
         "tags": [
           "enumeration"
         ],
-        "operationId": "getNamesAdministrated",
+        "operationId": "getEnumeration",
         "responses": {
           "200": {
             "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
+                  "type": "object",
+                  "additionalProperties": {
+                    "$ref": "#/components/schemas/EnumerationDTO"
                   }
                 }
               }
@@ -642,7 +642,7 @@
         }
       }
     },
-    "/enumerations/{enumName}/{enumCode}/hide": {
+    "/enumerations/{enumName}/{enumCode}": {
       "delete": {
         "tags": [
           "enumeration"
@@ -740,11 +740,8 @@
       "EventConditionDTO": {
         "type": "object",
         "properties": {
-          "conditionType": {
-            "type": "string",
-            "enum": [
-              "YEAR_BORN"
-            ]
+          "conditionTypeCode": {
+            "type": "string"
           },
           "minValue": {
             "type": "string",
@@ -763,7 +760,7 @@
           }
         },
         "required": [
-          "conditionType"
+          "conditionTypeCode"
         ]
       },
       "EventDTO": {
@@ -784,7 +781,11 @@
             "minLength": 1
           },
           "eventType": {
-            "type": "string"
+            "type": "string",
+            "enum": [
+              "EVENT",
+              "ECA"
+            ]
           },
           "imageUrl": {
             "type": "string",
@@ -965,6 +966,33 @@
           "type"
         ]
       },
+      "EventConditionTypeDTO": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/EnumerationItemDTO"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "conditionOption": {
+                "type": "string",
+                "enum": [
+                  "VALUE",
+                  "DATE_MIN",
+                  "DATE_MAX",
+                  "DATE_RANGE",
+                  "NUM_RANGE",
+                  "NUM_MIN",
+                  "NUM_MAX"
+                ]
+              }
+            }
+          }
+        ],
+        "required": [
+          "conditionOption"
+        ]
+      },
       "PlaceDTO": {
         "allOf": [
           {
@@ -1056,10 +1084,27 @@
           }
         }
       },
+      "EnumerationDTO": {
+        "type": "object",
+        "properties": {
+          "administrated": {
+            "type": "boolean"
+          },
+          "values": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EnumerationItemAggregateDTO"
+            }
+          }
+        }
+      },
       "EnumerationItemAggregateDTO": {
         "oneOf": [
           {
             "$ref": "#/components/schemas/EnumerationItemDTO"
+          },
+          {
+            "$ref": "#/components/schemas/EventConditionTypeDTO"
           },
           {
             "$ref": "#/components/schemas/PlaceDTO"

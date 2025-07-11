@@ -17,9 +17,13 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
+import { EnumerationDTO } from '../model/enumeration-dto';
+// @ts-ignore
 import { EnumerationItemAggregateDTO } from '../model/enumeration-item-aggregate-dto';
 // @ts-ignore
 import { EnumerationItemDTO } from '../model/enumeration-item-dto';
+// @ts-ignore
+import { EventConditionTypeDTO } from '../model/event-condition-type-dto';
 // @ts-ignore
 import { GenericErrorDTO } from '../model/generic-error-dto';
 // @ts-ignore
@@ -43,19 +47,19 @@ export class EnumerationRestService extends BaseService {
 
     /**
      * @param enumName 
-     * @param enumerationItemDTOPlaceDTO 
+     * @param enumerationItemDTOEventConditionTypeDTOPlaceDTO 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createEnumItem(enumName: 'REG_EVENT_CONDITION_TYPE' | 'REG_EVENT_DISCOUNT_TYPE' | 'REG_EVENT_TYPE' | 'REG_EVENT_TERM_TAG' | 'REG_PLACE' | 'REG_PERIOD' | 'REG_RELATION' | 'REG_SHIRT_SIZE', enumerationItemDTOPlaceDTO: EnumerationItemDTO | PlaceDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | '*/*', context?: HttpContext, transferCache?: boolean}): Observable<EnumerationItemAggregateDTO>;
-    public createEnumItem(enumName: 'REG_EVENT_CONDITION_TYPE' | 'REG_EVENT_DISCOUNT_TYPE' | 'REG_EVENT_TYPE' | 'REG_EVENT_TERM_TAG' | 'REG_PLACE' | 'REG_PERIOD' | 'REG_RELATION' | 'REG_SHIRT_SIZE', enumerationItemDTOPlaceDTO: EnumerationItemDTO | PlaceDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<EnumerationItemAggregateDTO>>;
-    public createEnumItem(enumName: 'REG_EVENT_CONDITION_TYPE' | 'REG_EVENT_DISCOUNT_TYPE' | 'REG_EVENT_TYPE' | 'REG_EVENT_TERM_TAG' | 'REG_PLACE' | 'REG_PERIOD' | 'REG_RELATION' | 'REG_SHIRT_SIZE', enumerationItemDTOPlaceDTO: EnumerationItemDTO | PlaceDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<EnumerationItemAggregateDTO>>;
-    public createEnumItem(enumName: 'REG_EVENT_CONDITION_TYPE' | 'REG_EVENT_DISCOUNT_TYPE' | 'REG_EVENT_TYPE' | 'REG_EVENT_TERM_TAG' | 'REG_PLACE' | 'REG_PERIOD' | 'REG_RELATION' | 'REG_SHIRT_SIZE', enumerationItemDTOPlaceDTO: EnumerationItemDTO | PlaceDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json' | '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public createEnumItem(enumName: 'REG_EVENT_CONDITION_TYPE' | 'REG_EVENT_DISCOUNT_TYPE' | 'REG_EVENT_TYPE' | 'REG_EVENT_TERM_TAG' | 'REG_PLACE' | 'REG_PERIOD' | 'REG_RELATION' | 'REG_SHIRT_SIZE', enumerationItemDTOEventConditionTypeDTOPlaceDTO: EnumerationItemDTO | EventConditionTypeDTO | PlaceDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | '*/*', context?: HttpContext, transferCache?: boolean}): Observable<EnumerationItemAggregateDTO>;
+    public createEnumItem(enumName: 'REG_EVENT_CONDITION_TYPE' | 'REG_EVENT_DISCOUNT_TYPE' | 'REG_EVENT_TYPE' | 'REG_EVENT_TERM_TAG' | 'REG_PLACE' | 'REG_PERIOD' | 'REG_RELATION' | 'REG_SHIRT_SIZE', enumerationItemDTOEventConditionTypeDTOPlaceDTO: EnumerationItemDTO | EventConditionTypeDTO | PlaceDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<EnumerationItemAggregateDTO>>;
+    public createEnumItem(enumName: 'REG_EVENT_CONDITION_TYPE' | 'REG_EVENT_DISCOUNT_TYPE' | 'REG_EVENT_TYPE' | 'REG_EVENT_TERM_TAG' | 'REG_PLACE' | 'REG_PERIOD' | 'REG_RELATION' | 'REG_SHIRT_SIZE', enumerationItemDTOEventConditionTypeDTOPlaceDTO: EnumerationItemDTO | EventConditionTypeDTO | PlaceDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<EnumerationItemAggregateDTO>>;
+    public createEnumItem(enumName: 'REG_EVENT_CONDITION_TYPE' | 'REG_EVENT_DISCOUNT_TYPE' | 'REG_EVENT_TYPE' | 'REG_EVENT_TERM_TAG' | 'REG_PLACE' | 'REG_PERIOD' | 'REG_RELATION' | 'REG_SHIRT_SIZE', enumerationItemDTOEventConditionTypeDTOPlaceDTO: EnumerationItemDTO | EventConditionTypeDTO | PlaceDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json' | '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (enumName === null || enumName === undefined) {
             throw new Error('Required parameter enumName was null or undefined when calling createEnumItem.');
         }
-        if (enumerationItemDTOPlaceDTO === null || enumerationItemDTOPlaceDTO === undefined) {
-            throw new Error('Required parameter enumerationItemDTOPlaceDTO was null or undefined when calling createEnumItem.');
+        if (enumerationItemDTOEventConditionTypeDTOPlaceDTO === null || enumerationItemDTOEventConditionTypeDTOPlaceDTO === undefined) {
+            throw new Error('Required parameter enumerationItemDTOEventConditionTypeDTOPlaceDTO was null or undefined when calling createEnumItem.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -98,7 +102,7 @@ export class EnumerationRestService extends BaseService {
         return this.httpClient.request<EnumerationItemAggregateDTO>('post', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: enumerationItemDTOPlaceDTO,
+                body: enumerationItemDTOEventConditionTypeDTOPlaceDTO,
                 responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
@@ -152,7 +156,7 @@ export class EnumerationRestService extends BaseService {
             }
         }
 
-        let localVarPath = `/enumerations/${this.configuration.encodeParam({name: "enumName", value: enumName, in: "path", style: "simple", explode: false, dataType: "'REG_EVENT_CONDITION_TYPE' | 'REG_EVENT_DISCOUNT_TYPE' | 'REG_EVENT_TYPE' | 'REG_EVENT_TERM_TAG' | 'REG_PLACE' | 'REG_PERIOD' | 'REG_RELATION' | 'REG_SHIRT_SIZE'", dataFormat: undefined})}/${this.configuration.encodeParam({name: "enumCode", value: enumCode, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}/hide`;
+        let localVarPath = `/enumerations/${this.configuration.encodeParam({name: "enumName", value: enumName, in: "path", style: "simple", explode: false, dataType: "'REG_EVENT_CONDITION_TYPE' | 'REG_EVENT_DISCOUNT_TYPE' | 'REG_EVENT_TYPE' | 'REG_EVENT_TERM_TAG' | 'REG_PLACE' | 'REG_PERIOD' | 'REG_RELATION' | 'REG_SHIRT_SIZE'", dataFormat: undefined})}/${this.configuration.encodeParam({name: "enumCode", value: enumCode, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<Array<EnumerationItemAggregateDTO>>('delete', `${basePath}${localVarPath}`,
             {
@@ -225,6 +229,56 @@ export class EnumerationRestService extends BaseService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
+    public getEnumeration(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | '*/*', context?: HttpContext, transferCache?: boolean}): Observable<{ [key: string]: EnumerationDTO; }>;
+    public getEnumeration(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<{ [key: string]: EnumerationDTO; }>>;
+    public getEnumeration(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<{ [key: string]: EnumerationDTO; }>>;
+    public getEnumeration(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json' | '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+
+        let localVarHeaders = this.defaultHeaders;
+
+        const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
+            'application/json',
+            '*/*'
+        ]);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+        const localVarTransferCache: boolean = options?.transferCache ?? true;
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/enumerations`;
+        const { basePath, withCredentials } = this.configuration;
+        return this.httpClient.request<{ [key: string]: EnumerationDTO; }>('get', `${basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                responseType: <any>responseType_,
+                ...(withCredentials ? { withCredentials } : {}),
+                headers: localVarHeaders,
+                observe: observe,
+                transferCache: localVarTransferCache,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
     public getItemsAdministrated(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | '*/*', context?: HttpContext, transferCache?: boolean}): Observable<{ [key: string]: Array<EnumerationItemAggregateDTO>; }>;
     public getItemsAdministrated(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<{ [key: string]: Array<EnumerationItemAggregateDTO>; }>>;
     public getItemsAdministrated(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<{ [key: string]: Array<EnumerationItemAggregateDTO>; }>>;
@@ -259,56 +313,6 @@ export class EnumerationRestService extends BaseService {
         let localVarPath = `/enumerations/items/administrated`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<{ [key: string]: Array<EnumerationItemAggregateDTO>; }>('get', `${basePath}${localVarPath}`,
-            {
-                context: localVarHttpContext,
-                responseType: <any>responseType_,
-                ...(withCredentials ? { withCredentials } : {}),
-                headers: localVarHeaders,
-                observe: observe,
-                transferCache: localVarTransferCache,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public getNamesAdministrated(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | '*/*', context?: HttpContext, transferCache?: boolean}): Observable<Array<string>>;
-    public getNamesAdministrated(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<string>>>;
-    public getNamesAdministrated(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<string>>>;
-    public getNamesAdministrated(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json' | '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
-
-        let localVarHeaders = this.defaultHeaders;
-
-        const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
-            'application/json',
-            '*/*'
-        ]);
-        if (localVarHttpHeaderAcceptSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
-        }
-
-        const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
-
-        const localVarTransferCache: boolean = options?.transferCache ?? true;
-
-
-        let responseType_: 'text' | 'json' | 'blob' = 'json';
-        if (localVarHttpHeaderAcceptSelected) {
-            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
-                responseType_ = 'text';
-            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
-                responseType_ = 'json';
-            } else {
-                responseType_ = 'blob';
-            }
-        }
-
-        let localVarPath = `/enumerations/names/administrated`;
-        const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<Array<string>>('get', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,

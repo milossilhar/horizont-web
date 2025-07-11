@@ -97,9 +97,6 @@ class OpenAPIOneOfRefactor {
         const schemaName = this.generateSchemaName(obj);
         this.oneOfSchemas.set(hash, { schema: obj, hash, name: schemaName });
 
-        // Add to components/schemas
-        _.set(this.openApiDoc, `components.schemas.${schemaName}`, _.cloneDeep(obj));
-
         console.log(`Found oneOf schema at ${path}, created: ${schemaName}`);
       }
     }
@@ -138,12 +135,18 @@ class OpenAPIOneOfRefactor {
   // Process the OpenAPI document
   process() {
     console.log('Collecting oneOf schemas...');
-    this.collectOneOfSchemas(this.openApiDoc.paths);
+    this.collectOneOfSchemas(this.openApiDoc);
 
     console.log(`Found ${this.oneOfSchemas.size} unique oneOf schemas`);
 
     console.log('Replacing oneOf instances with $ref...');
-    this.openApiDoc.paths = this.replaceOneOfWithRef(this.openApiDoc.paths);
+    this.openApiDoc = this.replaceOneOfWithRef(this.openApiDoc);
+
+    this.oneOfSchemas.forEach((val, key) => {
+      // Add to components/schemas
+      console.log(`Adding oneOf schema to components/schemas: ${val.name}`);
+      _.set(this.openApiDoc, `components.schemas.${val.name}`, _.cloneDeep(val.schema));
+    });
 
     console.log('Processing complete!');
   }

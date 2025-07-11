@@ -7,9 +7,11 @@ api/event.service.ts
 api/health.service.ts
 configuration.ts
 encoder.ts
+model/enumeration-dto.ts
 model/enumeration-item-aggregate-dto.ts
 model/enumeration-item-dto.ts
 model/event-condition-dto.ts
+model/event-condition-type-dto.ts
 model/event-dto.ts
 model/event-term-dto.ts
 model/generic-error-dto.ts

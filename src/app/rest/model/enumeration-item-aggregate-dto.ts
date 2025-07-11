@@ -8,6 +8,7 @@
  * Do not edit the class manually.
  */
 import { EnumerationItemDTO } from './enumeration-item-dto';
+import { EventConditionTypeDTO } from './event-condition-type-dto';
 import { PlaceDTO } from './place-dto';
 
 
@@ -15,5 +16,5 @@ import { PlaceDTO } from './place-dto';
  * @type EnumerationItemAggregateDTO
  * @export
  */
-export type EnumerationItemAggregateDTO = EnumerationItemDTO | PlaceDTO;
+export type EnumerationItemAggregateDTO = EnumerationItemDTO | EventConditionTypeDTO | PlaceDTO;
 

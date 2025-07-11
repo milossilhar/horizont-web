@@ -7,12 +7,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { EnumerationItemAggregateDTO } from './enumeration-item-aggregate-dto';
 
 
-export interface EventConditionDTO { 
-    conditionTypeCode: string;
-    minValue?: string;
-    maxValue?: string;
-    value?: string;
+export interface EnumerationDTO { 
+    administrated?: boolean;
+    values?: Array<EnumerationItemAggregateDTO>;
 }
 
