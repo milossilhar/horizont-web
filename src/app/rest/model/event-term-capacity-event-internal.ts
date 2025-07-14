@@ -21,7 +21,8 @@ export namespace EventTermCapacityEventInternalDTO {
     export const StatusEnum = {
         Concept: 'CONCEPT',
         Queue: 'QUEUE',
-        Confirmed: 'CONFIRMED'
+        Confirmed: 'CONFIRMED',
+        Deleted: 'DELETED'
     } as const;
     export type StatusEnum = typeof StatusEnum[keyof typeof StatusEnum];
 }

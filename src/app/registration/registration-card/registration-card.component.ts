@@ -1,5 +1,6 @@
 // registration-card.component.ts
 import { Component, inject, Input, output, signal } from '@angular/core';
+import { update } from 'lodash';
 import { CardModule } from 'primeng/card';
 import { TagModule } from 'primeng/tag';
 import { DividerModule } from 'primeng/divider';
@@ -19,7 +20,6 @@ import { catchError, concatMap, filter, finalize, of, tap } from 'rxjs';
 import { DialogService } from '../../shared/service/dialog.service';
 import { ToastService } from '../../shared/service/toast.service';
 
-
 @Component({
   selector: 'app-registration-card',
   standalone: true,
@@ -28,7 +28,7 @@ import { ToastService } from '../../shared/service/toast.service';
     IndependentTagComponent, ConsentTagComponent, ExternalLinkComponent, BooleanTagComponent,
     DatePipe, CurrencyPipe, EnumPipe, PercentPipe, DefaultPipe
   ],
-  providers: [ CurrencyPipe ],
+  providers: [CurrencyPipe],
   templateUrl: './registration-card.component.html',
   styles: []
 })
@@ -45,10 +45,11 @@ export class RegistrationCardComponent {
     private dialogService: DialogService,
     private toastService: ToastService,
     private currencyPipe: CurrencyPipe
-  ) {}
+  ) {
+  }
 
   get statusSeverity(): 'contrast' | 'success' | 'info' | 'warn' | 'danger' {
-    switch(this.registration.status) {
+    switch (this.registration.status) {
       case 'CONFIRMED':
         return 'success';
       case 'QUEUE':
@@ -61,7 +62,7 @@ export class RegistrationCardComponent {
   }
 
   get statusText(): string {
-    switch(this.registration.status) {
+    switch (this.registration.status) {
       case 'CONFIRMED':
         return 'Potvrdené';
       case 'QUEUE':
@@ -81,6 +82,10 @@ export class RegistrationCardComponent {
     return this.currencyPipe.transform(this.payment?.deposit);
   }
 
+  get remainingValue() {
+    return this.currencyPipe.transform(this.payment?.remainingValue);
+  }
+
   get discountPercent() {
     if (!this.payment?.discountPercent) return null;
     return this.payment.discountPercent / 100;
@@ -92,6 +97,16 @@ export class RegistrationCardComponent {
 
   get telPhoneHref(): string {
     return `tel:${this.registration.telPhone}`;
+  }
+
+  get emailFlags() {
+    return [
+      { value: this.registration.emailConfirmSent ?? false, label: 'Potvrdenie' },
+      { value: this.registration.emailPaymentInfoSent ?? false, label: 'Platba' },
+      { value: this.registration.emailPaymentConfirmSent ?? false, label: 'Potvr. zálohy' },
+      { value: this.registration.emailPaymentCompleteConfirmSent ?? false, label: 'Potvr. platby' },
+      { value: this.registration.emailDetailSent ?? false, label: 'Pokyny akcie' },
+    ];
   }
 
   protected getDiscountPercent() {
@@ -106,23 +121,33 @@ export class RegistrationCardComponent {
   }
 
   protected paidClick(event: Event, deposit: boolean) {
-    const message = `Potvrdiť zálohu ${this.deposit} pre platbu ${this.payment?.variableSymbol}`;
-    this.dialogService.confirmDialog(event, message, "Potvrdenie").pipe(
+    const messages = deposit
+      ? {
+        confirm: `Potvrdiť zálohu ${this.deposit} pre platbu ${this.payment?.variableSymbol}`,
+        success: `Záloha ${this.deposit} úspešne potvrdená.`,
+        error: `Záloha ${this.deposit} sa potvrdila, ale nastala CHYBA pri odoslaní EMAIL-u.`
+      }
+      : {
+        confirm: `Potvrdiť celú sumu ${this.remainingValue} pre platbu ${this.payment?.variableSymbol}`,
+        success: `Celá suma ${this.remainingValue} úspešne potvrdená.`,
+        error: `Celá suma ${this.remainingValue} sa potvrdila, ale nastala CHYBA pri odoslaní EMAIL-u.`
+      };
+    this.dialogService.confirmDialog(event, messages.confirm, "Potvrdenie").pipe(
       filter(r => r),
       tap(() => this.loading.set(true)),
       concatMap(() => this.registrationHorizontService.confirmPayment(this.payment?.id ?? 0, deposit).pipe(
         catchError(() => {
           // log error to user
-          this.toastService.error(`Potvrdenie zálohy sa nepodarilo.`, 'CHYBA');
+          this.toastService.error(`Operácia sa nepodarila.`, 'CHYBA');
           return of(null);
         })
       )),
       filter(r => !!r),
       tap(updatedReg => {
-        if (updatedReg.emailPaymentConfirmSent) {
-          this.toastService.success(`Záloha ${this.deposit} úspešne potvrdená.`, 'ÚSPECH');
+        if (deposit ? updatedReg.emailPaymentConfirmSent : updatedReg.email) {
+          this.toastService.success(messages.success, 'ÚSPECH');
         } else {
-          this.toastService.warn(`Záloha ${this.deposit} sa potvrdila, ale nastala CHYBA pri odoslaní EMAIL-u.`, 'CHYBA E-MAIL');
+          this.toastService.warn(messages.error, 'CHYBA E-MAIL');
         }
         this.registrationUpdate.emit(updatedReg);
       }),

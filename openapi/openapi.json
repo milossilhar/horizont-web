@@ -1,6 +1,9 @@
 {
   "openapi": "3.1.0",
-  "info": { "title": "OpenAPI definition", "version": "v0" },
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
   "servers": [
     {
       "url": "http://localhost:8088/api",
@@ -10,20 +13,27 @@
   "paths": {
     "/events/{eventId}": {
       "put": {
-        "tags": ["event"],
+        "tags": [
+          "event"
+        ],
         "operationId": "updateEvent",
         "parameters": [
           {
             "name": "eventId",
             "in": "path",
             "required": true,
-            "schema": { "type": "integer", "format": "int64" }
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
           }
         ],
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": { "$ref": "#/components/schemas/Event" }
+              "schema": {
+                "$ref": "#/components/schemas/Event"
+              }
             }
           },
           "required": true
@@ -33,7 +43,9 @@
             "description": "Unauthorized",
             "content": {
               "*/*": {
-                "schema": { "$ref": "#/components/schemas/GenericError" }
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                }
               }
             }
           },
@@ -41,21 +53,28 @@
             "description": "OK",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/Event" }
+                "schema": {
+                  "$ref": "#/components/schemas/Event"
+                }
               }
             }
           }
         }
       },
       "delete": {
-        "tags": ["event"],
+        "tags": [
+          "event"
+        ],
         "operationId": "deleteEvent",
         "parameters": [
           {
             "name": "eventId",
             "in": "path",
             "required": true,
-            "schema": { "type": "integer", "format": "int64" }
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
           }
         ],
         "responses": {
@@ -63,7 +82,9 @@
             "description": "Unauthorized",
             "content": {
               "*/*": {
-                "schema": { "$ref": "#/components/schemas/GenericError" }
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                }
               }
             }
           },
@@ -82,20 +103,27 @@
     },
     "/registrations/confirm/{paymentId}": {
       "post": {
-        "tags": ["registration"],
+        "tags": [
+          "registration"
+        ],
         "operationId": "confirmPayment",
         "parameters": [
           {
             "name": "paymentId",
             "in": "path",
             "required": true,
-            "schema": { "type": "integer", "format": "int64" }
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
           },
           {
             "name": "deposit",
             "in": "query",
             "required": true,
-            "schema": { "type": "boolean" }
+            "schema": {
+              "type": "boolean"
+            }
           }
         ],
         "responses": {
@@ -103,7 +131,9 @@
             "description": "Unauthorized",
             "content": {
               "*/*": {
-                "schema": { "$ref": "#/components/schemas/GenericError" }
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                }
               }
             }
           },
@@ -111,7 +141,9 @@
             "description": "OK",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/Registration" }
+                "schema": {
+                  "$ref": "#/components/schemas/Registration"
+                }
               }
             }
           }
@@ -120,20 +152,27 @@
     },
     "/public/registration/{eventTermId}": {
       "post": {
-        "tags": ["public"],
+        "tags": [
+          "public"
+        ],
         "operationId": "createRegistration",
         "parameters": [
           {
             "name": "eventTermId",
             "in": "path",
             "required": true,
-            "schema": { "type": "integer", "format": "int64" }
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
           }
         ],
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": { "$ref": "#/components/schemas/Registration_Public" }
+              "schema": {
+                "$ref": "#/components/schemas/Registration_Public"
+              }
             }
           },
           "required": true
@@ -143,7 +182,9 @@
             "description": "Unauthorized",
             "content": {
               "*/*": {
-                "schema": { "$ref": "#/components/schemas/GenericError" }
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                }
               }
             }
           },
@@ -151,7 +192,9 @@
             "description": "OK",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/Registration_Public" }
+                "schema": {
+                  "$ref": "#/components/schemas/Registration_Public"
+                }
               }
             }
           }
@@ -160,14 +203,19 @@
     },
     "/public/registration/{eventTermId}/calculate-price": {
       "post": {
-        "tags": ["public"],
+        "tags": [
+          "public"
+        ],
         "operationId": "calculatePriceForRegistration",
         "parameters": [
           {
             "name": "eventTermId",
             "in": "path",
             "required": true,
-            "schema": { "type": "integer", "format": "int64" }
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
           }
         ],
         "requestBody": {
@@ -185,7 +233,9 @@
             "description": "Unauthorized",
             "content": {
               "*/*": {
-                "schema": { "$ref": "#/components/schemas/GenericError" }
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                }
               }
             }
           },
@@ -193,7 +243,9 @@
             "description": "OK",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/Payment_Public" }
+                "schema": {
+                  "$ref": "#/components/schemas/Payment_Public"
+                }
               }
             }
           }
@@ -202,7 +254,9 @@
     },
     "/public/registration/confirm": {
       "post": {
-        "tags": ["public"],
+        "tags": [
+          "public"
+        ],
         "operationId": "confirmRegistration",
         "requestBody": {
           "content": {
@@ -219,7 +273,9 @@
             "description": "Unauthorized",
             "content": {
               "*/*": {
-                "schema": { "$ref": "#/components/schemas/GenericError" }
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                }
               }
             }
           },
@@ -227,7 +283,9 @@
             "description": "OK",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/Registration_Public" }
+                "schema": {
+                  "$ref": "#/components/schemas/Registration_Public"
+                }
               }
             }
           }
@@ -236,14 +294,18 @@
     },
     "/events": {
       "get": {
-        "tags": ["event"],
+        "tags": [
+          "event"
+        ],
         "operationId": "getEvents",
         "responses": {
           "401": {
             "description": "Unauthorized",
             "content": {
               "*/*": {
-                "schema": { "$ref": "#/components/schemas/GenericError" }
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                }
               }
             }
           },
@@ -263,12 +325,16 @@
         }
       },
       "post": {
-        "tags": ["event"],
+        "tags": [
+          "event"
+        ],
         "operationId": "createEvent",
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": { "$ref": "#/components/schemas/Event" }
+              "schema": {
+                "$ref": "#/components/schemas/Event"
+              }
             }
           },
           "required": true
@@ -278,7 +344,9 @@
             "description": "Unauthorized",
             "content": {
               "*/*": {
-                "schema": { "$ref": "#/components/schemas/GenericError" }
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                }
               }
             }
           },
@@ -286,7 +354,9 @@
             "description": "OK",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/Event" }
+                "schema": {
+                  "$ref": "#/components/schemas/Event"
+                }
               }
             }
           }
@@ -295,14 +365,18 @@
     },
     "/public/events/{eventUUID}": {
       "get": {
-        "tags": ["public"],
+        "tags": [
+          "public"
+        ],
         "operationId": "getEventByUUID",
         "parameters": [
           {
             "name": "eventUUID",
             "in": "path",
             "required": true,
-            "schema": { "type": "string" }
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -310,7 +384,9 @@
             "description": "Unauthorized",
             "content": {
               "*/*": {
-                "schema": { "$ref": "#/components/schemas/GenericError" }
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                }
               }
             }
           },
@@ -318,7 +394,9 @@
             "description": "OK",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/Event_EventPublic" }
+                "schema": {
+                  "$ref": "#/components/schemas/Event_EventPublic"
+                }
               }
             }
           }
@@ -327,14 +405,18 @@
     },
     "/public/events/{eventUUID}/capacity": {
       "get": {
-        "tags": ["public"],
+        "tags": [
+          "public"
+        ],
         "operationId": "getEventCapacities",
         "parameters": [
           {
             "name": "eventUUID",
             "in": "path",
             "required": true,
-            "schema": { "type": "string" }
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -342,7 +424,9 @@
             "description": "Unauthorized",
             "content": {
               "*/*": {
-                "schema": { "$ref": "#/components/schemas/GenericError" }
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                }
               }
             }
           },
@@ -364,14 +448,18 @@
     },
     "/public/events/current": {
       "get": {
-        "tags": ["public"],
+        "tags": [
+          "public"
+        ],
         "operationId": "getEventsCurrent",
         "responses": {
           "401": {
             "description": "Unauthorized",
             "content": {
               "*/*": {
-                "schema": { "$ref": "#/components/schemas/GenericError" }
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                }
               }
             }
           },
@@ -381,7 +469,9 @@
               "application/json": {
                 "schema": {
                   "type": "array",
-                  "items": { "$ref": "#/components/schemas/Event_EventPublic" }
+                  "items": {
+                    "$ref": "#/components/schemas/Event_EventPublic"
+                  }
                 }
               }
             }
@@ -391,14 +481,18 @@
     },
     "/public/enums": {
       "get": {
-        "tags": ["public"],
+        "tags": [
+          "public"
+        ],
         "operationId": "getPublicEnumerations",
         "responses": {
           "401": {
             "description": "Unauthorized",
             "content": {
               "*/*": {
-                "schema": { "$ref": "#/components/schemas/GenericError" }
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                }
               }
             }
           },
@@ -423,14 +517,18 @@
     },
     "/health/env": {
       "get": {
-        "tags": ["health"],
+        "tags": [
+          "health"
+        ],
         "operationId": "getEnvironment",
         "responses": {
           "401": {
             "description": "Unauthorized",
             "content": {
               "*/*": {
-                "schema": { "$ref": "#/components/schemas/GenericError" }
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                }
               }
             }
           },
@@ -449,14 +547,18 @@
     },
     "/events/detail": {
       "get": {
-        "tags": ["event"],
+        "tags": [
+          "event"
+        ],
         "operationId": "getDetailedEvents",
         "responses": {
           "401": {
             "description": "Unauthorized",
             "content": {
               "*/*": {
-                "schema": { "$ref": "#/components/schemas/GenericError" }
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                }
               }
             }
           },
@@ -478,14 +580,19 @@
     },
     "/events/detail/{eventId}": {
       "get": {
-        "tags": ["event"],
+        "tags": [
+          "event"
+        ],
         "operationId": "getDetailedEvent",
         "parameters": [
           {
             "name": "eventId",
             "in": "path",
             "required": true,
-            "schema": { "type": "integer", "format": "int64" }
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
           }
         ],
         "responses": {
@@ -493,7 +600,9 @@
             "description": "Unauthorized",
             "content": {
               "*/*": {
-                "schema": { "$ref": "#/components/schemas/GenericError" }
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                }
               }
             }
           },
@@ -501,7 +610,9 @@
             "description": "OK",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/Event_EventInternal" }
+                "schema": {
+                  "$ref": "#/components/schemas/Event_EventInternal"
+                }
               }
             }
           }
@@ -510,14 +621,19 @@
     },
     "/eventTerms/{id}": {
       "get": {
-        "tags": ["eventTerm"],
+        "tags": [
+          "eventTerm"
+        ],
         "operationId": "getEventTerm",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": { "type": "integer", "format": "int64" }
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
           }
         ],
         "responses": {
@@ -525,7 +641,9 @@
             "description": "Unauthorized",
             "content": {
               "*/*": {
-                "schema": { "$ref": "#/components/schemas/GenericError" }
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                }
               }
             }
           },
@@ -533,7 +651,9 @@
             "description": "OK",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/EventTerm_EventTerm" }
+                "schema": {
+                  "$ref": "#/components/schemas/EventTerm_EventTerm"
+                }
               }
             }
           }
@@ -542,14 +662,18 @@
     },
     "/eventTerms/current": {
       "get": {
-        "tags": ["eventTerm"],
+        "tags": [
+          "eventTerm"
+        ],
         "operationId": "getEventTermsCurrent",
         "responses": {
           "401": {
             "description": "Unauthorized",
             "content": {
               "*/*": {
-                "schema": { "$ref": "#/components/schemas/GenericError" }
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                }
               }
             }
           },
@@ -559,7 +683,9 @@
               "application/json": {
                 "schema": {
                   "type": "array",
-                  "items": { "$ref": "#/components/schemas/EventTerm_Public" }
+                  "items": {
+                    "$ref": "#/components/schemas/EventTerm_Public"
+                  }
                 }
               }
             }
@@ -573,35 +699,75 @@
       "GenericError": {
         "type": "object",
         "properties": {
-          "code": { "type": "string" },
-          "status_code": { "type": "integer", "format": "int32" },
-          "message": { "type": "string" },
+          "code": {
+            "type": "string"
+          },
+          "status_code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          },
           "parameters": {
             "type": "object",
-            "additionalProperties": { "type": "object" }
+            "additionalProperties": {
+              "type": "object"
+            }
           }
         }
       },
       "Event": {
         "type": "object",
         "properties": {
-          "createdAt": { "type": "string", "format": "date-time" },
-          "uuid": { "type": "string" },
-          "id": { "type": "integer", "format": "int64" },
-          "name": { "type": "string" },
-          "details": { "type": "string" },
-          "place": { "type": "string" },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "uuid": {
+            "type": "string"
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "details": {
+            "type": "string"
+          },
+          "place": {
+            "type": "string"
+          },
           "eventType": {
             "type": "string",
-            "enum": ["EVENT", "CAMP", "SCHOOL_CLIMB", "ECA"]
+            "enum": [
+              "EVENT",
+              "CAMP",
+              "SCHOOL_CLIMB",
+              "ECA"
+            ]
           },
-          "regStartAt": { "type": "string", "format": "date-time" },
-          "regEndAt": { "type": "string", "format": "date-time" },
-          "imageUrl": { "type": "string" },
-          "discountType": { "type": "string" },
+          "regStartAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "regEndAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "imageUrl": {
+            "type": "string"
+          },
+          "discountType": {
+            "type": "string"
+          },
           "terms": {
             "type": "array",
-            "items": { "$ref": "#/components/schemas/EventTerm" },
+            "items": {
+              "$ref": "#/components/schemas/EventTerm"
+            },
             "uniqueItems": true
           }
         },
@@ -617,74 +783,168 @@
       "EventTerm": {
         "type": "object",
         "properties": {
-          "id": { "type": "integer", "format": "int64" },
-          "startAt": { "type": "string", "format": "date-time" },
-          "endAt": { "type": "string", "format": "date-time" },
-          "capacity": { "type": "integer", "format": "int32" },
-          "deposit": { "type": "number" },
-          "price": { "type": "number" },
-          "event": { "$ref": "#/components/schemas/Event" },
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "startAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "capacity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "deposit": {
+            "type": "number"
+          },
+          "price": {
+            "type": "number"
+          },
+          "event": {
+            "$ref": "#/components/schemas/Event"
+          },
           "registrations": {
             "type": "array",
-            "items": { "$ref": "#/components/schemas/Registration" },
+            "items": {
+              "$ref": "#/components/schemas/Registration"
+            },
             "uniqueItems": true
           },
           "currentCapacities": {
             "type": "array",
-            "items": { "$ref": "#/components/schemas/EventTermCapacity" }
+            "items": {
+              "$ref": "#/components/schemas/EventTermCapacity"
+            }
           }
         },
-        "required": ["capacity", "deposit", "price"]
+        "required": [
+          "capacity",
+          "deposit",
+          "price"
+        ]
       },
       "EventTermCapacity": {
         "type": "object",
         "properties": {
-          "eventTermId": { "type": "integer", "format": "int64" },
+          "eventTermId": {
+            "type": "integer",
+            "format": "int64"
+          },
           "status": {
             "type": "string",
-            "enum": ["CONCEPT", "QUEUE", "CONFIRMED"]
+            "enum": [
+              "CONCEPT",
+              "QUEUE",
+              "CONFIRMED",
+              "DELETED"
+            ]
           },
-          "capacity": { "type": "integer", "format": "int32" },
-          "registrations": { "type": "integer", "format": "int64" },
-          "registeredCount": { "type": "integer", "format": "int64" },
-          "confirmedCount": { "type": "integer", "format": "int64" }
+          "capacity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "registrations": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "registeredCount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "confirmedCount": {
+            "type": "integer",
+            "format": "int64"
+          }
         }
       },
       "KnownPerson": {
         "type": "object",
         "properties": {
-          "name": { "type": "string" },
-          "surname": { "type": "string" },
-          "relation": { "type": "string" }
+          "name": {
+            "type": "string"
+          },
+          "surname": {
+            "type": "string"
+          },
+          "relation": {
+            "type": "string"
+          }
         },
-        "required": ["name", "relation", "surname"]
+        "required": [
+          "name",
+          "relation",
+          "surname"
+        ]
       },
       "Payment": {
         "type": "object",
         "properties": {
-          "registration": { "$ref": "#/components/schemas/Registration" },
-          "id": { "type": "integer", "format": "int64" },
-          "price": { "type": "number" },
-          "deposit": { "type": "number" },
-          "discountValue": { "type": "number" },
-          "discountPercent": { "type": "number" },
-          "depositPaid": { "type": "boolean" },
-          "paid": { "type": "boolean" },
-          "variableSymbol": { "type": "string" },
-          "remainingValue": { "type": "number" },
-          "discountPercentValue": { "type": "number" },
-          "finalPrice": { "type": "number" },
-          "hasDiscount": { "type": "boolean" },
-          "hasDeposit": { "type": "boolean" }
+          "registration": {
+            "$ref": "#/components/schemas/Registration"
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "price": {
+            "type": "number"
+          },
+          "deposit": {
+            "type": "number"
+          },
+          "discountValue": {
+            "type": "number"
+          },
+          "discountPercent": {
+            "type": "number"
+          },
+          "depositPaid": {
+            "type": "boolean"
+          },
+          "paid": {
+            "type": "boolean"
+          },
+          "remainingValue": {
+            "type": "number"
+          },
+          "variableSymbol": {
+            "type": "string"
+          },
+          "finalPrice": {
+            "type": "number"
+          },
+          "discountPercentValue": {
+            "type": "number"
+          },
+          "hasDiscount": {
+            "type": "boolean"
+          },
+          "hasDeposit": {
+            "type": "boolean"
+          }
         },
-        "required": ["price"]
+        "required": [
+          "price"
+        ]
       },
       "Person": {
         "type": "object",
         "properties": {
-          "name": { "type": "string" },
-          "surname": { "type": "string" },
-          "dateOfBirth": { "type": "string", "format": "date" },
+          "name": {
+            "type": "string"
+          },
+          "surname": {
+            "type": "string"
+          },
+          "dateOfBirth": {
+            "type": "string",
+            "format": "date"
+          },
           "healthNotes": {
             "type": "string",
             "maxLength": 1000,
@@ -695,40 +955,93 @@
             "maxLength": 1000,
             "minLength": 0
           },
-          "shirtSize": { "type": "string" },
-          "isIndependent": { "type": "boolean" },
-          "fullName": { "type": "string" }
+          "shirtSize": {
+            "type": "string"
+          },
+          "isIndependent": {
+            "type": "boolean"
+          },
+          "fullName": {
+            "type": "string"
+          }
         },
-        "required": ["dateOfBirth", "name", "surname"]
+        "required": [
+          "dateOfBirth",
+          "name",
+          "surname"
+        ]
       },
       "Registration": {
         "type": "object",
         "properties": {
-          "createdAt": { "type": "string", "format": "date-time" },
-          "uuid": { "type": "string" },
-          "id": { "type": "integer", "format": "int64" },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "uuid": {
+            "type": "string"
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
           "status": {
             "type": "string",
-            "enum": ["CONCEPT", "QUEUE", "CONFIRMED"]
+            "enum": [
+              "CONCEPT",
+              "QUEUE",
+              "CONFIRMED",
+              "DELETED"
+            ]
           },
-          "name": { "type": "string" },
-          "surname": { "type": "string" },
-          "email": { "type": "string" },
-          "telPhone": { "type": "string" },
-          "consentGDPR": { "type": "boolean" },
-          "consentPhoto": { "type": "boolean" },
-          "emailConfirmSent": { "type": "boolean" },
-          "emailPaymentInfoSent": { "type": "boolean" },
-          "emailPaymentConfirmSent": { "type": "boolean" },
+          "name": {
+            "type": "string"
+          },
+          "surname": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "telPhone": {
+            "type": "string"
+          },
+          "consentGDPR": {
+            "type": "boolean"
+          },
+          "consentPhoto": {
+            "type": "boolean"
+          },
+          "emailConfirmSent": {
+            "type": "boolean"
+          },
+          "emailDetailSent": {
+            "type": "boolean"
+          },
+          "emailPaymentInfoSent": {
+            "type": "boolean"
+          },
+          "emailPaymentConfirmSent": {
+            "type": "boolean"
+          },
+          "emailPaymentCompleteConfirmSent": {
+            "type": "boolean"
+          },
           "people": {
             "type": "array",
-            "items": { "$ref": "#/components/schemas/Person" }
+            "items": {
+              "$ref": "#/components/schemas/Person"
+            }
           },
           "knownPeople": {
             "type": "array",
-            "items": { "$ref": "#/components/schemas/KnownPerson" }
+            "items": {
+              "$ref": "#/components/schemas/KnownPerson"
+            }
           },
-          "payment": { "$ref": "#/components/schemas/Payment" }
+          "payment": {
+            "$ref": "#/components/schemas/Payment"
+          }
         },
         "required": [
           "consentGDPR",
@@ -742,11 +1055,21 @@
       "KnownPerson_Public": {
         "type": "object",
         "properties": {
-          "name": { "type": "string" },
-          "surname": { "type": "string" },
-          "relation": { "type": "string" }
+          "name": {
+            "type": "string"
+          },
+          "surname": {
+            "type": "string"
+          },
+          "relation": {
+            "type": "string"
+          }
         },
-        "required": ["name", "relation", "surname"]
+        "required": [
+          "name",
+          "relation",
+          "surname"
+        ]
       },
       "Payment_Public": {
         "type": "object",
@@ -754,28 +1077,64 @@
           "registration": {
             "$ref": "#/components/schemas/Registration_Public"
           },
-          "id": { "type": "integer", "format": "int64" },
-          "price": { "type": "number" },
-          "deposit": { "type": "number" },
-          "discountValue": { "type": "number" },
-          "discountPercent": { "type": "number" },
-          "depositPaid": { "type": "boolean" },
-          "paid": { "type": "boolean" },
-          "variableSymbol": { "type": "string" },
-          "remainingValue": { "type": "number" },
-          "discountPercentValue": { "type": "number" },
-          "finalPrice": { "type": "number" },
-          "hasDiscount": { "type": "boolean" },
-          "hasDeposit": { "type": "boolean" }
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "price": {
+            "type": "number"
+          },
+          "deposit": {
+            "type": "number"
+          },
+          "discountValue": {
+            "type": "number"
+          },
+          "discountPercent": {
+            "type": "number"
+          },
+          "depositPaid": {
+            "type": "boolean"
+          },
+          "paid": {
+            "type": "boolean"
+          },
+          "remainingValue": {
+            "type": "number"
+          },
+          "variableSymbol": {
+            "type": "string"
+          },
+          "finalPrice": {
+            "type": "number"
+          },
+          "discountPercentValue": {
+            "type": "number"
+          },
+          "hasDiscount": {
+            "type": "boolean"
+          },
+          "hasDeposit": {
+            "type": "boolean"
+          }
         },
-        "required": ["price"]
+        "required": [
+          "price"
+        ]
       },
       "Person_Public": {
         "type": "object",
         "properties": {
-          "name": { "type": "string" },
-          "surname": { "type": "string" },
-          "dateOfBirth": { "type": "string", "format": "date" },
+          "name": {
+            "type": "string"
+          },
+          "surname": {
+            "type": "string"
+          },
+          "dateOfBirth": {
+            "type": "string",
+            "format": "date"
+          },
           "healthNotes": {
             "type": "string",
             "maxLength": 1000,
@@ -786,39 +1145,89 @@
             "maxLength": 1000,
             "minLength": 0
           },
-          "shirtSize": { "type": "string" },
-          "isIndependent": { "type": "boolean" },
-          "fullName": { "type": "string" }
+          "shirtSize": {
+            "type": "string"
+          },
+          "isIndependent": {
+            "type": "boolean"
+          },
+          "fullName": {
+            "type": "string"
+          }
         },
-        "required": ["dateOfBirth", "name", "surname"]
+        "required": [
+          "dateOfBirth",
+          "name",
+          "surname"
+        ]
       },
       "Registration_Public": {
         "type": "object",
         "properties": {
-          "createdAt": { "type": "string", "format": "date-time" },
-          "uuid": { "type": "string" },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "uuid": {
+            "type": "string"
+          },
           "status": {
             "type": "string",
-            "enum": ["CONCEPT", "QUEUE", "CONFIRMED"]
+            "enum": [
+              "CONCEPT",
+              "QUEUE",
+              "CONFIRMED",
+              "DELETED"
+            ]
           },
-          "name": { "type": "string" },
-          "surname": { "type": "string" },
-          "email": { "type": "string" },
-          "telPhone": { "type": "string" },
-          "consentGDPR": { "type": "boolean" },
-          "consentPhoto": { "type": "boolean" },
-          "emailConfirmSent": { "type": "boolean" },
-          "emailPaymentInfoSent": { "type": "boolean" },
-          "emailPaymentConfirmSent": { "type": "boolean" },
+          "name": {
+            "type": "string"
+          },
+          "surname": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "telPhone": {
+            "type": "string"
+          },
+          "consentGDPR": {
+            "type": "boolean"
+          },
+          "consentPhoto": {
+            "type": "boolean"
+          },
+          "emailConfirmSent": {
+            "type": "boolean"
+          },
+          "emailDetailSent": {
+            "type": "boolean"
+          },
+          "emailPaymentInfoSent": {
+            "type": "boolean"
+          },
+          "emailPaymentConfirmSent": {
+            "type": "boolean"
+          },
+          "emailPaymentCompleteConfirmSent": {
+            "type": "boolean"
+          },
           "people": {
             "type": "array",
-            "items": { "$ref": "#/components/schemas/Person_Public" }
+            "items": {
+              "$ref": "#/components/schemas/Person_Public"
+            }
           },
           "knownPeople": {
             "type": "array",
-            "items": { "$ref": "#/components/schemas/KnownPerson_Public" }
+            "items": {
+              "$ref": "#/components/schemas/KnownPerson_Public"
+            }
           },
-          "payment": { "$ref": "#/components/schemas/Payment_Public" }
+          "payment": {
+            "$ref": "#/components/schemas/Payment_Public"
+          }
         },
         "required": [
           "consentGDPR",
@@ -832,46 +1241,106 @@
       "RegistrationPricingRequest_Public": {
         "type": "object",
         "properties": {
-          "userEmail": { "type": "string" },
-          "numberOfPeople": { "type": "integer", "format": "int64" }
+          "userEmail": {
+            "type": "string"
+          },
+          "numberOfPeople": {
+            "type": "integer",
+            "format": "int64"
+          }
         },
-        "required": ["numberOfPeople", "userEmail"]
+        "required": [
+          "numberOfPeople",
+          "userEmail"
+        ]
       },
       "GenericRequestString_Public": {
         "type": "object",
-        "properties": { "value": { "type": "string" } }
+        "properties": {
+          "value": {
+            "type": "string"
+          }
+        }
       },
       "EventTerm_EventPublic": {
         "type": "object",
         "properties": {
-          "id": { "type": "integer", "format": "int64" },
-          "startAt": { "type": "string", "format": "date-time" },
-          "endAt": { "type": "string", "format": "date-time" },
-          "capacity": { "type": "integer", "format": "int32" },
-          "deposit": { "type": "number" },
-          "price": { "type": "number" }
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "startAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "capacity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "deposit": {
+            "type": "number"
+          },
+          "price": {
+            "type": "number"
+          }
         },
-        "required": ["capacity", "deposit", "price"]
+        "required": [
+          "capacity",
+          "deposit",
+          "price"
+        ]
       },
       "Event_EventPublic": {
         "type": "object",
         "properties": {
-          "createdAt": { "type": "string", "format": "date-time" },
-          "uuid": { "type": "string" },
-          "name": { "type": "string" },
-          "details": { "type": "string" },
-          "place": { "type": "string" },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "uuid": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "details": {
+            "type": "string"
+          },
+          "place": {
+            "type": "string"
+          },
           "eventType": {
             "type": "string",
-            "enum": ["EVENT", "CAMP", "SCHOOL_CLIMB", "ECA"]
+            "enum": [
+              "EVENT",
+              "CAMP",
+              "SCHOOL_CLIMB",
+              "ECA"
+            ]
           },
-          "regStartAt": { "type": "string", "format": "date-time" },
-          "regEndAt": { "type": "string", "format": "date-time" },
-          "imageUrl": { "type": "string" },
-          "discountType": { "type": "string" },
+          "regStartAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "regEndAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "imageUrl": {
+            "type": "string"
+          },
+          "discountType": {
+            "type": "string"
+          },
           "terms": {
             "type": "array",
-            "items": { "$ref": "#/components/schemas/EventTerm_EventPublic" },
+            "items": {
+              "$ref": "#/components/schemas/EventTerm_EventPublic"
+            },
             "uniqueItems": true
           }
         },
@@ -887,10 +1356,22 @@
       "EventTermCapacityResponse_Public": {
         "type": "object",
         "properties": {
-          "capacity": { "type": "integer", "format": "int32" },
-          "confirmed": { "type": "integer", "format": "int64" },
-          "registered": { "type": "integer", "format": "int64" },
-          "available": { "type": "integer", "format": "int64" }
+          "capacity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "confirmed": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "registered": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "available": {
+            "type": "integer",
+            "format": "int64"
+          }
         }
       },
       "EnumerationItem_Public": {
@@ -905,40 +1386,95 @@
               "REG_E_SHIRT_SIZE"
             ]
           },
-          "code": { "type": "string" },
-          "description": { "type": "string" },
-          "ordering": { "type": "integer", "format": "int32" },
-          "visible": { "type": "boolean" }
+          "code": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "ordering": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "visible": {
+            "type": "boolean"
+          }
         },
-        "required": ["code", "description", "enum_name", "ordering", "visible"]
+        "required": [
+          "code",
+          "description",
+          "enum_name",
+          "ordering",
+          "visible"
+        ]
       },
       "GenericResponseString": {
         "type": "object",
-        "properties": { "value": { "type": "string" } }
+        "properties": {
+          "value": {
+            "type": "string"
+          }
+        }
       },
       "EventTermCapacity_EventInternal": {
         "type": "object",
         "properties": {
-          "eventTermId": { "type": "integer", "format": "int64" },
+          "eventTermId": {
+            "type": "integer",
+            "format": "int64"
+          },
           "status": {
             "type": "string",
-            "enum": ["CONCEPT", "QUEUE", "CONFIRMED"]
+            "enum": [
+              "CONCEPT",
+              "QUEUE",
+              "CONFIRMED",
+              "DELETED"
+            ]
           },
-          "capacity": { "type": "integer", "format": "int32" },
-          "registrations": { "type": "integer", "format": "int64" },
-          "registeredCount": { "type": "integer", "format": "int64" },
-          "confirmedCount": { "type": "integer", "format": "int64" }
+          "capacity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "registrations": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "registeredCount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "confirmedCount": {
+            "type": "integer",
+            "format": "int64"
+          }
         }
       },
       "EventTerm_EventInternal": {
         "type": "object",
         "properties": {
-          "id": { "type": "integer", "format": "int64" },
-          "startAt": { "type": "string", "format": "date-time" },
-          "endAt": { "type": "string", "format": "date-time" },
-          "capacity": { "type": "integer", "format": "int32" },
-          "deposit": { "type": "number" },
-          "price": { "type": "number" },
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "startAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "capacity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "deposit": {
+            "type": "number"
+          },
+          "price": {
+            "type": "number"
+          },
           "currentCapacities": {
             "type": "array",
             "items": {
@@ -946,59 +1482,138 @@
             }
           }
         },
-        "required": ["capacity", "deposit", "price"]
+        "required": [
+          "capacity",
+          "deposit",
+          "price"
+        ]
       },
       "Event_EventInternal": {
         "type": "object",
         "properties": {
-          "createdAt": { "type": "string", "format": "date-time" },
-          "uuid": { "type": "string" },
-          "id": { "type": "integer", "format": "int64" },
-          "name": { "type": "string" },
-          "place": { "type": "string" },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "uuid": {
+            "type": "string"
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "place": {
+            "type": "string"
+          },
           "eventType": {
             "type": "string",
-            "enum": ["EVENT", "CAMP", "SCHOOL_CLIMB", "ECA"]
+            "enum": [
+              "EVENT",
+              "CAMP",
+              "SCHOOL_CLIMB",
+              "ECA"
+            ]
           },
-          "regStartAt": { "type": "string", "format": "date-time" },
-          "regEndAt": { "type": "string", "format": "date-time" },
-          "imageUrl": { "type": "string" },
-          "discountType": { "type": "string" },
+          "regStartAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "regEndAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "imageUrl": {
+            "type": "string"
+          },
+          "discountType": {
+            "type": "string"
+          },
           "terms": {
             "type": "array",
-            "items": { "$ref": "#/components/schemas/EventTerm_EventInternal" },
+            "items": {
+              "$ref": "#/components/schemas/EventTerm_EventInternal"
+            },
             "uniqueItems": true
           }
         },
-        "required": ["eventType", "name", "place", "regEndAt", "regStartAt"]
+        "required": [
+          "eventType",
+          "name",
+          "place",
+          "regEndAt",
+          "regStartAt"
+        ]
       },
       "EventTermCapacity_EventTerm": {
         "type": "object",
         "properties": {
-          "eventTermId": { "type": "integer", "format": "int64" },
+          "eventTermId": {
+            "type": "integer",
+            "format": "int64"
+          },
           "status": {
             "type": "string",
-            "enum": ["CONCEPT", "QUEUE", "CONFIRMED"]
+            "enum": [
+              "CONCEPT",
+              "QUEUE",
+              "CONFIRMED",
+              "DELETED"
+            ]
           },
-          "capacity": { "type": "integer", "format": "int32" },
-          "registrations": { "type": "integer", "format": "int64" },
-          "registeredCount": { "type": "integer", "format": "int64" },
-          "confirmedCount": { "type": "integer", "format": "int64" }
+          "capacity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "registrations": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "registeredCount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "confirmedCount": {
+            "type": "integer",
+            "format": "int64"
+          }
         }
       },
       "EventTerm_EventTerm": {
         "type": "object",
         "properties": {
-          "id": { "type": "integer", "format": "int64" },
-          "startAt": { "type": "string", "format": "date-time" },
-          "endAt": { "type": "string", "format": "date-time" },
-          "capacity": { "type": "integer", "format": "int32" },
-          "deposit": { "type": "number" },
-          "price": { "type": "number" },
-          "event": { "$ref": "#/components/schemas/Event_EventTerm" },
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "startAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "capacity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "deposit": {
+            "type": "number"
+          },
+          "price": {
+            "type": "number"
+          },
+          "event": {
+            "$ref": "#/components/schemas/Event_EventTerm"
+          },
           "registrations": {
             "type": "array",
-            "items": { "$ref": "#/components/schemas/Registration_EventTerm" },
+            "items": {
+              "$ref": "#/components/schemas/Registration_EventTerm"
+            },
             "uniqueItems": true
           },
           "currentCapacities": {
@@ -1008,35 +1623,82 @@
             }
           }
         },
-        "required": ["capacity", "deposit", "price"]
+        "required": [
+          "capacity",
+          "deposit",
+          "price"
+        ]
       },
       "Event_EventTerm": {
         "type": "object",
         "properties": {
-          "createdAt": { "type": "string", "format": "date-time" },
-          "uuid": { "type": "string" },
-          "id": { "type": "integer", "format": "int64" },
-          "name": { "type": "string" },
-          "place": { "type": "string" },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "uuid": {
+            "type": "string"
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "place": {
+            "type": "string"
+          },
           "eventType": {
             "type": "string",
-            "enum": ["EVENT", "CAMP", "SCHOOL_CLIMB", "ECA"]
+            "enum": [
+              "EVENT",
+              "CAMP",
+              "SCHOOL_CLIMB",
+              "ECA"
+            ]
           },
-          "regStartAt": { "type": "string", "format": "date-time" },
-          "regEndAt": { "type": "string", "format": "date-time" },
-          "imageUrl": { "type": "string" },
-          "discountType": { "type": "string" }
+          "regStartAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "regEndAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "imageUrl": {
+            "type": "string"
+          },
+          "discountType": {
+            "type": "string"
+          }
         },
-        "required": ["eventType", "name", "place", "regEndAt", "regStartAt"]
+        "required": [
+          "eventType",
+          "name",
+          "place",
+          "regEndAt",
+          "regStartAt"
+        ]
       },
       "KnownPerson_EventTerm": {
         "type": "object",
         "properties": {
-          "name": { "type": "string" },
-          "surname": { "type": "string" },
-          "relation": { "type": "string" }
+          "name": {
+            "type": "string"
+          },
+          "surname": {
+            "type": "string"
+          },
+          "relation": {
+            "type": "string"
+          }
         },
-        "required": ["name", "relation", "surname"]
+        "required": [
+          "name",
+          "relation",
+          "surname"
+        ]
       },
       "Payment_EventTerm": {
         "type": "object",
@@ -1044,28 +1706,64 @@
           "registration": {
             "$ref": "#/components/schemas/Registration_EventTerm"
           },
-          "id": { "type": "integer", "format": "int64" },
-          "price": { "type": "number" },
-          "deposit": { "type": "number" },
-          "discountValue": { "type": "number" },
-          "discountPercent": { "type": "number" },
-          "depositPaid": { "type": "boolean" },
-          "paid": { "type": "boolean" },
-          "variableSymbol": { "type": "string" },
-          "remainingValue": { "type": "number" },
-          "discountPercentValue": { "type": "number" },
-          "finalPrice": { "type": "number" },
-          "hasDiscount": { "type": "boolean" },
-          "hasDeposit": { "type": "boolean" }
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "price": {
+            "type": "number"
+          },
+          "deposit": {
+            "type": "number"
+          },
+          "discountValue": {
+            "type": "number"
+          },
+          "discountPercent": {
+            "type": "number"
+          },
+          "depositPaid": {
+            "type": "boolean"
+          },
+          "paid": {
+            "type": "boolean"
+          },
+          "remainingValue": {
+            "type": "number"
+          },
+          "variableSymbol": {
+            "type": "string"
+          },
+          "finalPrice": {
+            "type": "number"
+          },
+          "discountPercentValue": {
+            "type": "number"
+          },
+          "hasDiscount": {
+            "type": "boolean"
+          },
+          "hasDeposit": {
+            "type": "boolean"
+          }
         },
-        "required": ["price"]
+        "required": [
+          "price"
+        ]
       },
       "Person_EventTerm": {
         "type": "object",
         "properties": {
-          "name": { "type": "string" },
-          "surname": { "type": "string" },
-          "dateOfBirth": { "type": "string", "format": "date" },
+          "name": {
+            "type": "string"
+          },
+          "surname": {
+            "type": "string"
+          },
+          "dateOfBirth": {
+            "type": "string",
+            "format": "date"
+          },
           "healthNotes": {
             "type": "string",
             "maxLength": 1000,
@@ -1076,40 +1774,93 @@
             "maxLength": 1000,
             "minLength": 0
           },
-          "shirtSize": { "type": "string" },
-          "isIndependent": { "type": "boolean" },
-          "fullName": { "type": "string" }
+          "shirtSize": {
+            "type": "string"
+          },
+          "isIndependent": {
+            "type": "boolean"
+          },
+          "fullName": {
+            "type": "string"
+          }
         },
-        "required": ["dateOfBirth", "name", "surname"]
+        "required": [
+          "dateOfBirth",
+          "name",
+          "surname"
+        ]
       },
       "Registration_EventTerm": {
         "type": "object",
         "properties": {
-          "createdAt": { "type": "string", "format": "date-time" },
-          "uuid": { "type": "string" },
-          "id": { "type": "integer", "format": "int64" },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "uuid": {
+            "type": "string"
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
           "status": {
             "type": "string",
-            "enum": ["CONCEPT", "QUEUE", "CONFIRMED"]
+            "enum": [
+              "CONCEPT",
+              "QUEUE",
+              "CONFIRMED",
+              "DELETED"
+            ]
           },
-          "name": { "type": "string" },
-          "surname": { "type": "string" },
-          "email": { "type": "string" },
-          "telPhone": { "type": "string" },
-          "consentGDPR": { "type": "boolean" },
-          "consentPhoto": { "type": "boolean" },
-          "emailConfirmSent": { "type": "boolean" },
-          "emailPaymentInfoSent": { "type": "boolean" },
-          "emailPaymentConfirmSent": { "type": "boolean" },
+          "name": {
+            "type": "string"
+          },
+          "surname": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "telPhone": {
+            "type": "string"
+          },
+          "consentGDPR": {
+            "type": "boolean"
+          },
+          "consentPhoto": {
+            "type": "boolean"
+          },
+          "emailConfirmSent": {
+            "type": "boolean"
+          },
+          "emailDetailSent": {
+            "type": "boolean"
+          },
+          "emailPaymentInfoSent": {
+            "type": "boolean"
+          },
+          "emailPaymentConfirmSent": {
+            "type": "boolean"
+          },
+          "emailPaymentCompleteConfirmSent": {
+            "type": "boolean"
+          },
           "people": {
             "type": "array",
-            "items": { "$ref": "#/components/schemas/Person_EventTerm" }
+            "items": {
+              "$ref": "#/components/schemas/Person_EventTerm"
+            }
           },
           "knownPeople": {
             "type": "array",
-            "items": { "$ref": "#/components/schemas/KnownPerson_EventTerm" }
+            "items": {
+              "$ref": "#/components/schemas/KnownPerson_EventTerm"
+            }
           },
-          "payment": { "$ref": "#/components/schemas/Payment_EventTerm" }
+          "payment": {
+            "$ref": "#/components/schemas/Payment_EventTerm"
+          }
         },
         "required": [
           "consentGDPR",
@@ -1123,14 +1874,34 @@
       "EventTerm_Public": {
         "type": "object",
         "properties": {
-          "id": { "type": "integer", "format": "int64" },
-          "startAt": { "type": "string", "format": "date-time" },
-          "endAt": { "type": "string", "format": "date-time" },
-          "capacity": { "type": "integer", "format": "int32" },
-          "deposit": { "type": "number" },
-          "price": { "type": "number" }
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "startAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "capacity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "deposit": {
+            "type": "number"
+          },
+          "price": {
+            "type": "number"
+          }
         },
-        "required": ["capacity", "deposit", "price"]
+        "required": [
+          "capacity",
+          "deposit",
+          "price"
+        ]
       }
     }
   }

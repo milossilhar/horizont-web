@@ -1,5 +1,5 @@
 <p-card styleClass="w-full overflow-hidden">
-  
+
   <!-- Header with Status -->
   <ng-template #header>
     <div class="bg-gradient-to-bl from-zinc-600 to-emerald-800 text-white py-4 px-6">
@@ -24,7 +24,7 @@
 
   <!-- Main Content -->
   <div class="px-2 py-0">
-    
+
     <!-- Contact Information -->
     <div class="grid sm:grid-cols-2 gap-6">
       <div class="flex flex-col gap-y-4">
@@ -125,18 +125,18 @@
       <!-- Action Buttons -->
        @if (!payment.paid) {
          <div class="flex flex-col items-stretch gap-1 mt-2">
-   
+
            @if (payment.hasDeposit && !payment.depositPaid) {
              <p-button size="small" [fluid]="true" icon="pi pi-check" severity="info"
                (onClick)="paidClick($event, true)" [disabled]="loading()" [loading]="loading()"
                [label]="`Potvrď zálohu (${payment.deposit | currency})`">
              </p-button>
            }
-   
-           <!-- <p-button size="small" [fluid]="true" icon="pi pi-check-square" severity="success"
+
+           <p-button size="small" [fluid]="true" icon="pi pi-check-square" severity="success"
              (onClick)="paidClick($event, false)" [disabled]="loading()" [loading]="loading()"
-             [label]="getPaymentButtonText() + ` (${this.payment.remainingValue | currency})`">
-           </p-button> -->
+             [label]="getPaymentButtonText() + ` (${payment.remainingValue | currency})`">
+           </p-button>
          </div>
        }
      }
@@ -149,18 +149,18 @@
         Registrované deti
         <p-badge [value]="registration.people.length" severity="info"></p-badge>
       </h3>
-      
+
       <div class="grid gap-4">
         @for (person of registration.people; track $index) {
           <div class="bg-white border border-gray-200 rounded-lg p-3 flex flex-col gap-y-1">
-            
+
             <div class="flex justify-between items-start">
               <h4 class="font-semibold text-gray-800">
                 {{person.name}} {{person.surname}}
               </h4>
               <app-independent-tag [independent]="person.isIndependent" size="small"></app-independent-tag>
             </div>
-            
+
             <div class="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
               <div>
                 <span class="text-gray-600 block">Dátum narodenia</span>
@@ -171,12 +171,12 @@
                 <span class="text-gray-600 block">Veľkosť trička</span>
                 <span class="text-gray-800 font-medium">{{person.shirtSize}}</span>
               </div>
-              
+
               <div>
                 <span class="text-gray-600 block">Zdravotné poznámky</span>
                 <span class="text-teal-700 font-medium">{{person.healthNotes | default : 'neuvedené'}}</span>
               </div>
-              
+
               <div>
                 <span class="text-gray-600 block">Alergie na jedlo</span>
                 <span class="text-orange-700 font-medium">{{person.foodAllergyNotes | default : 'neuvedené'}}</span>
@@ -195,7 +195,7 @@
         Známe osoby
         <p-badge [value]="`${registration.knownPeople.length}`" severity="info"></p-badge>
       </h3>
-      
+
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
         @for (knownPerson of registration.knownPeople; track $index) {
           <div class="bg-gray-50 rounded-lg p-3 border border-gray-200">
@@ -207,6 +207,16 @@
         }
       </div>
     }
+
+    <p-divider></p-divider>
+    <h3 class="text-md font-semibold text-gray-800 mb-2">
+      Poslané emaily
+    </h3>
+    <div class="flex flex-row flex-wrap gap-2 justify-start items-center">
+      @for (emailFlag of emailFlags; track $index) {
+        <app-boolean-tag size="text-xs" [value]="emailFlag.value" [trueLabel]="emailFlag.label" [falseLabel]="emailFlag.label"></app-boolean-tag>
+      }
+    </div>
 
   </div>
 

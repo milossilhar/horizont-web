@@ -19,10 +19,10 @@ export interface PaymentDTO {
     discountPercent?: number;
     depositPaid?: boolean;
     paid?: boolean;
-    variableSymbol?: string;
     remainingValue?: number;
-    discountPercentValue?: number;
+    variableSymbol?: string;
     finalPrice?: number;
+    discountPercentValue?: number;
     hasDiscount?: boolean;
     hasDeposit?: boolean;
 }
