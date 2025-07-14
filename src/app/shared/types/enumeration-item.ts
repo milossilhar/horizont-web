@@ -5,5 +5,6 @@ import { NgTagSeverity } from './prime-ng-severities';
 
 export interface EnumerationItem extends Partial<EnumerationItemDTO>, Partial<PlaceDTO>, Partial<EventConditionTypeDTO> {
   icon?: string,
+  disabled?: boolean,
   severity?: NgTagSeverity
 }

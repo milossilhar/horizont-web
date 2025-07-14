@@ -1,5 +1,5 @@
 import { JsonPipe } from '@angular/common';
-import { Component, input, OnInit } from '@angular/core';
+import { Component, computed, input, OnInit } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Button } from 'primeng/button';
 import { DatePicker } from 'primeng/datepicker';
@@ -34,6 +34,8 @@ export class EventFormComponent extends DestroyableComponent implements OnInit {
   public shownAs = input<ShownAsType>('standalone');
   public onSuccess = input<() => void>(() => {});
 
+  protected standalone = computed(() => this.shownAs() === 'standalone');
+
   constructor(
     private fb: NonNullableFormBuilder,
     private eventRestService: EventRestService
@@ -49,6 +51,7 @@ export class EventFormComponent extends DestroyableComponent implements OnInit {
       placeCode: this.fb.control<string | null>(null, Validators.required),
       periodCode: this.fb.control<string | null>(null),
       conditions: this.fb.array([]),
+      terms: this.fb.array([]),
     });
   }
 

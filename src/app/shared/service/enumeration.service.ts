@@ -5,6 +5,7 @@ import { EnumerationRestService } from '../../rest/api/enumeration.service';
 import { EnumerationDTO } from '../../rest/model/enumeration-dto';
 import { EnumerationItemAggregateDTO } from '../../rest/model/enumeration-item-aggregate-dto';
 import { EventDTO } from '../../rest/model/event-dto';
+import { EventTermDTO } from '../../rest/model/event-term-dto';
 import { Enumeration } from '../types/enumeration';
 import { EnumerationItem } from '../types/enumeration-item';
 import { EnumerationName } from '../types/enumeration-name';
@@ -20,6 +21,36 @@ const ENUM_NAMES: Record<EnumerationName, string> = {
 }
 
 const LOCAL_ENUMS: Dictionary<Enumeration> = {
+  'YES_NO': {
+    administrated: false,
+    values: [
+      // we need to fake typescript so it is happy
+      { code: true as any, name: 'Áno', type: 'local', ordering: 1 },
+      { code: false as any, name: 'Nie', type: 'local', ordering: 2 }
+    ]
+  },
+  'EVENT_TERM_REPEAT_TYPE': {
+    name: 'Druhy opakovaní termínov',
+    administrated: false,
+    values: [
+      { code: EventTermDTO.RepeatTypeEnum.Once, name: 'Jedenkrát', description: 'Jednorázová udalosť v presný čas', type: 'local', ordering: 1 },
+      { code: EventTermDTO.RepeatTypeEnum.Daily, name: 'Denne', description: 'Každý deň v uvedenom období', type: 'local', ordering: 2 },
+      { code: EventTermDTO.RepeatTypeEnum.Weekly, name: 'Týždenne', description: 'Raz za týždeň v daný deň', type: 'local', ordering: 3 }
+    ]
+  },
+  'DAY_OF_WEEK': {
+    name: 'Dni v týždni',
+    administrated: false,
+    values: [
+      { code: EventTermDTO.DayOfWeekEnum.Monday, name: 'Pondelok', type: 'local', ordering: 1 },
+      { code: EventTermDTO.DayOfWeekEnum.Tuesday, name: 'Utorok', type: 'local', ordering: 2 },
+      { code: EventTermDTO.DayOfWeekEnum.Wednesday, name: 'Streda', type: 'local', ordering: 3 },
+      { code: EventTermDTO.DayOfWeekEnum.Thursday, name: 'Štvrtok', type: 'local', ordering: 4 },
+      { code: EventTermDTO.DayOfWeekEnum.Friday, name: 'Piatok', type: 'local', ordering: 5 },
+      { code: EventTermDTO.DayOfWeekEnum.Saturday, name: 'Sobota', type: 'local', ordering: 6 },
+      { code: EventTermDTO.DayOfWeekEnum.Sunday, name: 'Nedeľa', type: 'local', ordering: 7 }
+    ]
+  },
   'EVENT_STATUS': {
     name: 'Stavy udalostí',
     administrated: false,

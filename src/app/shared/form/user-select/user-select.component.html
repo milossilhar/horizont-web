@@ -1,1 +1,15 @@
-<p>user-select works!</p>
+<app-form-with-errors [errorMessages]="errorMessages()">
+  <p-float-label variant="on">
+    <p-multi-select [options]="users()" [formControl]="form" fluid [showClear]="true" [inputId]="inputId()"
+                    dropdownIcon="pi pi-user" filterBy="name,surname" [lazy]="true"
+                    optionValue="username" optionLabel="name" display="chip">
+      <ng-template let-item #item>
+        <div class="flex flex-row flex-wrap items-baseline justify-center gap-2">
+          <p class="text-md">{{ item.name }}</p>
+          <p class="text-sm text-gray-500">{{ item.surname }}</p>
+        </div>
+      </ng-template>
+    </p-multi-select>
+    <label [for]="inputId()">{{ label() }}</label>
+  </p-float-label>
+</app-form-with-errors>

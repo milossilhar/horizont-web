@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { map, Observable, of, ReplaySubject, tap } from 'rxjs';
 
-interface User {
+export interface User {
   username: string;
   name: string;
   surname: string;
@@ -10,14 +10,31 @@ interface User {
   pictureHref: string;
 }
 
-const LOCAL_USERS: Array<User> = [{
+const LOCAL_USERS: Array<User> = [
+  {
     username: 'melis',
     name: 'Mela',
     surname: 'Váleková',
     email: 'test@test.com',
     roles: ['ADMIN', 'TRAINER'],
     pictureHref: 'https://picsum.photos/id/64/300'
-  }
+  },
+  {
+    username: 'lenka',
+    name: 'Lenka',
+    surname: 'Bacigálová',
+    email: 'test@test.com',
+    roles: ['ADMIN', 'TRAINER'],
+    pictureHref: 'https://picsum.photos/id/65/300'
+  },
+  {
+    username: 'linda',
+    name: 'Linda',
+    surname: 'Melichárová',
+    email: 'test@test.com',
+    roles: ['ADMIN', 'TRAINER'],
+    pictureHref: 'https://picsum.photos/id/66/300'
+  },
 ];
 
 @Injectable({

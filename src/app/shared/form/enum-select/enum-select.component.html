@@ -1,30 +1,45 @@
-<app-form-with-errors [errorMessages]="errorMessages()">
-  <p-float-label variant="on">
-    <p-select [formControl]="form" optionValue="code" fluid
-              [showClear]="true" [inputId]="inputId()" [options]="values()" #selectComponent>
-      <ng-template let-selectedItem #selectedItem>
-        {{ selectedItem.name }}
-      </ng-template>
-      <ng-template let-item #item>
-        @if (item.description) {
-          <div class="flex flex-col items-start justify-center gap-1">
+@if (type() === 'select') {
+  <app-form-with-errors [errorMessages]="errorMessages()" [hint]="hint()">
+    <p-float-label variant="on">
+      <p-select [formControl]="form" [inputId]="inputId()" [options]="values()"
+                optionValue="code" optionDisabled="disabled" fluid [showClear]="true"
+                (onChange)="onChange.emit($event.value)" #selectComponent>
+        <ng-template let-selectedItem #selectedItem>
+          {{ selectedItem.name }}
+        </ng-template>
+        <ng-template let-item #item>
+          @if (item.description) {
+            <div class="flex flex-col items-start justify-center gap-1">
+              <p class="text-md">{{ item.name }}</p>
+              <p class="text-sm text-gray-500">{{ item.description }}</p>
+            </div>
+          } @else {
             <p class="text-md">{{ item.name }}</p>
-            <p class="text-sm text-gray-500">{{ item.description }}</p>
-          </div>
-        } @else {
-          <p class="text-md">{{ item.name }}</p>
-        }
-      </ng-template>
-      <ng-template #footer>
-        @if (enumeration()?.administrated) {
-          <div class="p-3">
-            <p-button label="Pridaj" fluid [text]="true" icon="pi pi-plus"
-                      (click)="selectComponent.hide(); onAddClick()">
-            </p-button>
-          </div>
-        }
-      </ng-template>
-    </p-select>
-    <label [for]="inputId()">{{ label() }}</label>
-  </p-float-label>
-</app-form-with-errors>
+          }
+        </ng-template>
+        <ng-template #footer>
+          @if (enumeration()?.administrated) {
+            <div class="p-3">
+              <p-button label="Pridaj" fluid [text]="true" icon="pi pi-plus"
+                        (click)="selectComponent.hide(); onAddClick()">
+              </p-button>
+            </div>
+          }
+        </ng-template>
+      </p-select>
+      <label [for]="inputId()">{{ label() }}</label>
+    </p-float-label>
+  </app-form-with-errors>
+} @else if (type() === 'selectbutton') {
+  <app-form-with-errors>
+    <div class="flex flex-row items-center space-x-4">
+      @if (showLabel()) {
+        <p class="text-md font-medium">{{ label() }}</p>
+      }
+      <p-select-button class="self-start" [formControl]="form" [options]="values()" [allowEmpty]="false"
+                       optionValue="code" optionLabel="name" optionDisabled="disabled" size="small"
+                       (onChange)="onChange.emit($event.value)">
+      </p-select-button>
+    </div>
+  </app-form-with-errors>
+}

@@ -1,31 +1,101 @@
 <div class="w-full flex flex-col gap-2">
   <h2 class="text-xl">Termíny</h2>
   <p class="text-sm text-gray-500">Termíny udalosti na prihlasovanie</p>
-  <div class="p-4 space-y-4 bg-neutral-100 rounded-lg">
-    @if (controls.length === 0) {
+  @if (controls.length === 0) {
+    <div class="p-4 bg-red-50 rounded-lg">
       <p class="text-center">Bez termínov</p>
-    } @else {
-      @for (control of controls; track $index) {
-        <div class="flex items-center justify-start space-x-2">
-          <p-button rounded text icon="pi pi-times" severity="danger">
-          </p-button>
-          <div [formGroup]="control" class="flex flex-col space-y-2 flex-1">
-            <app-enum-select formControlName="conditionType" enumName="REG_EVENT_CONDITION_TYPE" label="Podmienka"
-                             [inputId]="`condition-${$index}-value`">
-            </app-enum-select>
+    </div>
+  } @else {
+    @for (control of controls; track $index) {
+      <div [formGroup]="control" class="flex flex-col p-4 bg-neutral-100 rounded-lg space-y-4 flex-1">
+        <div class="flex justify-between items-baseline">
+          <h2 class="text-lg font-semibold">Termín {{ $index + 1 }}</h2>
+          <p-button label="Vymazať" text severity="danger" (onClick)="removeTerm($event, $index)"></p-button>
+        </div>
+        <app-enum-select enumName="EVENT_TERM_REPEAT_TYPE" formControlName="repeatType" type="selectbutton"
+                         (onChange)="onRepeatTypeChange($event, $index)" defaulting
+                         [inputId]="`event-term-${$index}-start-date`" label="Opakovanie"
+        ></app-enum-select>
+        @if (!!control.controls.repeatType.value) {
+
+          @if (control.controls.start) {
             <app-form-with-errors>
               <p-float-label variant="on">
-                <label [for]="`condition-${$index}-value`">Hodnota</label>
-                <input pInputText fluid [id]="`condition-${$index}-value`" formControlName="value" autocomplete="off"/>
+                <p-date-picker formControlName="start" fluid showIcon iconDisplay="input"
+                               [showTime]="true" hourFormat="24" [inputId]="`event-term-${$index}-start`">
+                </p-date-picker>
+                <label [for]="`event-term-${$index}-start`">Začiatok</label>
               </p-float-label>
             </app-form-with-errors>
-          </div>
-        </div>
-      }
-      <div class="flex items-baseline justify-between space-x-2">
+          }
+
+          @if (control.controls.period) {
+            <app-form-with-errors hint="Prosím zvoľ rozsah">
+              <p-float-label variant="on">
+                <p-date-picker formControlName="period" fluid showIcon iconDisplay="input" selectionMode="range"
+                               [showTime]="false" [inputId]="`event-term-${$index}-period`">
+                </p-date-picker>
+                <label [for]="`event-term-${$index}-period`">Dni</label>
+              </p-float-label>
+            </app-form-with-errors>
+          }
+
+          @if (control.controls.startTime) {
+            <app-form-with-errors>
+              <p-float-label variant="on">
+                <p-date-picker formControlName="startTime" fluid showIcon icon="pi pi-clock"
+                               [timeOnly]="true" [inputId]="`event-term-${$index}-start-time`">
+                </p-date-picker>
+                <label [for]="`event-term-${$index}-start-time`">Čas začiatku</label>
+              </p-float-label>
+            </app-form-with-errors>
+          }
+
+          <app-form-with-errors [options]="durationOptions">
+            <p-input-group>
+              <p-float-label variant="on">
+                <p-input-number formControlName="durationMinutes" fluid [inputId]="`event-term-${$index}-duration`">
+                </p-input-number>
+                <label [for]="`event-term-${$index}-duration`">Trvanie</label>
+              </p-float-label>
+              <p-inputgroup-addon>min</p-inputgroup-addon>
+            </p-input-group>
+          </app-form-with-errors>
+
+          @if (control.controls.dayOfWeek) {
+            <app-enum-select enumName="DAY_OF_WEEK" formControlName="dayOfWeek"
+                             [inputId]="`event-term-${$index}-day-of-week`"
+                             label="Deň v týždni"
+            ></app-enum-select>
+          }
+
+          <app-user-select formControlName="expectedTrainers" label="Očakávaní tréneri"
+                           [inputId]="`event-term-${$index}-trainers`">
+          </app-user-select>
+
+          <app-form-with-errors>
+            <p-input-group>
+              <p-float-label variant="on">
+                <p-input-number formControlName="price" fluid
+                                [inputId]="`event-term-${$index}-price`">
+                </p-input-number>
+                <label [for]="`event-term-${$index}-price`">{{ getPriceLabel(control.controls.repeatType.value) }}</label>
+              </p-float-label>
+              <p-inputgroup-addon>
+                <i class="pi pi-euro"></i>
+              </p-inputgroup-addon>
+            </p-input-group>
+          </app-form-with-errors>
+
+          <app-enum-select enumName="YES_NO" formControlName="hasAttendance"
+                           showLabel label="Generovať dochádzku" type="selectbutton"
+                           [inputId]="`event-term-${$index}-attendance`"
+          ></app-enum-select>
+        }
       </div>
     }
-  </div>
-  <p-button label="Pridaj termín" text fluid icon="pi pi-plus" severity="success">
+  }
+  <p-button label="Pridaj termín" text fluid icon="pi pi-plus" severity="success" (onClick)="addTerm()">
   </p-button>
+  <p>{{form.getRawValue() | json}}</p>
 </div>

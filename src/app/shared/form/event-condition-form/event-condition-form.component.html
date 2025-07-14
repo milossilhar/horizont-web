@@ -1,30 +1,29 @@
 <div class="w-full flex flex-col gap-2">
   <h2 class="text-xl">Obmedzenia</h2>
   <p class="text-sm text-gray-500">Obmedzujúce podmienky prihlásenia / registrácie k udalosti</p>
-  <div class="p-4 space-y-4 bg-neutral-100 rounded-lg">
-    @if (controls.length === 0) {
+  @if (controls.length === 0) {
+    <div class="p-4 bg-green-50 rounded-lg">
       <p class="text-center">Bez obmedzení</p>
-    } @else {
-      @for (control of controls; track $index) {
-        <div class="flex items-center justify-start space-x-2">
-          <p-button rounded text icon="pi pi-times" severity="danger"
-                    (onClick)="removeCondition($event, $index)"></p-button>
-          <div [formGroup]="control" class="flex flex-col space-y-2 flex-1">
-            <app-enum-select formControlName="conditionType" enumName="REG_EVENT_CONDITION_TYPE" label="Podmienka"
-                             [inputId]="`condition-${$index}-value`">
-            </app-enum-select>
-            <app-form-with-errors>
-              <p-float-label variant="on">
-                <label [for]="`condition-${$index}-value`">Hodnota</label>
-                <input pInputText fluid [id]="`condition-${$index}-value`" formControlName="value" autocomplete="off"/>
-              </p-float-label>
-            </app-form-with-errors>
-          </div>
+    </div>
+  } @else {
+    @for (control of controls; track $index) {
+      <div class="flex items-center justify-start space-x-2 p-4 bg-neutral-100 rounded-lg">
+        <p-button rounded text icon="pi pi-times" severity="danger"
+                  (onClick)="removeCondition($event, $index)"></p-button>
+        <div [formGroup]="control" class="flex flex-col space-y-2 flex-1">
+          <app-enum-select formControlName="conditionType" enumName="REG_EVENT_CONDITION_TYPE" label="Podmienka"
+                           [inputId]="`condition-${$index}-value`">
+          </app-enum-select>
+          <app-form-with-errors>
+            <p-float-label variant="on">
+              <label [for]="`condition-${$index}-value`">Hodnota</label>
+              <input pInputText fluid [id]="`condition-${$index}-value`" formControlName="value" autocomplete="off"/>
+            </p-float-label>
+          </app-form-with-errors>
         </div>
-      }
-      <div class="flex items-baseline justify-between space-x-2">
       </div>
     }
-  </div>
-  <p-button label="Pridaj obmedzenie" text fluid icon="pi pi-plus" severity="success" (onClick)="addCondition()"></p-button>
+  }
+  <p-button label="Pridaj obmedzenie" text fluid icon="pi pi-plus" severity="success"
+            (onClick)="addCondition()"></p-button>
 </div>

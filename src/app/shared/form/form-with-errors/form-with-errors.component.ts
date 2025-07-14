@@ -1,12 +1,14 @@
 import { JsonPipe } from '@angular/common';
 import { AfterContentInit, booleanAttribute, Component, ContentChild, input } from '@angular/core';
 import { AbstractControl, NgControl } from '@angular/forms';
+import { Chip } from 'primeng/chip';
 import { Message } from 'primeng/message';
 import { DestroyableComponent } from '../../base/destroyable.component';
+import { LabelValue } from '../../types/label-value';
 
 @Component({
   selector: 'app-form-with-errors',
-  imports: [Message, JsonPipe],
+  imports: [Message, JsonPipe, Chip],
   templateUrl: './form-with-errors.component.html',
   styles: ``
 })
@@ -17,6 +19,7 @@ export class FormWithErrorsComponent extends DestroyableComponent implements Aft
   public showErrorsWhen = input<'touched' | 'dirty' | 'always'>('dirty');
   public hint = input<string>();
   public debug = input(false, { transform: booleanAttribute });
+  public options = input<Array<LabelValue<string, any>>>();
 
   protected control: AbstractControl | null = null;
   // protected currentLength = signal<number>(0);
@@ -44,11 +47,11 @@ export class FormWithErrorsComponent extends DestroyableComponent implements Aft
     // ).subscribe();
   }
 
-  get shouldShowHint(): boolean {
+  protected get shouldShowHint(): boolean {
     return !!this.hint();
   }
 
-  get shouldShowErrors(): boolean {
+  protected get shouldShowErrors(): boolean {
     if (!this.control || !this.control.errors) {
       return false;
     }
@@ -64,7 +67,7 @@ export class FormWithErrorsComponent extends DestroyableComponent implements Aft
     }
   }
 
-  getErrorMessages(): string[] {
+  protected getErrorMessages(): string[] {
     if (!this.control?.errors) {
       return [];
     }
@@ -83,6 +86,10 @@ export class FormWithErrorsComponent extends DestroyableComponent implements Aft
     });
 
     return errors;
+  }
+
+  protected onOptionClick(value: any) {
+    this.control?.setValue(value);
   }
 
   private getDefaultErrorMessage(errorKey: string, errorValue: any): string {

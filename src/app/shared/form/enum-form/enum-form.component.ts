@@ -17,7 +17,6 @@ import { EnumerationService } from '../../service/enumeration.service';
 import { Enumeration } from '../../types/enumeration';
 import { EnumerationName } from '../../types/enumeration-name';
 import { markAllAsDirty } from '../../util/angular-utils';
-import { EnumSelectComponent } from '../enum-select/enum-select.component';
 import { FormWithErrorsComponent } from '../form-with-errors/form-with-errors.component';
 
 type EnumFormType = FormGroup<{

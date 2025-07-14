@@ -1,6 +1,6 @@
-<div class="p-2 space-y-4">
+<div class="p-2 space-y-4" [class]="standalone() ? 'max-w-5xl mx-auto' : ''">
   <h3 class="text-xl">Nová udalosť</h3>
-  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="flex flex-col gap-4">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="grid grid-cols-1 gap-4">
     <app-form-with-errors [errorMessages]="{'required': 'Názov udalosti je povinný.'}">
       <p-floatlabel variant="on">
         <label for="event-name">Názov</label>
@@ -9,7 +9,7 @@
     </app-form-with-errors>
     <app-enum-select formControlName="eventType" enumName="EVENT_TYPE" inputId="event-type" label="Typ udalosti"></app-enum-select>
     <app-enum-select formControlName="periodCode" enumName="REG_PERIOD" inputId="event-period" label="Obdobie"></app-enum-select>
-    <app-enum-select formControlName="placeCode" enumName="REG_PLACE" inputId="event-place" label="Miesto*"></app-enum-select>
+    <app-enum-select formControlName="placeCode" enumName="REG_PLACE" inputId="event-place" label="Miesto"></app-enum-select>
     <app-form-with-errors>
       <p-float-label variant="on">
         <p-date-picker formControlName="registrationStarts" fluid showIcon iconDisplay="input" inputId="event-reg-start"
@@ -27,7 +27,10 @@
         <label for="event-reg-end">Registrácia - koniec</label>
       </p-float-label>
     </app-form-with-errors>
-    <app-event-condition-form formArrayName="conditions"></app-event-condition-form>
+    <div class="grid grid-cols-1 gap-4" [class]="standalone() ? 'lg:grid-cols-2' : ''">
+      <app-event-term-form formArrayName="terms"></app-event-term-form>
+      <app-event-condition-form formArrayName="conditions"></app-event-condition-form>
+    </div>
     <p-button label="Uložiť" type="submit"></p-button>
   </form>
   <p>{{form.getRawValue() | json}}</p>

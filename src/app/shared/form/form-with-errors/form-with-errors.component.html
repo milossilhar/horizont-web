@@ -11,6 +11,13 @@
 <!--      }-->
     </div>
   }
+  @if (options()) {
+    <div class="flex flex-row gap-2 flex-wrap">
+      @for (option of options(); track $index) {
+        <p-chip styleClass="text-xs" [label]="option.label" class="cursor-pointer" (click)="onOptionClick(option.value)"></p-chip>
+      }
+    </div>
+  }
   @if (shouldShowErrors) {
     @for (errorMessage of getErrorMessages(); track $index) {
       <p-message severity="error" variant="simple">{{ errorMessage }}</p-message>
