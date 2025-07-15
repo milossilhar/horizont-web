@@ -1,6 +1,5 @@
 // registration-card.component.ts
-import { Component, inject, Input, output, signal } from '@angular/core';
-import { update } from 'lodash';
+import { Component, Input, output, signal } from '@angular/core';
 import { CardModule } from 'primeng/card';
 import { TagModule } from 'primeng/tag';
 import { DividerModule } from 'primeng/divider';
@@ -8,7 +7,6 @@ import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
 import { BadgeModule } from 'primeng/badge';
 import { IndependentTagComponent } from '../../shared/components/tags/independent-tag/independent-tag.component';
-import { ConsentTagComponent } from '../../shared/components/tags/consent-tag/consent-tag.component';
 import { ExternalLinkComponent } from '../../shared/components/external-link/external-link.component';
 import { EnumPipe } from '../../shared/pipes/enum.pipe';
 import { RegistrationDTO } from '../../rest/model/models';
@@ -25,7 +23,7 @@ import { ToastService } from '../../shared/service/toast.service';
   standalone: true,
   imports: [
     CardModule, TagModule, DividerModule, ButtonModule, TooltipModule, BadgeModule,
-    IndependentTagComponent, ConsentTagComponent, ExternalLinkComponent, BooleanTagComponent,
+    IndependentTagComponent, ExternalLinkComponent, BooleanTagComponent,
     DatePipe, CurrencyPipe, EnumPipe, PercentPipe, DefaultPipe
   ],
   providers: [CurrencyPipe],
@@ -55,6 +53,7 @@ export class RegistrationCardComponent {
       case 'QUEUE':
         return 'warn';
       case 'CONCEPT':
+      case 'DELETED':
         return 'danger';
       default:
         return 'contrast';
@@ -69,8 +68,21 @@ export class RegistrationCardComponent {
         return 'V poradí';
       case 'CONCEPT':
         return 'Nepotvrdené';
+      case 'DELETED':
+        return 'Vymazaná'
       default:
         return 'Neznámy';
+    }
+  }
+
+  get headerGradient() {
+    switch (this.registration.status) {
+      case 'CONFIRMED':
+        return 'from-green-400 to-green-600';
+      case 'DELETED':
+        return 'from-red-400 to-red-600';
+      default:
+        return 'from-zinc-600 to-emerald-800';
     }
   }
 
@@ -89,6 +101,10 @@ export class RegistrationCardComponent {
   get discountPercent() {
     if (!this.payment?.discountPercent) return null;
     return this.payment.discountPercent / 100;
+  }
+
+  get isDeleted() {
+    return this.registration.status === 'DELETED';
   }
 
   get emailHref(): string {
