@@ -73,7 +73,8 @@ export class EventTermSelectorComponent extends DestroyableComponent implements 
 
     // update parent
     effect(() => {
-      this.onChange(this.selectedId() < 0 ? null : this.selectedId());
+      if (this.selectedId() < 0) return;
+      this.onChange(this.selectedId());
     });
 
     effect(() => {
