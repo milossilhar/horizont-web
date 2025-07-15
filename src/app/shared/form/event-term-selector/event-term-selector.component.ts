@@ -1,6 +1,7 @@
-import { Component, effect, forwardRef, input, signal } from '@angular/core';
+import { Component, effect, forwardRef, input, OnInit, signal } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { takeUntil, tap } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { filter, map, takeUntil, tap } from 'rxjs';
 import { DestroyableComponent } from '../../base/destroyable.component';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { RemainCapacityTagComponent } from "../../components/tags/remain-capacity-tag/remain-capacity-tag.component";
@@ -26,27 +27,29 @@ import { EventTermCapacityStatus } from '../../enum/event-term-capacity-status';
       multi: true
     }]
 })
-export class EventTermSelectorComponent extends DestroyableComponent implements ControlValueAccessor {
+export class EventTermSelectorComponent extends DestroyableComponent implements ControlValueAccessor, OnInit {
 
   protected EventTermCapacityStatus = EventTermCapacityStatus;
 
   public terms = input.required<Array<EventTermPublicDTO>>();
-  
+
   public eventUUID = input<string>();
 
   public setDefault = input<boolean>(true);
 
   // shows selector as admin panel
   public showAdmin = input<boolean>(false);
-  
-  protected selectedIndex = signal<number>(-1);
+
+  protected selectedId = signal<number>(-1);
   protected disabled = signal<boolean>(false);
   protected capacities = signal<Dictionary<EventTermCapacityResponsePublicDTO>>({});
 
-  private onChange: (value?: number) => void = () => {};
+  private onChange: (value?: number | null) => void = () => {};
   private onTouched = () => {};
-  
+
   constructor(
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
     private eventService: EventService,
     private publicHorizontService: PublicHorizontService
   ) {
@@ -69,29 +72,39 @@ export class EventTermSelectorComponent extends DestroyableComponent implements 
 
       if (!terms.length) return;
 
-      if (!this.setDefault()) return;
-      
-      this.onTermClick(0);
+      if (!this.setDefault() && terms.length > 1) return;
+
+      if (this.selectedId() >= 0) return;
+
+      this.onTermClick(terms[0].id);
     });
 
     // update parent
     effect(() => {
-      const selectedIndex = this.selectedIndex();
-      const terms = this.terms();
-      const selectedTerm = terms[selectedIndex];
-      
-      if (!selectedTerm) return;
-
-      this.selectedTermChanged(selectedTerm);
+      this.onChange(this.selectedId() < 0 ? null : this.selectedId());
     });
   }
+
+  ngOnInit(): void {
+    this.activatedRoute.queryParams.pipe(
+      filter(params => !!params && !!params['termID']),
+      map(params => Number(params['termID'])),
+      filter(termID => !Number.isNaN(termID)),
+      filter(termID => this.terms().some(term => term.id === termID)),
+      tap(termID => this.selectedId.set(termID)),
+      takeUntil(this.destroy$)
+    ).subscribe();
+  }
+
+
 
   // #ControlValueAccessor
   writeValue(obj: any): void {
     if (!obj) return;
+    const id = Number(obj);
+    if (Number.isNaN(id)) return;
 
-    const foundIndex = this.terms().findIndex(t => t.id === obj);
-    this.selectedIndex.set(foundIndex);
+    this.onTermClick(id);
   }
   registerOnChange(fn: any): void {
     this.onChange = fn;
@@ -104,8 +117,21 @@ export class EventTermSelectorComponent extends DestroyableComponent implements 
   }
   // /ControlValueAccessor
 
-  protected onTermClick(index: number) {
-    this.selectedIndex.set(index);
+  protected isSelected(id?: number) {
+    return this.selectedId() === id;
+  }
+
+  protected onTermClick(id?: number) {
+    if (!id) return;
+
+    this.router.navigate(
+      [],
+      {
+        relativeTo: this.activatedRoute,
+        queryParams: { termID: id },
+        queryParamsHandling: 'merge'
+      }
+    );
   }
 
   protected getCapacity(term: EventTermPublicDTO) {
@@ -115,18 +141,6 @@ export class EventTermSelectorComponent extends DestroyableComponent implements 
   protected getCapacityStatus(term: EventTermPublicDTO) {
     const capacity = this.capacities()[`${term.id}`];
     return capacity ? this.eventService.getCapacityStatus(capacity) : EventTermCapacityStatus.FREE;
-  }
-
-  protected isFilled(status: EventTermCapacityStatus) {
-    return status === EventTermCapacityStatus.FILLED;
-  }
-
-  protected showCapacityFullMessage(status: EventTermCapacityStatus) {
-    return status === EventTermCapacityStatus.FILLED || status === EventTermCapacityStatus.LAST_ONE;
-  }
-
-  private selectedTermChanged(term: EventTermPublicDTO) {
-    this.onChange(term.id);
   }
 
 }

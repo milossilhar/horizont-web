@@ -8,8 +8,7 @@
         <p><i class="pi pi-map-marker mr-1"></i>{{event()?.place}}</p>
         <p><i class="pi pi-calendar mr-1"></i>Termíny</p>
         <app-event-term-selector class="w-full"
-          [terms]="terms()" [eventUUID]="this.event()?.uuid" [formControl]="eventTermForm"
-          [setDefault]="false" [showAdmin]="true">
+          [terms]="terms()" [eventUUID]="this.event()?.uuid" [formControl]="eventTermForm" [showAdmin]="true">
         </app-event-term-selector>
       </div>
     </ng-template>

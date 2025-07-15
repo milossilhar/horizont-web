@@ -1,13 +1,13 @@
 <div class="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
   @for (term of terms(); track $index) {
-    @let selected = selectedIndex() === $index;
+    @let selected = isSelected(term.id);
     @let capacity = getCapacity(term);
     @let capacityStatus = getCapacityStatus(term);
 
     <div class="flex flex-col gap-y-2">
       <div class="p-2 rounded-border cursor-pointer bg-highlight hover:bg-highlight-emphasis"
         [class]="{ 'bg-highlight-emphasis': selected }"
-        (click)="onTermClick($index)">
+        (click)="onTermClick(term.id)">
         <div class="flex flex-row w-full justify-between">
           <p class="text-lg">Termín {{$index +1}}</p>
           @if(selected) {
@@ -16,7 +16,7 @@
             <i class="pi pi-circle"></i>
           }
         </div>
-        
+
         @if (showAdmin()) {
           <div class="flex flex-col justify-start items-start ml-4">
             <p class="text-lg font-bold">
