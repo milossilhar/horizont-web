@@ -1,7 +1,7 @@
-import { Component, effect, forwardRef, input, OnInit, signal } from '@angular/core';
+import { Component, effect, forwardRef, input, signal } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { filter, map, takeUntil, tap } from 'rxjs';
+import { takeUntil, tap } from 'rxjs';
 import { DestroyableComponent } from '../../base/destroyable.component';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { RemainCapacityTagComponent } from "../../components/tags/remain-capacity-tag/remain-capacity-tag.component";
@@ -27,7 +27,7 @@ import { EventTermCapacityStatus } from '../../enum/event-term-capacity-status';
       multi: true
     }]
 })
-export class EventTermSelectorComponent extends DestroyableComponent implements ControlValueAccessor, OnInit {
+export class EventTermSelectorComponent extends DestroyableComponent implements ControlValueAccessor {
 
   protected EventTermCapacityStatus = EventTermCapacityStatus;
 
@@ -35,14 +35,14 @@ export class EventTermSelectorComponent extends DestroyableComponent implements 
 
   public eventUUID = input<string>();
 
-  public setDefault = input<boolean>(true);
-
   // shows selector as admin panel
   public showAdmin = input<boolean>(false);
 
   protected selectedId = signal<number>(-1);
   protected disabled = signal<boolean>(false);
   protected capacities = signal<Dictionary<EventTermCapacityResponsePublicDTO>>({});
+
+  private queryParams = signal<Record<string, string>>({});
 
   private onChange: (value?: number | null) => void = () => {};
   private onTouched = () => {};
@@ -55,6 +55,11 @@ export class EventTermSelectorComponent extends DestroyableComponent implements 
   ) {
     super();
 
+    this.activatedRoute.queryParams.pipe(
+      tap(params => this.queryParams.set(params)),
+      takeUntil(this.destroy$)
+    ).subscribe();
+
     // load capacities for the Event when input gets set
     effect(() => {
       const eventUUID = this.eventUUID();
@@ -66,37 +71,23 @@ export class EventTermSelectorComponent extends DestroyableComponent implements 
       ).subscribe();
     });
 
-    // setting first option as default
-    effect(() => {
-      const terms = this.terms();
-
-      if (!terms.length) return;
-
-      if (!this.setDefault() && terms.length > 1) return;
-
-      if (this.selectedId() >= 0) return;
-
-      this.onTermClick(terms[0].id);
-    });
-
     // update parent
     effect(() => {
       this.onChange(this.selectedId() < 0 ? null : this.selectedId());
     });
+
+    effect(() => {
+      if (!this.terms().length) return;
+
+      if (!this.queryParams()['termID']) return this.setDefault();
+
+      const id = Number(this.queryParams()['termID']);
+      if (Number.isNaN(id)) return this.setDefault();
+      if (!this.terms().some(term => term.id === id)) return this.setDefault();
+
+      this.selectedId.set(id);
+    });
   }
-
-  ngOnInit(): void {
-    this.activatedRoute.queryParams.pipe(
-      filter(params => !!params && !!params['termID']),
-      map(params => Number(params['termID'])),
-      filter(termID => !Number.isNaN(termID)),
-      filter(termID => this.terms().some(term => term.id === termID)),
-      tap(termID => this.selectedId.set(termID)),
-      takeUntil(this.destroy$)
-    ).subscribe();
-  }
-
-
 
   // #ControlValueAccessor
   writeValue(obj: any): void {
@@ -104,6 +95,7 @@ export class EventTermSelectorComponent extends DestroyableComponent implements 
     const id = Number(obj);
     if (Number.isNaN(id)) return;
 
+    console.log('writeValue', id);
     this.onTermClick(id);
   }
   registerOnChange(fn: any): void {
@@ -122,6 +114,7 @@ export class EventTermSelectorComponent extends DestroyableComponent implements 
   }
 
   protected onTermClick(id?: number) {
+    console.log('onTermClick', id);
     if (!id) return;
 
     this.router.navigate(
@@ -141,6 +134,15 @@ export class EventTermSelectorComponent extends DestroyableComponent implements 
   protected getCapacityStatus(term: EventTermPublicDTO) {
     const capacity = this.capacities()[`${term.id}`];
     return capacity ? this.eventService.getCapacityStatus(capacity) : EventTermCapacityStatus.FREE;
+  }
+
+  private setDefault() {
+    const terms = this.terms();
+    if (!terms.length) return;
+    if (this.selectedId() >= 0) return; // not override
+
+    const firstTerm = terms[0];
+    this.onTermClick(firstTerm.id);
   }
 
 }
