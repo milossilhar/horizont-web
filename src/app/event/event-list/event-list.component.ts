@@ -30,7 +30,8 @@ export class EventListComponent implements OnInit {
   protected registrationStatues = [
     // EventTermCapacityEventInternalDTO.StatusEnum.Concept,
     EventTermCapacityEventInternalDTO.StatusEnum.Confirmed,
-    EventTermCapacityEventInternalDTO.StatusEnum.Queue
+    EventTermCapacityEventInternalDTO.StatusEnum.Queue,
+    EventTermCapacityEventInternalDTO.StatusEnum.Deleted
   ];
 
   protected events = signal<EventEventInternalDTO[]>([]);
@@ -44,7 +45,7 @@ export class EventListComponent implements OnInit {
   }
 
   getTermRegistrations(term: EventTermEventInternalDTO): number {
-    return reduce(term.currentCapacities, (acc, curr) => acc + (curr.registrations ?? 0), 0);
+    return reduce(term.currentCapacities, (acc, curr) => acc + (curr.status === 'CONFIRMED' ? (curr.registrations ?? 0) : 0), 0);
   }
 
   getCapacityForStatus(term: EventTermEventInternalDTO, status: EventTermCapacityEventInternalDTO.StatusEnum) {
@@ -56,7 +57,7 @@ export class EventListComponent implements OnInit {
   getCapacityMessageConfig(status: EventTermCapacityEventInternalDTO.StatusEnum): CapacityMessageConfig {
     switch(status) {
       case 'CONCEPT': return { title: 'Nepotvrdené', severity: 'secondary' };
-      case 'QUEUE': return { title: 'V poradí', severity: 'danger' };
+      case 'QUEUE': return { title: 'V poradí', severity: 'warn' };
       case 'CONFIRMED': return { title: 'Potvrdené', severity: 'success' };
       case 'DELETED': return { title: 'Vymazaná', severity: 'danger' };
     }
