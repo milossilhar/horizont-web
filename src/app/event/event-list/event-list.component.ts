@@ -58,6 +58,7 @@ export class EventListComponent implements OnInit {
       case 'CONCEPT': return { title: 'Nepotvrdené', severity: 'secondary' };
       case 'QUEUE': return { title: 'V poradí', severity: 'danger' };
       case 'CONFIRMED': return { title: 'Potvrdené', severity: 'success' };
+      case 'DELETED': return { title: 'Vymazaná', severity: 'danger' };
     }
   }
 }

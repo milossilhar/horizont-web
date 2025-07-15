@@ -24,8 +24,10 @@ export interface RegistrationEventTermDTO {
     consentGDPR: boolean;
     consentPhoto: boolean;
     emailConfirmSent?: boolean;
+    emailDetailSent?: boolean;
     emailPaymentInfoSent?: boolean;
     emailPaymentConfirmSent?: boolean;
+    emailPaymentCompleteConfirmSent?: boolean;
     people?: Array<PersonEventTermDTO>;
     knownPeople?: Array<KnownPersonEventTermDTO>;
     payment?: PaymentEventTermDTO;
@@ -34,7 +36,8 @@ export namespace RegistrationEventTermDTO {
     export const StatusEnum = {
         Concept: 'CONCEPT',
         Queue: 'QUEUE',
-        Confirmed: 'CONFIRMED'
+        Confirmed: 'CONFIRMED',
+        Deleted: 'DELETED'
     } as const;
     export type StatusEnum = typeof StatusEnum[keyof typeof StatusEnum];
 }
