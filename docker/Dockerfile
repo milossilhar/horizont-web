@@ -21,7 +21,7 @@ RUN npm run build --omit=dev
 
 FROM caddy:2.9
 
-LABEL cicd="horizon-caddy-web"
+LABEL cicd="registration-web"
 
 COPY ./docker/Caddyfile /etc/caddy/Caddyfile
-COPY --from=angular-build /usr/src/frontend/dist/horizont-web/browser/ /var/www/angular
+COPY --from=angular-build /usr/src/frontend/dist/registration-web/browser/ /var/www/angular

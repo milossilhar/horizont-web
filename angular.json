@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "horizont-web": {
+    "registration-web": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/horizont-web",
+            "outputPath": "dist/registration-web",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -64,10 +64,10 @@
           },
           "configurations": {
             "production": {
-              "buildTarget": "horizont-web:build:production"
+              "buildTarget": "registration-web:build:production"
             },
             "development": {
-              "buildTarget": "horizont-web:build:development"
+              "buildTarget": "registration-web:build:development"
             }
           },
           "defaultConfiguration": "development"

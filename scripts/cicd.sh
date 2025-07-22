@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 export DOCKER_SCAN_SUGGEST=false
 
-DOCKER_IMAGE_NAME="horizon/caddy-web"
+DOCKER_IMAGE_NAME="registration/caddy-web"
 DOCKERFILE=./docker/Dockerfile
 DOCKER_COMPOSE_COMMAND="docker compose -f ./docker/compose.prod.yaml"
 DOCKER_COMPOSE_STOP_TIMEOUT=10
@@ -31,7 +31,7 @@ has_option() {
 
 log "Starting Continuous Delivery and Integration"
 
-# goto root (horizon-system) directory
+# goto root (registration-web) directory
 pushd "$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )/.." > /dev/null
 
 CICD_TAG=$(cat $DOCKERFILE | grep -oP 'cicd="\K[a-z\-]+' | tail -1)
