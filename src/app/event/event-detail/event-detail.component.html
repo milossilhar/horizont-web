@@ -1,28 +1,89 @@
-<!--<div class="flex flex-col gap-y-2">-->
-<!--  <p-card>-->
-<!--    <ng-template #title>-->
-<!--      <p class="text-2xl">{{event()?.name}}</p>-->
-<!--    </ng-template>-->
-<!--    <ng-template #subtitle>-->
-<!--      <div class="flex flex-col items-start gap-y-2">-->
-<!--        <p><i class="pi pi-map-marker mr-1"></i>{{event()?.place}}</p>-->
-<!--        <p><i class="pi pi-calendar mr-1"></i>Termíny</p>-->
-<!--        <app-event-term-selector class="w-full"-->
-<!--          [terms]="terms()" [eventUUID]="this.event()?.uuid" [formControl]="eventTermForm"-->
-<!--          [setDefault]="false" [showAdmin]="true">-->
-<!--        </app-event-term-selector>-->
-<!--      </div>-->
-<!--    </ng-template>-->
-<!--  </p-card>-->
+<div class="grid grid-cols-12 m-2 shadow-lg">
+  <!-- Event Image -->
+  <div class="col-span-6 relative p-4 h-48 overflow-hidden rounded-t-lg">
+    @if (event()?.imageUrl) {
+      <img [src]="event()?.imageUrl" alt="Image of the event" class="w-full h-full object-cover"/>
+    }
+    <!-- Status Badge -->
+    <app-enum-tag class="absolute top-3 right-3" size="text-sm" enumName="EVENT_STATUS" [value]="event()?.status"></app-enum-tag>
+    <!-- Event Type Badge -->
+    <app-enum-tag class="absolute top-3 left-3" size="text-sm" enumName="EVENT_TYPE" [value]="event()?.eventType"></app-enum-tag>
+    <!-- Lock Icon if locked -->
+    @if (!!event()?.locked) {
+      <div class="absolute bottom-3 right-3">
+        <i class="pi pi-lock text-white text-xl drop-shadow-md"></i>
+      </div>
+    }
+  </div>
 
-<!--  @let selected = selectedEventTerm();-->
-<!--  @if(selected) {-->
-<!--    @if (selected.registrations && !!selected.registrations.length) {-->
-<!--      <app-registrations [registrations]="selected.registrations" (registrationUpdate)="onRegistrationUpdate($event)"></app-registrations>-->
-<!--    } @else {-->
-<!--      <p-message text="Tento termín nemá ešte žiadne registrácie." severity="info"></p-message>-->
-<!--    }-->
-<!--  } @else {-->
-<!--    <p-message text="Najskôr vyber termín." severity="contrast"></p-message>-->
-<!--  }-->
-<!--</div>-->
+  <div class="col-span-6 p-4">
+    <!-- Event Title -->
+    <h3 class="text-xl font-bold text-gray-800 mb-2 line-clamp-2">
+      {{ event()?.name }}
+    </h3>
+
+    <!-- Event Details -->
+    <p class="text-gray-600 text-sm mb-4 line-clamp-3">
+      {{ event()?.details }}
+    </p>
+
+    <!-- Registration Period -->
+    <div class="mb-4">
+      <div class="flex items-center mb-2">
+        <i class="pi pi-calendar text-blue-500 mr-2"></i>
+        <span class="text-sm font-semibold text-gray-700">Registration Period</span>
+      </div>
+      <div class="bg-blue-50 p-3 rounded-lg">
+        <div class="flex justify-between items-center text-sm">
+          <div>
+            <span class="text-gray-600">Starts:</span>
+            <span class="font-medium ml-1">{{ event()?.registrationStarts | date : 'medium' }}</span>
+          </div>
+          <i class="pi pi-arrow-right text-blue-500"></i>
+          <div>
+            <span class="text-gray-600">Ends:</span>
+            <span class="font-medium ml-1">{{ event()?.registrationEnds | date : 'medium' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Location and Period Info -->
+    <div class="grid grid-cols-2 gap-3 mb-4">
+      @if (event()?.placeCode) {
+        <div class="flex gap-2 items-baseline bg-gray-50 p-3 rounded-lg">
+          <i class="pi pi-map-marker text-red-500 mr-1"></i>
+          <span class="text-xs text-gray-600 font-medium">Location</span>
+          <span class="text-sm font-semibold text-gray-800">{{ event()?.placeCode ?? '' | enum : 'REG_PLACE' }}</span>
+        </div>
+      }
+      @if (event()?.periodCode) {
+        <div class="flex gap-2 items-baseline bg-gray-50 p-3 rounded-lg">
+          <i class="pi pi-clock text-orange-500 mr-1"></i>
+          <span class="text-xs text-gray-600 font-medium">Period</span>
+          <span class="text-sm font-semibold text-gray-800">{{ event()?.periodCode ?? '' | enum : 'REG_PERIOD' }}</span>
+        </div>
+      }
+    </div>
+
+    <!-- Metadata (if available) -->
+    @if (event()?.createdAt || event()?.modifiedAt) {
+      <div class="border-t pt-3 mt-4">
+        <div class="text-xs text-gray-500 space-y-1">
+          @if (event()?.createdAt) {
+            <div class="flex justify-between">
+              <span>Created:</span>
+              <span>{{ event()?.createdAt | date : 'medium' }} by {{ event()?.createdBy }}</span>
+            </div>
+          }
+          @if (event()?.modifiedAt) {
+            <div class="flex justify-between">
+              <span>Modified:</span>
+              <span>{{ event()?.modifiedAt | date : 'medium' }} by {{ event()?.modifiedBy }}</span>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</div>

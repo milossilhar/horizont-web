@@ -8,7 +8,7 @@ import {
   provideAppInitializer,
   provideZoneChangeDetection
 } from '@angular/core';
-import { provideRouter, withInMemoryScrolling } from '@angular/router';
+import { provideRouter, withComponentInputBinding, withInMemoryScrolling, withViewTransitions } from '@angular/router';
 import { providePrimeNG } from 'primeng/config';
 
 import { routes } from './app.routes';
@@ -18,10 +18,10 @@ import { Configuration, ConfigurationParameters } from './rest/configuration';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { HTTP_INTERCEPTOR_PROVIDERS } from './http/interceptors';
 import { AuthConfig, OAuthService, provideOAuthClient } from 'angular-oauth2-oidc';
-import { registerLocaleData } from '@angular/common';
+import { registerLocaleData, ViewportScroller } from '@angular/common';
 import localeSk from '@angular/common/locales/sk';
 import { sk } from './app.locale';
-import { from, map, catchError, tap } from 'rxjs';
+import { from, map, catchError, tap, of, throwError } from 'rxjs';
 
 import { DialogService } from 'primeng/dynamicdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -35,7 +35,7 @@ const OAUTH_CLIENT_CONFIG: AuthConfig = {
   responseType: 'code',
   scope: 'openid profile email',
   useSilentRefresh: true,
-  // showDebugInformation: true,
+  showDebugInformation: true,
 };
 
 const API_CONFIG: ConfigurationParameters = {
@@ -61,7 +61,13 @@ export const appConfig: ApplicationConfig = {
       }
     }),
 
-    provideRouter(routes, withInMemoryScrolling({ scrollPositionRestoration: 'top' })),
+    provideRouter(routes,
+      withInMemoryScrolling({
+        scrollPositionRestoration: 'enabled',
+        anchorScrolling: 'enabled'
+      }),
+      withComponentInputBinding()
+    ),
 
     providePrimeNG({
       ripple: true,
@@ -82,18 +88,19 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(RegistrationApiModule.forRoot(() => new Configuration(API_CONFIG))),
 
     provideAppInitializer(() => {
+      const viewportScroller = inject(ViewportScroller);
+      viewportScroller.setOffset([0, 80]);
+
       const oauthService = inject(OAuthService);
       oauthService.configure(OAUTH_CLIENT_CONFIG);
 
       return from(oauthService.loadDiscoveryDocumentAndTryLogin()).pipe(
-        // delay(10000),
         tap(() => oauthService.setupAutomaticSilentRefresh()),
-        tap(() => console.log('oauth service initialized')),
         map(() => true),
         catchError(err => {
           window.document.getElementById('intro-error')?.classList.remove('hidden');
           window.document.getElementById('intro-loading')?.classList.add('hidden');
-          throw err;
+          return throwError(() => err);
         })
       );
     })

@@ -1,10 +1,7 @@
 import { Component, inject, input, OnInit, signal } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { Avatar } from 'primeng/avatar';
-import { Button } from 'primeng/button';
 import { FloatLabel } from 'primeng/floatlabel';
 import { MultiSelect } from 'primeng/multiselect';
-import { Select } from 'primeng/select';
 import { takeUntil, tap } from 'rxjs';
 import { DestroyableComponent } from '../../base/destroyable.component';
 import { HostControlDirective } from '../../directives/host-control.directive';
@@ -14,13 +11,10 @@ import { FormWithErrorsComponent } from '../form-with-errors/form-with-errors.co
 @Component({
   selector: 'app-user-select',
   imports: [
-    Button,
     FloatLabel,
     FormWithErrorsComponent,
-    Select,
     ReactiveFormsModule,
-    MultiSelect,
-    Avatar
+    MultiSelect
   ],
   templateUrl: './user-select.component.html',
   styles: ``,

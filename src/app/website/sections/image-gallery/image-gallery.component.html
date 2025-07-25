@@ -1,0 +1,11 @@
+<div class="w-full flex justify-center py-10">
+  <app-section-header
+    header="Galéria fotiek"
+    subheader="Takto fungujeme v klube.">
+  </app-section-header>
+</div>
+<div class="columns-2 md:columns-3 xl:columns-4 gap-4 space-y-4 px-4">
+  @for (imageId of items; track $index) {
+    <img class="h-auto max-w-full rounded-lg" [src]="`https://picsum.photos/id/${imageId}/${getDimensions(imageId)}`" alt="">
+  }
+</div>

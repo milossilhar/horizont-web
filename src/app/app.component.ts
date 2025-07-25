@@ -11,4 +11,6 @@ import { ToastModule } from 'primeng/toast';
   styleUrl: './app.component.css',
   providers: []
 })
-export class AppComponent { }
+export class AppComponent {
+
+}

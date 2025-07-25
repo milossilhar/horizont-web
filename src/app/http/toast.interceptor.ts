@@ -1,4 +1,5 @@
 import {
+  HttpContextToken,
   HttpEvent,
   HttpEventType,
   HttpHandler,
@@ -9,6 +10,8 @@ import { Injectable } from '@angular/core';
 import { catchError, filter, Observable, tap, throwError } from 'rxjs';
 import { ToastService } from '../shared/service/toast.service';
 import { MustacheService } from '../shared/service/mustache.service';
+
+export const IS_SILENT_REQUEST = new HttpContextToken<boolean>(() => false);
 
 @Injectable({
   providedIn: 'root'
@@ -73,6 +76,8 @@ export class ToastInterceptor implements HttpInterceptor {
   ) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    if (req.context.get(IS_SILENT_REQUEST)) return next.handle(req);
+
     return next.handle(req).pipe(
       filter(event => event.type === HttpEventType.Response),
       tap(res => {

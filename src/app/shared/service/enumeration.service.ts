@@ -56,9 +56,9 @@ const LOCAL_ENUMS: Dictionary<Enumeration> = {
     administrated: false,
     values: [
       { code: EventDTO.StatusEnum.Draft, name: 'Koncept', description: 'Nepublikovaná udalosť', type: 'local', ordering: 1 },
-      { code: EventDTO.StatusEnum.Published, name: 'Publikovaný', type: 'local', ordering: 2 },
-      { code: EventDTO.StatusEnum.Deleted, name: 'Vymazaný', type: 'local', ordering: 3 },
-      { code: EventDTO.StatusEnum.Cancelled, name: 'Zrušený', type: 'local', ordering: 4 },
+      { code: EventDTO.StatusEnum.Published, name: 'Publikovaná', type: 'local', ordering: 2 },
+      { code: EventDTO.StatusEnum.Deleted, name: 'Vymazaná', type: 'local', ordering: 3 },
+      { code: EventDTO.StatusEnum.Cancelled, name: 'Zrušená', type: 'local', ordering: 4 },
     ]
   },
   'EVENT_TYPE': {

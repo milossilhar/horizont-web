@@ -15,6 +15,18 @@ export class RedirectService {
     return ['/unavailable'];
   }
 
+  public get events() {
+    return ['/events'];
+  }
+
+  public getEventDetail(id: number) {
+    return ['/events', id];
+  }
+
+  public getEventDetailTree(id: number) {
+    return this.router.createUrlTree(this.getEventDetail(id));
+  }
+
   public getUnavailableTree() {
     return this.router.createUrlTree(this.unavailable);
   }
@@ -23,7 +35,15 @@ export class RedirectService {
     this.router.navigate(this.unavailable);
   }
 
+  public toEvents() {
+    this.router.navigate(this.events);
+  }
+
   public toNotFound() {
     this.router.navigate(['/notfound']).then(noop);
+  }
+
+  public toHome() {
+    this.router.navigate(['/']).then(noop);
   }
 }

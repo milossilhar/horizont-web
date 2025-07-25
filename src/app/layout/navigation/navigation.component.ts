@@ -26,12 +26,12 @@ export class NavigationComponent {
   navigationItems: Array<NavigationItem> = [
     {
       label: 'Úvod',
-      href: '/dashboard',
+      href: '/app',
       icon: 'pi-th-large'
     },
     {
       label: 'Udalosti',
-      href: '/events',
+      href: '/app/events',
       icon: 'pi-calendar'
     },
     {

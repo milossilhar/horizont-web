@@ -1,0 +1,43 @@
+<section id="header">
+  <nav class="fixed mx-auto w-full max-w-7xl px-5 top-4 left-1/2 -translate-x-1/2 z-[1000] transition-all duration-300"
+       [class]="expanded() && !expandedMenu() ? '' : 'sm:w-lg md:w-3xl lg:w-5xl xl:w-6xl'">
+    <div class="p-4 rounded-xl lg:rounded-full border border-transparent transition-all duration-300"
+         [class]="expanded() && !expandedMenu() ? '' : 'shadow-lg border-surface-200 backdrop-blur-xl bg-white/50'">
+      <div class="flex justify-between items-center px-4">
+        <a class="text-2xl cursor-pointer hover:underline" [routerLink]="['/home']" [fragment]="'header'">
+          HORIZONT
+        </a>
+        <div class="lg:hidden flex gap-x-5 items-baseline">
+          <button class="cursor-pointer rounded-full w-10 aspect-square flex justify-center items-center"
+            (click)="expandedMenu.set(!expandedMenu())">
+            <i class="text-lg pi" [class]="expandedMenu() ? 'pi-times' : 'pi-align-right'"></i>
+          </button>
+        </div>
+        <div class="max-lg:hidden flex gap-x-5 items-baseline">
+          @for (link of links; track $index) {
+            <a class="text-md hover:underline cursor-pointer"
+               [routerLink]="link.routerLink"
+               [fragment]="link.fragment">
+              {{ link.label }}
+            </a>
+          }
+          <a [routerLink]="['/app']" pButton [rounded]="true">Prihlásiť</a>
+        </div>
+      </div>
+      <div class="lg:hidden block ease-in-out overflow-hidden transition-all duration-500"
+           [class]="expandedMenu() ? 'opacity-100' : 'opacity-0'"
+           [style.max-height]="expandedMenu() ? '100vh' : '0px'">
+        <div class="flex flex-col gap-4 justify-center items-stretch py-5 transition-all duration-500">
+          @for (link of links; track $index) {
+            <a class="text-md text-center py-4 rounded-lg hover:bg-sky-600/50 cursor-pointer"
+               [routerLink]="link.routerLink"
+               [fragment]="link.fragment">
+              {{ link.label }}
+            </a>
+          }
+        </div>
+      </div>
+    </div>
+  </nav>
+  <div class="header-mask bg-gradient-to-b from-surface-400/50 to-transparent"></div>
+</section>

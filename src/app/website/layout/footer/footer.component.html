@@ -1,0 +1,54 @@
+<footer class="footer-mask w-full bg-surface-100 pb-20">
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 space-y-4 m-10">
+    <div class="flex flex-col items-start gap-2">
+      <h3 class="text-2xl">HORIZONT</h3>
+      <p class="text-lg text-gray-600">Lezecký klub z Pezinka</p>
+    </div>
+    <div class="flex flex-col items-start gap-8">
+      <h3 class="text-xl">Sledujte nás na sociálnych sieťach</h3>
+
+      @for (socialLink of socialLinks; track $index) {
+        <a class="flex gap-2 p-2 rounded-lg cursor-pointer hover:bg-zinc-700 hover:text-white" [href]="socialLink.url" target="_blank">
+          <i class="text-2xl" [class]="socialLink.icon"></i>
+          <p>{{socialLink.name}}</p>
+        </a>
+      }
+    </div>
+    <div class="flex flex-col items-start gap-4">
+      <h3 class="text-xl">Užitočné odkazy</h3>
+
+      @for (link of links; track $index) {
+        <a class="flex gap-2 cursor-pointer hover:underline" [routerLink]="link.routerLink" [fragment]="link.fragment">
+          {{ link.label }}
+        </a>
+      }
+    </div>
+    <div class="flex flex-col items-start gap-8">
+      <h3 class="text-xl">Kontaktné informácie</h3>
+
+      <div class="flex flex-col gap-1">
+        <h4 class="text-lg">Obchodné</h4>
+        <p class="text-sm text-gray-700">Tolstého 1</p>
+        <p  class="text-sm text-gray-700">902 01 Pezinok</p>
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <h4 class="text-lg">Adresa</h4>
+        <p class="text-sm text-gray-700">Tolstého 1</p>
+        <p  class="text-sm text-gray-700">902 01 Pezinok</p>
+      </div>
+
+      <div class="flex justify-start items-center gap-4">
+        <i class="pi pi-envelope text-xl"></i>
+        <a class="text-lg hover:underline" href="mailto:info@leziemevpezinku.sk" target="_blank">info&commat;leziemevpezinku.sk</a>
+      </div>
+      <div class="flex justify-start items-center gap-4">
+        <i class="pi pi-phone text-xl"></i>
+        <a class="text-lg hover:underline" href="tel:0908123456" target="_blank">0908 123 456</a>
+      </div>
+    </div>
+  </div>
+  <div class="flex justify-center items-center">
+    <p class="text-sm text-gray-500">&copy; {{currentYear}} <a href="https://syntaxstudio.eu" target="_blank">Syntax Studio</a></p>
+  </div>
+</footer>

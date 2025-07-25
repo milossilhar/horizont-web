@@ -1,0 +1,33 @@
+<div class="container mx-auto py-10 px-4 sm:px-6 lg:px-8">
+  <app-section-header
+    header="Zoznám sa s týmom"
+    subheader="Spoznaj zapálených jednotlivcov, ktorí robia našu spoločnosť výnimočnou.
+Každý člen tímu prináša jedinečné zručnosti a perspektívy, aby posúval náš klub vpred.">
+  </app-section-header>
+  <!-- Team Grid -->
+  <div class="mt-20 mb-10">
+    <app-section-header header="Vedúce klubu"></app-section-header>
+  </div>
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-20">
+    @if (!leaders()) {
+      <app-skeleton type="card"></app-skeleton>
+      <app-skeleton type="card"></app-skeleton>
+    }
+    @for (leader of leaders() ; track $index) {
+      <app-team-card [member]="leader"></app-team-card>
+    }
+  </div>
+
+  <div class="mt-20 mb-10">
+    <app-section-header header="Členovia a inštruktori"></app-section-header>
+  </div>
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-20">
+    @if (!members()) {
+      <app-skeleton type="card"></app-skeleton>
+      <app-skeleton type="card"></app-skeleton>
+    }
+    @for (member of members() ; track $index) {
+      <app-team-card [member]="member"></app-team-card>
+    }
+  </div>
+</div>
