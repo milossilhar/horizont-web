@@ -1,3 +1,27 @@
-@if (items && items.length > 0) {
-  <p-breadcrumb [model]="items" [home]="home"></p-breadcrumb>
+@if (showBreadcrumbs()) {
+  <p-breadcrumb [model]="items()">
+    <ng-template #item let-item>
+      @if (!!item.loadingKey && !item.label) {
+        <app-skeleton type="single"></app-skeleton>
+      } @else if (item.last) {
+        @if (item.icon) {
+          <i [class]="item.icon"></i>
+        } @else {
+          <span>{{ item.label }}</span>
+        }
+      } @else {
+        <a [routerLink]="item.url">
+          @if (item.icon) {
+            <i [class]="item.icon"></i>
+          } @else {
+            <span>{{ item.label }}</span>
+          }
+        </a>
+      }
+    </ng-template>
+
+    <ng-template #separator>
+      <i class="pi pi-chevron-right"></i>
+    </ng-template>
+  </p-breadcrumb>
 }

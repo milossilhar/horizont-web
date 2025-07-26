@@ -19,16 +19,17 @@ export const routes: Routes = [
     path: 'app',
     canActivate: [InitGuard],
     component: SidebarLayoutComponent,
+    data: { breadcrumb: { label: 'Domov', icon: 'pi pi-home' } },
     children: [
-      { path: '', component: LoremIpsumComponent, data: { breadcrumb: { type: 'home', icon: 'pi pi-th-large' } } },
+      { path: '', component: LoremIpsumComponent },
       {
         path: 'events',
         canActivate: [AuthGuard],
-        data: { breadcrumb: { type: 'item', label: 'Udalosti' } },
+        data: { breadcrumb: { label: 'Udalosti' } },
         children: [
           { path: '', component: DataComponent, data: { component: 'events' } },
-          { path: 'new', component: EventFormComponent, data: { breadcrumb: { type: 'item', label: 'Nová Udalosť' } } },
-          { path: ':eventId',  component: EventDetailComponent, data: { breadcrumb: { type: 'loading', id: 'eventName' } } },
+          { path: 'new', component: EventFormComponent, data: { breadcrumb: { label: 'Nová Udalosť' } } },
+          { path: ':eventId',  component: EventDetailComponent, data: { breadcrumb: { loadingKey: 'eventName' } } },
         ]
       }
     ]

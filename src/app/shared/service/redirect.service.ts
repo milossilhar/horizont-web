@@ -2,48 +2,48 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { noop } from 'lodash';
 
+type RedirectKeys = 'home' | 'events' | 'eventDetail' | 'unavailable' | 'notfound';
+
 @Injectable({
   providedIn: 'root'
 })
 export class RedirectService {
 
+  private _routes: Record<RedirectKeys, any[]> = {
+    home: ['home'],
+    events: ['app', 'events'],
+    eventDetail: ['app', 'events', '{{id}}'],
+    unavailable: ['unavailable'],
+    notfound: ['notfound']
+  }
+
   constructor(
     private router: Router
   ) { }
 
-  public get unavailable() {
-    return ['/unavailable'];
+  public getTree(key: RedirectKeys, params: Record<string, string> = {}) {
+    const route = this._transformRoute(this._findRoute(key), params);
+    return this.router.createUrlTree(route);
   }
 
-  public get events() {
-    return ['/events'];
+  public goTo(key: RedirectKeys, params: Record<string, string> = {}, callback?: () => void) {
+    const route = this._transformRoute(this._findRoute(key), params);
+    this.router.navigate(route).then(callback ?? noop);
   }
 
-  public getEventDetail(id: number) {
-    return ['/events', id];
+  private _findRoute(name: RedirectKeys) {
+    if (!this._routes[name]) {
+      throw new Error(`Unknown route ${name}`);
+    }
+    return this._routes[name];
   }
 
-  public getEventDetailTree(id: number) {
-    return this.router.createUrlTree(this.getEventDetail(id));
-  }
+  private _transformRoute(route: string[], params: Record<string, string>) {
+    return route.map(r => {
+      const pattern = r.match(/^{{(.*)}}$/);
+      if (!pattern) return r;
 
-  public getUnavailableTree() {
-    return this.router.createUrlTree(this.unavailable);
-  }
-
-  public toUnavailable() {
-    this.router.navigate(this.unavailable);
-  }
-
-  public toEvents() {
-    this.router.navigate(this.events);
-  }
-
-  public toNotFound() {
-    this.router.navigate(['/notfound']).then(noop);
-  }
-
-  public toHome() {
-    this.router.navigate(['/']).then(noop);
+      return params[pattern[1]];
+    });
   }
 }

@@ -13,7 +13,6 @@ type NavigationItem = {
 @Component({
   selector: 'app-navigation',
   imports: [
-    Button,
     NavigationLinkComponent
   ],
   templateUrl: './navigation.component.html',

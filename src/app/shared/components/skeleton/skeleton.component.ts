@@ -1,7 +1,7 @@
 import { Component, input } from '@angular/core';
 import { Skeleton } from 'primeng/skeleton';
 
-type SkeletonType = 'card' | 'list';
+type SkeletonType = 'card' | 'list' | 'single';
 
 @Component({
   selector: 'app-skeleton',

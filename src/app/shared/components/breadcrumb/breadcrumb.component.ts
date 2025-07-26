@@ -1,40 +1,38 @@
-import { Component } from '@angular/core';
+import { Component, computed, Signal } from '@angular/core';
 import { Breadcrumb } from 'primeng/breadcrumb';
 import { MenuItem } from 'primeng/api';
 import { DestroyableComponent } from '../../base/destroyable.component';
-import { NavigationEnd, Router } from '@angular/router';
-import { filter, map, takeUntil, tap } from 'rxjs';
+import { BreadcrumbsService } from '../../service/breadcrumbs.service';
+import { RouterLink } from '@angular/router';
+import { SkeletonComponent } from '../skeleton/skeleton.component';
 
 @Component({
   selector: 'app-breadcrumb',
   imports: [
-    Breadcrumb
+    Breadcrumb,
+    RouterLink,
+    SkeletonComponent
   ],
   templateUrl: './breadcrumb.component.html',
   styles: ``
 })
 export class BreadcrumbComponent extends DestroyableComponent {
 
-  protected ROUTE_NAMES: Record<string, string> = {
-    events: 'Udalosti',
-    'new': 'Nový'
-  }
+  protected showBreadcrumbs = computed(() => this.breadcrumbService.breadcrumbs().length > 0);
+  protected items: Signal<MenuItem[]> = computed(() => {
+    return this.breadcrumbService
+        .breadcrumbs()
+        .map((breadcrumb, index) => {
+          return {
+            ...breadcrumb,
+            last: index === this.breadcrumbService.breadcrumbs().length - 1 }
+        })
+    }
+  );
 
-  protected home: MenuItem = { icon: 'pi pi-home', routerLink: '/dashboard' };
-  protected items: MenuItem[] = [];
-
-  constructor(router: Router) {
+  constructor(
+    private breadcrumbService: BreadcrumbsService
+  ) {
     super();
-    router.events.pipe(
-      filter(event => event instanceof NavigationEnd),
-      map(event => (event as NavigationEnd).urlAfterRedirects.split('/')),
-      map(segments => segments.filter(s => !!s && s.toLowerCase() !== 'dashboard')),
-      map(segments => segments.map((segment, index) => ({
-        label: this.ROUTE_NAMES[segment] ?? segment.toUpperCase(),
-        routerLink: index < segments.length - 1 ? `/${segment}` : undefined
-      } as MenuItem))),
-      tap(items => this.items = items),
-      takeUntil(this.destroy$)
-    ).subscribe();
   }
 }

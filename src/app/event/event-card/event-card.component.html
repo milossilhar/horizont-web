@@ -2,7 +2,9 @@
 <p-card styleClass="overflow-hidden">
   <ng-template #title>
     <div class="flex items-center gap-2">
-      <a class="text-2xl" [routerLink]="redirectService.getEventDetailTree(entity().id ?? 0)">{{ entity().name }}</a>
+      <a class="text-2xl hover:underline" [routerLink]="redirectService.getTree('eventDetail', { id: entity().id + '' })">
+        {{ entity().name }}
+      </a>
       <app-enum-tag enumName="EVENT_STATUS" [value]="entity().status"></app-enum-tag>
     </div>
   </ng-template>

@@ -24,8 +24,7 @@ export class InitGuard implements CanActivate {
     ]).pipe(
       map(() => true),
       catchError((err) => {
-        console.log('caught error in init guard: ', err);
-        return of(this.redirectService.getUnavailableTree());
+        return of(this.redirectService.getTree('unavailable'));
       })
     );
   }

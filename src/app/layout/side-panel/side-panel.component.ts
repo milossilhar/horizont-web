@@ -1,6 +1,5 @@
 import { Component, input, model } from '@angular/core';
 import { Avatar } from "primeng/avatar";
-import { Button } from "primeng/button";
 import { DividerModule } from 'primeng/divider';
 import { OverlayBadge } from 'primeng/overlaybadge';
 import { UserAvatarComponent } from '../../shared/components/user-avatar/user-avatar.component';
@@ -10,7 +9,6 @@ import { NavigationComponent } from '../navigation/navigation.component';
   selector: 'app-side-panel',
   imports: [
     Avatar,
-    Button,
     NavigationComponent,
     DividerModule,
     UserAvatarComponent,

@@ -134,7 +134,7 @@ export class DataComponent extends DestroyableComponent {
     const config = this.CONFIG[name];
     if (!config) {
       this.toastService.error(`Neznámy komponent ${name}`, 'Chyba');
-      this.redirectService.toNotFound();
+      this.redirectService.goTo('notfound');
       throw new Error(`Unrecognized component ${name}`);
     }
     return config;
