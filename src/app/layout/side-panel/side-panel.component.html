@@ -1,6 +1,6 @@
 <!-- Side Panel -->
 <div
-  class="p-4 text-gray-600 transition-width duration-300 ease-in-out flex flex-col"
+  class="p-4 text-gray-600 transition-width duration-300 ease-in-out flex flex-col space-y-4"
   [class]="collapsed() ? 'w-20' : 'w-64'">
   <!-- Header with toggle button -->
   <div class="flex items-center">
@@ -17,9 +17,24 @@
 
   <p-divider></p-divider>
 
-  <app-navigation [collapsed]="collapsed()"></app-navigation>
-
-  <div class="flex-1"></div>
+  <!-- Navigation Items -->
+  <nav class="flex-1 flex flex-col space-y-2">
+    @for (item of navigationItems.top; track $index) {
+      <div class="relative">
+        <app-navigation-link [collapsed]="collapsed()" [label]="item.label"
+                             [routerLink]="item.href" [icon]="item.icon" [queryParams]="item.params">
+        </app-navigation-link>
+      </div>
+    }
+    <div class="flex-1"></div>
+    @for (item of navigationItems.bottom; track $index) {
+      <div class="relative">
+        <app-navigation-link [collapsed]="collapsed()" [label]="item.label"
+                             [routerLink]="item.href" [icon]="item.icon" [queryParams]="item.params">
+        </app-navigation-link>
+      </div>
+    }
+  </nav>
 
   <!-- Footer -->
   <app-user-avatar [collapsed]="collapsed()"></app-user-avatar>

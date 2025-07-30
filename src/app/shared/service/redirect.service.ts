@@ -2,7 +2,13 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { noop } from 'lodash';
 
-type RedirectKeys = 'home' | 'events' | 'eventDetail' | 'unavailable' | 'notfound';
+type RedirectKeys = 'home'
+  | 'auth'
+  | 'events'
+  | 'eventDetail'
+  | 'unavailable'
+  | 'notfound'
+;
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +17,7 @@ export class RedirectService {
 
   private _routes: Record<RedirectKeys, any[]> = {
     home: ['home'],
+    auth: ['auth'],
     events: ['app', 'events'],
     eventDetail: ['app', 'events', '{{id}}'],
     unavailable: ['unavailable'],

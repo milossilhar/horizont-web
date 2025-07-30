@@ -1,66 +1,58 @@
-import { Injectable } from '@angular/core';
-import { OAuthService } from 'angular-oauth2-oidc';
-import { includes } from 'lodash';
-import { BehaviorSubject, catchError, from, map, Observable, of, take, tap } from 'rxjs';
+import { Injectable, signal } from '@angular/core';
+import { includes, isArray } from 'lodash';
+import Session from 'supertokens-web-js/recipe/session';
+import { UserRoleClaim } from "supertokens-web-js/recipe/userroles";
+import { RedirectService } from './redirect.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private _user$ = new BehaviorSubject<any | undefined>(undefined);
+  private readonly _authenticated = signal<boolean>(false);
+  public get authenticated() {
+    return this._authenticated.asReadonly();
+  }
 
   constructor(
-    private oauthService: OAuthService
-  ) {
+    private router: Router,
+    private redirectService: RedirectService,
+  ) { }
+
+  public async init() {
+    await this.existsSession();
+    return true;
   }
 
-  private set user(newUser: any | undefined) {
-    this._user$.next(newUser);
+  public login(redirectCommands: any[] = []) {
+    console.log('invoking login with redirect route: ', this.router.serializeUrl(this.router.createUrlTree(redirectCommands)));
+    this.redirectService.goTo('auth');
   }
 
-  public get isLoggedIn() {
-    return this._user$.pipe(
-      map(u => !!u && this.oauthService.hasValidAccessToken() && this.oauthService.hasValidIdToken())
-    );
+  public async hasRole(role: string) {
+    if (await this.existsSession()) {
+      const roles = await Session.getClaimValue({ claim: UserRoleClaim });
+      return isArray(roles) && includes(roles, role);
+    }
+    return false;
   }
 
-  public hasRole(role: string) {
-    return this._user$.pipe(
-      map(user => includes(user.roles, role))
-    );
+  public async attemptRefresh() {
+    await Session.attemptRefreshingSession();
   }
 
-  public init(): Observable<boolean> {
-    try {
-      return from(this.oauthService.loadUserProfile()).pipe(
-        tap((user: any) => this.user = user.info ?? user),
-        map(() => true),
-        catchError(() => {
-          this.logout(false);
-          return of(true);
-        })
-      );
-    } catch (error) {
-      return of(true);
+  public async logout() {
+    if (await this.existsSession()) {
+      await Session.signOut();
+      this._authenticated.set(false);
+      this.redirectService.goTo('home');
     }
   }
 
-  public toggleLogin() {
-    this.isLoggedIn.pipe(
-      take(1),
-      tap(loggedIn => {
-        if (loggedIn) {
-          this.logout(true);
-        } else {
-          this.oauthService.initCodeFlow();
-        }
-      })
-    ).subscribe();
-  }
-
-  private logout(redirect: boolean = true) {
-    this.oauthService.logOut(!redirect);
-    this.user = undefined;
+  private async existsSession() {
+    const sessionExists = await Session.doesSessionExist();
+    this._authenticated.set(sessionExists);
+    return sessionExists;
   }
 }

@@ -8,7 +8,7 @@ import {
   provideAppInitializer,
   provideZoneChangeDetection
 } from '@angular/core';
-import { provideRouter, withComponentInputBinding, withInMemoryScrolling, withViewTransitions } from '@angular/router';
+import { provideRouter, withComponentInputBinding, withInMemoryScrolling } from '@angular/router';
 import { providePrimeNG } from 'primeng/config';
 
 import { routes } from './app.routes';
@@ -17,30 +17,30 @@ import { RegistrationApiModule } from './rest/api.module';
 import { Configuration, ConfigurationParameters } from './rest/configuration';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { HTTP_INTERCEPTOR_PROVIDERS } from './http/interceptors';
-import { AuthConfig, OAuthService, provideOAuthClient } from 'angular-oauth2-oidc';
 import { registerLocaleData, ViewportScroller } from '@angular/common';
 import localeSk from '@angular/common/locales/sk';
 import { sk } from './app.locale';
-import { from, map, catchError, tap, of, throwError } from 'rxjs';
 
 import { DialogService } from 'primeng/dynamicdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
-
-const OAUTH_CLIENT_CONFIG: AuthConfig = {
-  issuer: `${window.location.origin}/api`,
-  redirectUri: `${window.location.origin}/index.html`,
-  postLogoutRedirectUri: `${window.location.origin}/index.html`,
-  silentRefreshRedirectUri: `${window.location.origin}/silent-refresh.html`,
-  clientId: 'horizon-web',
-  responseType: 'code',
-  scope: 'openid profile email',
-  useSilentRefresh: true,
-  showDebugInformation: true,
-};
+import SuperTokens from 'supertokens-web-js';
+import Session from 'supertokens-web-js/recipe/session';
+import { AuthService } from './shared/service/auth.service';
 
 const API_CONFIG: ConfigurationParameters = {
   basePath: '/api'
 };
+
+SuperTokens.init({
+  appInfo: {
+    appName: "Horizont Stránka",
+    apiDomain: "http://localhost:8088",
+    apiBasePath: '/api/supertokens'
+  },
+  recipeList: [
+    Session.init()
+  ]
+})
 
 registerLocaleData(localeSk, 'sk');
 
@@ -54,12 +54,6 @@ export const appConfig: ApplicationConfig = {
 
     provideHttpClient(withInterceptorsFromDi()),
     HTTP_INTERCEPTOR_PROVIDERS,
-    provideOAuthClient({
-      resourceServer: {
-        allowedUrls: ['/api'],
-        sendAccessToken: true
-      }
-    }),
 
     provideRouter(routes,
       withInMemoryScrolling({
@@ -91,18 +85,8 @@ export const appConfig: ApplicationConfig = {
       const viewportScroller = inject(ViewportScroller);
       viewportScroller.setOffset([0, 80]);
 
-      const oauthService = inject(OAuthService);
-      oauthService.configure(OAUTH_CLIENT_CONFIG);
-
-      return from(oauthService.loadDiscoveryDocumentAndTryLogin()).pipe(
-        tap(() => oauthService.setupAutomaticSilentRefresh()),
-        map(() => true),
-        catchError(err => {
-          window.document.getElementById('intro-error')?.classList.remove('hidden');
-          window.document.getElementById('intro-loading')?.classList.add('hidden');
-          return throwError(() => err);
-        })
-      );
+      const authService = inject(AuthService);
+      return authService.init();
     })
 
   ]
