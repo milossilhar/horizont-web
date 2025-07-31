@@ -20,7 +20,7 @@
 }
 
 .logo-mask {
-  mask-image: url('/logo.png');
+  mask-image: url('logo.png');
   mask-position: center;
   mask-size: contain;
   mask-repeat: no-repeat;
