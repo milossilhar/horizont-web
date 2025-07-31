@@ -18,3 +18,13 @@
   mask-position: top, bottom;
   mask-size: 100%; /* You may need to increase the width to 101% on the svg masks to compensate for strange sizing behavior in Firefox */
 }
+
+.logo-mask {
+  mask-image: url('/logo.png');
+  mask-position: center;
+  mask-size: contain;
+  mask-repeat: no-repeat;
+
+  height: 40px;
+  width: 200px;
+}

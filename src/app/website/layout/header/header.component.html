@@ -4,8 +4,9 @@
     <div class="p-4 rounded-xl lg:rounded-full border border-transparent transition-all duration-300"
          [class]="expanded() && !expandedMenu() ? '' : 'shadow-lg border-surface-200 backdrop-blur-xl bg-white/50'">
       <div class="flex justify-between items-center px-4">
-        <a class="text-2xl cursor-pointer hover:underline" [routerLink]="['/home']" [fragment]="'header'">
-          HORIZONT
+        <a class="logo-mask bg-linear-to-t cursor-pointer"
+           [class]="expanded() && !expandedMenu() ? 'from-slate-800 to-zinc-600' : 'from-orange-800 to-yellow-400'"
+           [routerLink]="['/home']" [fragment]="'header'">
         </a>
         <div class="lg:hidden flex gap-x-5 items-baseline">
           <button class="cursor-pointer rounded-full w-10 aspect-square flex justify-center items-center"
