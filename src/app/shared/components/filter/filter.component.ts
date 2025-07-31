@@ -1,5 +1,5 @@
 import { JsonPipe } from '@angular/common';
-import { Component, input, output } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { keys } from 'lodash-es';
