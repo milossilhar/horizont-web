@@ -26,15 +26,16 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import SuperTokens from 'supertokens-web-js';
 import Session from 'supertokens-web-js/recipe/session';
 import { AuthService } from './shared/service/auth.service';
+import { environment } from '../environments/environment';
 
 const API_CONFIG: ConfigurationParameters = {
-  basePath: '/api'
+  basePath: environment.api.url
 };
 
 SuperTokens.init({
   appInfo: {
-    appName: "Horizont Stránka",
-    apiDomain: "http://localhost:8088",
+    appName: "Horizont",
+    apiDomain: environment.supertokens.domain,
     apiBasePath: '/api/supertokens'
   },
   recipeList: [

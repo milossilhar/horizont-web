@@ -4,10 +4,20 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build --configuration development",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "generate-openapi": "openapi-generator-cli generate"
+    "generate-openapi": "openapi-generator-cli generate",
+
+    "prebuild:prod": "envsub src/environments/environment.prod.envsub.ts src/environments/environment.prod.ts",
+    "build:prod": "ng build --configuration production",
+    "postbuild:prod": "tsc --project ./tsconfig.server.json",
+    "server:prod": "node dist/server/server.js",
+
+    "preserver:dev": "npm run server:type-check",
+    "server:dev": "tsx --watch server/server.ts",
+    "server:type-check": "tsc --project ./tsconfig.server.json --noEmit",
+    "server:build": "tsc --project ./tsconfig.server.json"
   },
   "private": true,
   "dependencies": {
@@ -21,12 +31,16 @@
     "@angular/router": "^19.1.0",
     "@primeng/themes": "^19.0.9",
     "@tailwindcss/postcss": "^4.0.14",
+    "cors": "^2.8.5",
     "date-fns": "^4.1.0",
+    "envsub": "^4.1.0",
+    "express": "^5.1.0",
     "lodash-es": "^4.17.21",
     "postcss": "^8.5.3",
     "primeicons": "^7.0.0",
     "primeng": "^19.0.9",
     "rxjs": "~7.8.0",
+    "supertokens-node": "^23.0.1",
     "supertokens-web-js": "^0.15.0",
     "tailwindcss": "^4.0.14",
     "tailwindcss-primeui": "^0.5.1",
@@ -39,14 +53,19 @@
     "@angular/compiler-cli": "^19.1.0",
     "@angular/localize": "^19.2.2",
     "@openapitools/openapi-generator-cli": "^2.18.4",
+    "@types/express": "^5.0.3",
     "@types/jasmine": "~5.1.0",
-    "@types/lodash": "^4.17.16",
+    "@types/lodash-es": "^4.17.12",
+    "@types/node": "^24.1.0",
     "jasmine-core": "~5.5.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
+    "lodash": "^4.17.21",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.20.3",
     "typescript": "~5.7.2"
   }
 }
