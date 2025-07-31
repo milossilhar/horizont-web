@@ -1,6 +1,6 @@
 // import { Component } from '@angular/core';
 // import { ActivatedRoute } from '@angular/router';
-// import { last } from 'lodash';
+// import { last } from 'lodash-es';
 // import { CardModule } from 'primeng/card';
 // import { MessageModule } from 'primeng/message';
 //

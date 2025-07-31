@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { noop } from 'lodash';
+import { noop } from 'lodash-es';
 
 type RedirectKeys = 'home'
   | 'auth'

@@ -2,7 +2,7 @@ import { JsonPipe } from '@angular/common';
 import { Component, input, output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { toObservable } from '@angular/core/rxjs-interop';
-import { keys } from 'lodash';
+import { keys } from 'lodash-es';
 import { Button } from 'primeng/button';
 import { Skeleton } from 'primeng/skeleton';
 import { filter, Subscription, switchMap, takeUntil, tap } from 'rxjs';

@@ -8,7 +8,7 @@ import { OverlayService } from '../../service/overlay.service';
 import { EnumerationService } from '../../service/enumeration.service';
 import { MessageModule } from 'primeng/message';
 import { filter, map, takeUntil, tap } from 'rxjs';
-import { includes, map as lodashMap } from 'lodash';
+import { includes, map as lodashMap } from 'lodash-es';
 import { DestroyableComponent } from '../../base/destroyable.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Enumeration } from '../../types/enumeration';

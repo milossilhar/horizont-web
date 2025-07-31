@@ -2,7 +2,7 @@ import { Injectable, signal } from '@angular/core';
 import { DestroyableService } from '../base/destroyable.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter, map, takeUntil, tap } from 'rxjs';
-import { uniqBy } from 'lodash';
+import { uniqBy } from 'lodash-es';
 
 type BreadcrumbType = {
   label?: string,

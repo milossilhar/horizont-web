@@ -2,7 +2,7 @@ import { Component, OnInit, signal } from '@angular/core';
 import { SectionHeaderComponent } from "../../components/section-header/section-header.component";
 import { TeamCardComponent } from '../../components/team-card/team-card.component';
 import { delay, of, tap } from 'rxjs';
-import { groupBy } from 'lodash';
+import { groupBy } from 'lodash-es';
 import { SkeletonComponent } from '../../../shared/components/skeleton/skeleton.component';
 
 const LOCAL_MEMBERS = [

@@ -3,7 +3,7 @@
 // import { BehaviorSubject, map, ReplaySubject, switchMap, takeUntil, tap, timer } from 'rxjs';
 // import { AsyncPipe } from '@angular/common';
 // import { EventCardComponent } from '../../event/event-card/event-card.component';
-// import { Dictionary, groupBy } from 'lodash';
+// import { Dictionary, groupBy } from 'lodash-es';
 // import { DividerModule } from 'primeng/divider';
 // import { MessageModule } from 'primeng/message';
 // import { EventService } from '../../shared/service/event.service';

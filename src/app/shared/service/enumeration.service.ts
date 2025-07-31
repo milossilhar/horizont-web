@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { filter, map, Observable, ReplaySubject, tap } from 'rxjs';
-import { Dictionary, find, filter as lodashFilter, sortBy, forOwn } from 'lodash';
+import { find, filter as lodashFilter, sortBy, forOwn } from 'lodash-es';
 import { EnumerationRestService } from '../../rest/api/enumeration.service';
 import { EnumerationDTO } from '../../rest/model/enumeration-dto';
 import { EnumerationItemAggregateDTO } from '../../rest/model/enumeration-item-aggregate-dto';
@@ -20,7 +20,7 @@ const ENUM_NAMES: Record<EnumerationName, string> = {
   'REG_SHIRT_SIZE': 'Veľkosti tričiek'
 }
 
-const LOCAL_ENUMS: Dictionary<Enumeration> = {
+const LOCAL_ENUMS: Record<string, Enumeration> = {
   'YES_NO': {
     administrated: false,
     values: [
@@ -76,11 +76,11 @@ const LOCAL_ENUMS: Dictionary<Enumeration> = {
 })
 export class EnumerationService {
 
-  private _cachedEnums: Dictionary<Enumeration> = {};
-  private _cachedEnums$ = new ReplaySubject<Dictionary<Enumeration>>(1);
+  private _cachedEnums: Record<string, Enumeration> = {};
+  private _cachedEnums$ = new ReplaySubject<Record<string, Enumeration>>(1);
 
-  private set cachedEnums(enums: Dictionary<EnumerationDTO>) {
-    const fullEnums: Dictionary<Enumeration> = {...LOCAL_ENUMS, ...enums};
+  private set cachedEnums(enums: Record<string, EnumerationDTO>) {
+    const fullEnums: Record<string, Enumeration> = {...LOCAL_ENUMS, ...enums};
     forOwn(fullEnums, (e, name) => { if (!e.name) e.name = ENUM_NAMES[name as EnumerationName] ?? name });
 
     // console.log(`setting enums: \n${JSON.stringify(fullEnums, null, 2)}\n`);

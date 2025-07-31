@@ -7,7 +7,7 @@
 // import { ButtonModule } from 'primeng/button';
 // import { IconFieldModule } from 'primeng/iconfield';
 // import { InputIconModule } from 'primeng/inputicon';
-// import { deburr, filter, includes, join, map, some, toLower, trim } from 'lodash';
+// import { deburr, filter, includes, join, map, some, toLower, trim } from 'lodash-es';
 // import { RegistrationDTO } from '../../rest/model/models';
 // import { DestroyableComponent } from '../../shared/base/destroyable.component';
 // import { PersonCardComponent } from '../../shared/components/person-card/person-card.component';

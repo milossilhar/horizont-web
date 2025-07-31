@@ -1,9 +1,9 @@
 import { Injectable, signal } from '@angular/core';
-import { includes, isArray } from 'lodash';
 import Session from 'supertokens-web-js/recipe/session';
 import { UserRoleClaim } from "supertokens-web-js/recipe/userroles";
 import { RedirectService } from './redirect.service';
 import { Router } from '@angular/router';
+import { includes, isArray } from 'lodash-es';
 
 @Injectable({
   providedIn: 'root'

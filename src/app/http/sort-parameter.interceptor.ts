@@ -1,5 +1,5 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
-import { forEach } from 'lodash';
+import { forEach } from 'lodash-es';
 import { Observable } from 'rxjs';
 
 export class SortParameterInterceptor implements HttpInterceptor {
@@ -13,7 +13,7 @@ export class SortParameterInterceptor implements HttpInterceptor {
       const parsedSortParams = JSON.parse(sortParams[0]);
       if (Array.isArray(parsedSortParams)) {
         let params = req.params.delete('sort');
-        
+
         forEach(parsedSortParams, value => {
           params = params.append('sort', value);
         });

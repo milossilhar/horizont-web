@@ -1,6 +1,6 @@
 import { DataViewPageEvent } from 'primeng/dataview';
 import { Page } from '../types/page';
-import { startsWith } from 'lodash';
+import { startsWith } from 'lodash-es';
 
 /**
  * Converts a PrimeNG DataViewPageEvent object into a Page object.

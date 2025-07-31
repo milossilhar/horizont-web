@@ -16,7 +16,7 @@
 // import { ButtonModule } from 'primeng/button';
 // import { MeterGroupModule } from 'primeng/metergroup';
 // import { SelectModule } from 'primeng/select';
-// import { find, some } from 'lodash';
+// import { find, some } from 'lodash-es';
 // import { MessageModule } from 'primeng/message';
 // import { PRIME_CONSTANTS } from '../../shared/types/prime-ng-constants';
 // import { PublicHorizontService } from '../../rest/api/api';
