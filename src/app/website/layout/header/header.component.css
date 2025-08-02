@@ -20,7 +20,7 @@
 }
 
 .logo-mask {
-  mask-image: url('/logo.png');
+  mask-image: url('/images/logo.webp');
   mask-position: center;
   mask-size: contain;
   mask-repeat: no-repeat;
