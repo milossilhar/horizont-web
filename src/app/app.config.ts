@@ -29,7 +29,7 @@ import { AuthService } from './shared/service/auth.service';
 import { environment } from '../environments/environment';
 
 const API_CONFIG: ConfigurationParameters = {
-  basePath: environment.api.url
+  basePath: '/api'
 };
 
 SuperTokens.init({
