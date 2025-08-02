@@ -7,7 +7,6 @@ import { errorHandler, middleware } from 'supertokens-node/framework/express';
 
 import { config } from './config';
 import { superConfig } from './supertokens';
-import { endsWith } from 'lodash-es';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 
 supertokens.init(superConfig);
@@ -39,7 +38,7 @@ app.use(middleware());
 app.use('/', express.static(angularDir, {
   index: 'index.html',
   setHeaders: (res, filePath) => {
-    if (endsWith(filePath, 'index.html')) {
+    if (filePath.endsWith('index.html')) {
       res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
       res.setHeader('Pragma', 'no-cache');
       res.setHeader('Expires', '0');
