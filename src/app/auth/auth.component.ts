@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, Inject, OnDestroy, Renderer2 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-auth',
@@ -34,9 +35,9 @@ export class AuthComponent implements AfterViewInit, OnDestroy {
       (window as any).supertokensUIInit('supertokensui', {
         appInfo: {
           appName: "Horizont Stránka",
-          apiDomain: "http://localhost:8088",
-          apiBasePath: "/api/supertokens",
-          websiteDomain: "http://localhost:4200",
+          apiDomain: environment.supertokens.domain,
+          apiBasePath: "/supertokens",
+          websiteDomain: environment.website.domain,
           websiteBasePath: "/auth",
         },
         recipeList: [

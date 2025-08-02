@@ -8,5 +8,8 @@ export const environment = {
   },
   supertokens: {
     domain: '${APP_HOSTNAME:-http://localhost:3000}'
+  },
+  website: {
+    domain: '${APP_HOSTNAME:-http://localhost:3000}'
   }
 };

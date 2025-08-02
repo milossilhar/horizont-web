@@ -7,11 +7,21 @@ import { errorHandler, middleware } from 'supertokens-node/framework/express';
 
 import { config } from './config';
 import { superConfig } from './supertokens';
-
-const app = express();
-const angularDir = path.join(__dirname, '../angular/browser');
+import { endsWith } from 'lodash-es';
+import { createProxyMiddleware } from 'http-proxy-middleware';
 
 supertokens.init(superConfig);
+
+const angularDir = path.join(__dirname, '../angular/browser');
+
+const app = express();
+
+// proxy requests
+const proxyMiddleware = createProxyMiddleware({
+  target: config.spring.uri,
+  changeOrigin: true
+});
+app.use('/api', proxyMiddleware)
 
 app.use(express.json());
 app.use(
@@ -22,10 +32,20 @@ app.use(
   })
 );
 
+// use supertokens middleware
 app.use(middleware());
 
-// serve angular static files
-app.use(express.static(angularDir));
+// serve angular files
+app.use('/', express.static(angularDir, {
+  index: 'index.html',
+  setHeaders: (res, filePath) => {
+    if (endsWith(filePath, 'index.html')) {
+      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+      res.setHeader('Pragma', 'no-cache');
+      res.setHeader('Expires', '0');
+    }
+  }
+}));
 
 // health of the app
 app.get('/health', (req, res) => {
@@ -34,6 +54,7 @@ app.get('/health', (req, res) => {
 
 // return angular index.html for all other routes
 app.get('*all', (req, res) => {
+  res.set({ 'Cache-Control': 'no-store' })
   res.sendFile(path.join(angularDir, 'index.html'));
 });
 

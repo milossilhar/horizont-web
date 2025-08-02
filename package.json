@@ -8,14 +8,14 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "generate-openapi": "openapi-generator-cli generate",
-
     "prebuild:prod": "envsub src/environments/environment.prod.envsub.ts src/environments/environment.prod.ts",
     "build:prod": "ng build --configuration production",
     "postbuild:prod": "tsc --project ./tsconfig.server.json",
     "server:prod": "node dist/server/server.js",
-
+    "server:prod:init": "node dist/server/init.js",
     "preserver:dev": "npm run server:type-check",
     "server:dev": "tsx --watch server/server.ts",
+    "server:dev:init": "tsx server/init.ts",
     "server:type-check": "tsc --project ./tsconfig.server.json --noEmit",
     "server:build": "tsc --project ./tsconfig.server.json"
   },
@@ -35,6 +35,7 @@
     "date-fns": "^4.1.0",
     "envsub": "^4.1.0",
     "express": "^5.1.0",
+    "http-proxy-middleware": "^3.0.5",
     "lodash-es": "^4.17.21",
     "postcss": "^8.5.3",
     "primeicons": "^7.0.0",

@@ -36,7 +36,7 @@ SuperTokens.init({
   appInfo: {
     appName: "Horizont",
     apiDomain: environment.supertokens.domain,
-    apiBasePath: '/api/supertokens'
+    apiBasePath: '/supertokens'
   },
   recipeList: [
     Session.init()

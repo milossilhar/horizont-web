@@ -8,13 +8,13 @@ import Session from 'supertokens-node/recipe/session';
 export const superConfig: TypeInput = {
   framework: 'express',
   supertokens: {
-    connectionURI: config.coreURI
+    connectionURI: config.supertokens.uri
   },
   appInfo: {
     appName: 'Horizont',
     apiDomain: config.hostname,
     websiteDomain: config.hostname,
-    apiBasePath: '/api/supertokens',
+    apiBasePath: '/supertokens',
     websiteBasePath: '/auth'
   },
   recipeList: [
